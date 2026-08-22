@@ -69,7 +69,9 @@ namespace WebApplication1
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Context.User.Identity.IsAuthenticated) {
+                Menu1.Visible = true;
+            }
         }
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
