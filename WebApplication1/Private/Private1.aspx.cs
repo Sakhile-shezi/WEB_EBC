@@ -13,5 +13,22 @@ namespace WebApplication1.Private
         {
 
         }
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            // Access your form values directly via ID
+            string patientName = txtPatientName.Text;
+            string dob = txtPatientDob.Text;
+            string medication = txtMedication.Text;
+            string dosage = txtDosage.Text;
+            string frequency = txtFrequency.Text;
+            string instructions = txtInstructions.Text;
+
+            // Add saving logic here
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/DoctorDashboard.aspx");
+        }
     }
 }

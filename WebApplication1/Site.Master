@@ -1,5 +1,6 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="WebApplication1.SiteMaster" %>
 
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -7,7 +8,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %> - My ASP.NET Application</title>
-
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
@@ -51,8 +51,8 @@
                         <li class="nav-item"> 
                             <asp:Menu ID="Menu1" class="nav-link" runat="server" Orientation="Horizontal" Visible="False">
                                 <Items>
-                                    <asp:MenuItem NavigateUrl="~/Private/Private1.aspx" Text="Dashboard" Value="Dashboard"></asp:MenuItem>
-                                    <asp:MenuItem NavigateUrl="~/Private/Private2.aspx" Text="Details" Value="Details"></asp:MenuItem>
+                                    <asp:MenuItem NavigateUrl="~/Private/Private1.aspx" Text="Prescription" Value="Dashboard"></asp:MenuItem>
+                                    <asp:MenuItem NavigateUrl="~/Private/Private2.aspx" Text="Dashboard" Value="Details"></asp:MenuItem>
                                 </Items>
                             </asp:Menu>
                     </ul>
@@ -83,6 +83,7 @@
                 <p>&copy; <%: DateTime.Now.Year %> - My Major Project</p>
             </footer>
         </div>
+
     </form>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/Scripts/bootstrap.js") %>
