@@ -13,14 +13,37 @@
             font-family: Arial, sans-serif;
         }
 
-        .page-header {
+/*        .page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid #eaeaea;
             padding-bottom: 12px;
             margin-bottom: 20px;
-        }
+        }*/
+        .page-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-bottom: 2px solid #eaeaea;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+}
+
+.header-image {
+    width: 100%;
+    max-height: 150px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.page-header h1 {
+    margin: 0;
+    color: #333;
+}
 
         .form-section {
             margin-bottom: 24px;
@@ -78,6 +101,7 @@
 
     <div class="prescription-container">
         <header class="page-header">
+            <img class="header-image" src="/Images/WhatsApp Image 2026-09-02 at 10.38.35.jpeg"/>
             <h1>Create Patient Prescription</h1>
         </header>
 

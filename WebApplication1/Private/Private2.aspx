@@ -5,23 +5,28 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <style>
-        .dashboard-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 24px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-
         .dashboard-header {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
+            text-align: center;
             border-bottom: 2px solid #eaeaea;
             padding-bottom: 12px;
             margin-bottom: 20px;
         }
+
+        .header-image {
+            width: 100%;
+            max-height: 350px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+.user-profile {
+    margin-top: 10px;
+}
 
         .quick-stats {
             display: flex;
@@ -80,6 +85,7 @@
 
     <div class="dashboard-container">
         <header class="dashboard-header">
+            <img class="header-image" src="/Images/Smile.jpeg"/>
             <h1>Doctor Dashboard</h1>
             <div class="user-profile">
                 <span>Welcome, <asp:Label ID="lblDoctorName" runat="server" Text="Dr. Smith" /></span>

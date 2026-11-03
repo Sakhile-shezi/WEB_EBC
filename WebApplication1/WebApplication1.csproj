@@ -203,8 +203,29 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="packages.config" />
+    <Content Include="Images\Doctors.jpeg" />
     <Content Include="Images\eastboom.jpg" />
+    <Content Include="Images\Smile.jpeg" />
+    <Content Include="Images\WhatsApp Image 2026-09-02 at 10.38.35.jpeg" />
+    <Content Include="InitialAdminSetup.aspx" />
+    <Content Include="Private\Administrator\AppointmentManagement.aspx" />
+    <Content Include="Private\Administrator\ManageStaff.aspx" />
+    <Content Include="Private\Administrator\Profile.aspx" />
+    <Content Include="Private\Administrator\WebForm1.aspx" />
+    <Content Include="Private\Doctor\Prescription.aspx" />
+    <Content Include="Private\Doctor\Profile.aspx" />
+    <Content Include="Private\Doctor\WebForm1.aspx" />
+    <Content Include="Private\Nurse\MedicationAdministration.aspx" />
+    <Content Include="Private\Nurse\Profile.aspx" />
+    <Content Include="Private\Nurse\WebForm1.aspx" />
+    <Content Include="Private\PatientDetails.aspx" />
+    <Content Include="Private\Patient\Profile.aspx" />
+    <Content Include="Private\Patient\WebForm1.aspx" />
     <Content Include="Private\Web.config" />
+    <Content Include="Private\Administrator\Web.config" />
+    <Content Include="Private\Doctor\Web.config" />
+    <Content Include="Private\Nurse\Web.config" />
+    <Content Include="Private\Patient\Web.config" />
     <None Include="Properties\PublishProfiles\IST-Pmb-Group-6 - Web Deploy.pubxml" />
     <Content Include="Private\Private1.aspx" />
     <Content Include="Private\Private2.aspx" />
@@ -380,7 +401,105 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="InitialAdminSetup.aspx.cs">
+      <DependentUpon>InitialAdminSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InitialAdminSetup.aspx.designer.cs">
+      <DependentUpon>InitialAdminSetup.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Private\Administrator\AppointmentManagement.aspx.cs">
+      <DependentUpon>AppointmentManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Administrator\AppointmentManagement.aspx.designer.cs">
+      <DependentUpon>AppointmentManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Administrator\ManageStaff.aspx.cs">
+      <DependentUpon>ManageStaff.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Administrator\ManageStaff.aspx.designer.cs">
+      <DependentUpon>ManageStaff.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Administrator\Profile.aspx.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Administrator\Profile.aspx.designer.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Administrator\WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Administrator\WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Doctor\Prescription.aspx.cs">
+      <DependentUpon>Prescription.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Doctor\Prescription.aspx.designer.cs">
+      <DependentUpon>Prescription.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Doctor\Profile.aspx.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Doctor\Profile.aspx.designer.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Doctor\WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Doctor\WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Nurse\MedicationAdministration.aspx.cs">
+      <DependentUpon>MedicationAdministration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Nurse\MedicationAdministration.aspx.designer.cs">
+      <DependentUpon>MedicationAdministration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Nurse\Profile.aspx.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Nurse\Profile.aspx.designer.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Nurse\WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Nurse\WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\PatientDetails.aspx.cs">
+      <DependentUpon>PatientDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\PatientDetails.aspx.designer.cs">
+      <DependentUpon>PatientDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Patient\Profile.aspx.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Patient\Profile.aspx.designer.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Patient\WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Patient\WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Private\Private1.aspx.cs">
       <DependentUpon>Private1.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -421,6 +540,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Help\" />
+    <Folder Include="Private\Help\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\bootstrap.min.js.map" />

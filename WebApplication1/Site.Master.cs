@@ -69,9 +69,23 @@ namespace WebApplication1
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Context.User.Identity.IsAuthenticated) {
-                Menu1.Visible = true;
-            }
+            //   if (Context.User.Identity.IsAuthenticated) {
+            //      Menu1.Visible = true;
+            //  }
+            // Patient navigation
+            patientNavItem.Visible = Context.User.IsInRole("Patient");
+
+            // Nurse navigation
+            nurseNavItem.Visible = Context.User.IsInRole("Nurse");
+
+            // Doctor navigation
+            doctorNavItem.Visible = Context.User.IsInRole("Doctor");
+
+            // Administrator navigation
+            adminNavItem.Visible = Context.User.IsInRole("Admin");
+
+            // Staff management is only available to administrators
+            manageStaffNavItem.Visible = Context.User.IsInRole("Admin");
         }
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)

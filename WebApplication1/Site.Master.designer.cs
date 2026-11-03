@@ -24,6 +24,51 @@ namespace WebApplication1
         protected global::System.Web.UI.WebControls.Menu Menu1;
 
         /// <summary>
+        /// patientNavItem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl patientNavItem;
+
+        /// <summary>
+        /// nurseNavItem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl nurseNavItem;
+
+        /// <summary>
+        /// doctorNavItem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl doctorNavItem;
+
+        /// <summary>
+        /// adminNavItem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl adminNavItem;
+
+        /// <summary>
+        /// manageStaffNavItem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl manageStaffNavItem;
+
+        /// <summary>
         /// MainContent control.
         /// </summary>
         /// <remarks>

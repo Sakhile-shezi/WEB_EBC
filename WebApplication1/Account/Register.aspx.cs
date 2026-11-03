@@ -24,8 +24,35 @@ namespace WebApplication1.Account
                 //string callbackUrl = IdentityHelper.GetUserConfirmationRedirectUrl(code, user.Id, Request);
                 //manager.SendEmail(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>.");
 
-                signInManager.SignIn( user, isPersistent: false, rememberBrowser: false);
-                IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
+                //original code
+                //signInManager.SignIn( user, isPersistent: false, rememberBrowser: false);
+                //IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
+
+                // Every publicly registered account receives Patient, never a staff role.
+                IdentityResult roleResult = manager.AddToRole(user.Id, "Patient");
+
+                if (roleResult.Succeeded)
+                {
+                    // Sign in only after role assignment succeeds.
+                    signInManager.SignIn(
+                        user,
+                        isPersistent: false,
+                        rememberBrowser: false
+                    );
+
+                    IdentityHelper.RedirectToReturnUrl(
+                        Request.QueryString["ReturnUrl"],
+                        Response
+                    );
+                }
+                else
+                {
+                    // Avoid leaving an account that failed role assignment.
+                    manager.Delete(user);
+
+                    ErrorMessage.Text =
+                        "Registration could not be completed. Please try again or contact the administrator.";
+                }
             }
             else 
             {

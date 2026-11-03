@@ -32,7 +32,35 @@
                 <asp:RequiredFieldValidator runat="server" ControlToValidate="ConfirmPassword"
                     CssClass="text-danger" Display="Dynamic" ErrorMessage="The confirm password field is required." />
                 <asp:CompareValidator runat="server" ControlToCompare="Password" ControlToValidate="ConfirmPassword"
-                    CssClass="text-danger" Display="Dynamic" ErrorMessage="The password and confirmation password do not match." />
+                    CssClass="text-danger" ErrorMessage="The password and confirmation password do not match." />
+            </div>
+        </div>
+        <div class="row">
+            <asp:Label runat="server" AssociatedControlID="TBFullName" CssClass="col-md-2 col-form-label">Full Name</asp:Label>
+            <div class="col-md-10">
+                <asp:TextBox runat="server" ID="TBFullName" CssClass="form-control"/>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="TBFullName"
+                    CssClass="text-danger" ErrorMessage="The full name is required." />
+            </div>
+        </div>
+        <div class="row">
+            <asp:Label runat="server" AssociatedControlID="DDLRole" CssClass="col-md-2 col-form-label">Role</asp:Label>
+            <div class="col-md-10">
+                <asp:DropDownList ID="DDLRole" runat="server"  class="form-select" Width="25.5%">
+                    <asp:ListItem>Doctor</asp:ListItem>
+                    <asp:ListItem>Nurse</asp:ListItem>
+                    <asp:ListItem>Patient</asp:ListItem>
+                </asp:DropDownList>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="DDLRole"
+                    CssClass="text-danger" ErrorMessage="Role selection is required." />
+            </div>
+        </div>
+        <div class="row">
+            <asp:Label runat="server" AssociatedControlID="TBContactNo" CssClass="col-md-2 col-form-label">Contact Number</asp:Label>
+            <div class="col-md-10">
+                <asp:TextBox runat="server" ID="TBContactNo" CssClass="form-control"/>
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="TBcontactNo"
+                    CssClass="text-danger" ErrorMessage="Contact Number is required." />
             </div>
         </div>
         <div class="row">
