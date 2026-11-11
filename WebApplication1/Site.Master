@@ -57,8 +57,10 @@
                             </asp:Menu>
                     </ul> -->
 
+
 <ul class="navbar-nav flex-grow-1">
 
+    <!-- Public navigation -->
     <li class="nav-item">
         <a class="nav-link" runat="server" href="~/About">About</a>
     </li>
@@ -67,42 +69,80 @@
         <a class="nav-link" runat="server" href="~/Contact">Contact</a>
     </li>
 
-    <!-- Patient navigation -->
-    <li id="patientNavItem" runat="server" visible="false" class="nav-item">
+
+    <!-- PATIENT NAVIGATION -->
+    <li id="patientDashboardNav" runat="server" visible="false" class="nav-item">
         <a class="nav-link" runat="server"
-           href="~/Private/Patient/WebForm1.aspx">
+            href="~/Private/Patient/WebForm1.aspx">
             Patient Dashboard
         </a>
     </li>
 
-    <!-- Nurse navigation -->
-    <li id="nurseNavItem" runat="server" visible="false" class="nav-item">
+
+    <!-- NURSE NAVIGATION -->
+    <li id="nurseDashboardNav" runat="server" visible="false" class="nav-item">
         <a class="nav-link" runat="server"
-           href="~/Private/Nurse/WebForm1.aspx">
+            href="~/Private/Nurse/WebForm1.aspx">
             Nurse Dashboard
         </a>
     </li>
 
-    <!-- Doctor navigation -->
-    <li id="doctorNavItem" runat="server" visible="false" class="nav-item">
+    <li id="nurseMedicationNav" runat="server" visible="false" class="nav-item">
         <a class="nav-link" runat="server"
-           href="~/Private/Doctor/WebForm1.aspx">
+            href="~/Private/Nurse/MedicationAdministration.aspx">
+            Medication Administration
+        </a>
+    </li>
+
+    <li id="nurseProfileNav" runat="server" visible="false" class="nav-item">
+        <a class="nav-link" runat="server"
+            href="~/Private/Nurse/Profile.aspx">
+            Profile
+        </a>
+    </li>
+
+
+    <!-- DOCTOR NAVIGATION -->
+    <li id="doctorDashboardNav" runat="server" visible="false" class="nav-item">
+        <a class="nav-link" runat="server"
+            href="~/Private/Doctor/WebForm1.aspx">
             Doctor Dashboard
         </a>
     </li>
 
-    <!-- Administrator navigation -->
-    <li id="adminNavItem" runat="server" visible="false" class="nav-item">
+    <li id="doctorPrescriptionNav" runat="server" visible="false" class="nav-item">
         <a class="nav-link" runat="server"
-           href="~/Private/Administrator/WebForm1.aspx">
+            href="~/Private/Doctor/Prescription.aspx">
+            Prescription
+        </a>
+    </li>
+
+    <li id="doctorProfileNav" runat="server" visible="false" class="nav-item">
+        <a class="nav-link" runat="server"
+            href="~/Private/Doctor/Profile.aspx">
+            Profile
+        </a>
+    </li>
+
+
+    <!-- ADMINISTRATOR NAVIGATION -->
+    <li id="adminDashboardNav" runat="server" visible="false" class="nav-item">
+        <a class="nav-link" runat="server"
+            href="~/Private/Administrator/WebForm1.aspx">
             Admin Dashboard
         </a>
     </li>
 
-    <!-- Admin-only staff management -->
-    <li id="manageStaffNavItem" runat="server" visible="false" class="nav-item">
+    <li id="adminMedicineNav" runat="server" visible="false" class="nav-item">
         <a class="nav-link" runat="server"
-           href="~/Private/Administrator/ManageStaff.aspx">
+            href="~/Private/Administrator/MedicineManagement.aspx">
+            Medicine Management
+        </a>
+    </li>
+
+    <li id="adminManageStaffNav" runat="server" visible="false" class="nav-item">
+        <a class="nav-link" runat="server"
+            href="~/Private/Administrator/ManageStaff.aspx">
             Manage Staff
         </a>
     </li>

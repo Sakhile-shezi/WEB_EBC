@@ -12,8 +12,9 @@ namespace WebApplication1.Private.Nurse
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-        //    SqlDSMedAdmin.SelectParameters["id"].DefaultValue =
-        //        User.Identity.GetUserId();
+            SqlDSRecMedAdmin.SelectParameters["id"].DefaultValue =
+                User.Identity.GetUserId();
+            lblID.Text = User.Identity.GetUserId();
         }
 
         protected void TBPatient_TextChanged(object sender, EventArgs e)

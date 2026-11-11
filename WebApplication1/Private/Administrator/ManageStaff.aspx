@@ -84,7 +84,7 @@
         <div class="mb-3">
             <asp:Label runat="server"
                 AssociatedControlID="txtPassword">
-                Temporary Password
+                Password
             </asp:Label>
 
             <asp:TextBox ID="txtPassword" runat="server"

@@ -165,6 +165,103 @@
     <!-- Existing medication administration records -->
     <div class="med-card">
         <h4>Medication Administration History</h4>
+        
+<!-- RECENT ADMINISTRATIONS -->
+<div style="margin-bottom: 30px;">
+
+    <div style="display: flex; justify-content: space-between;
+                align-items: center; flex-wrap: wrap; gap: 10px;
+                margin-bottom: 8px;">
+
+        <h4 style="margin: 0; padding: 0; border: none;">
+            Recent Administrations
+        </h4>
+
+        <span style="background: #eaf3eb; color: #24572d;
+                     padding: 5px 12px; border-radius: 20px;
+                     font-size: 12px; font-weight: 600;">
+            Last 7 Days
+        </span>
+
+    </div>
+
+    <p class="med-help">
+        Your recent medication administration records from the past seven days.
+    </p>
+
+    <div class="med-grid-wrap">
+
+        <asp:GridView
+            ID="GridView4"
+            runat="server"
+            AutoGenerateColumns="False"
+            DataKeyNames="medication_AdministrationID"
+            DataSourceID="SqlDSRecMedAdmin"
+            CssClass="med-grid"
+            CellPadding="4"
+            GridLines="None"
+            EmptyDataText="No recent medication administration records found.">
+
+            <Columns>
+
+                <asp:BoundField
+                    DataField="Patient"
+                    HeaderText="Patient" />
+
+                <asp:BoundField
+                    DataField="MedicineName"
+                    HeaderText="Medicine" />
+
+                <asp:BoundField
+                    DataField="dosageGiven"
+                    HeaderText="Dosage Given" />
+
+                <asp:BoundField
+                    DataField="Dosage"
+                    HeaderText="Prescribed Dosage" />
+
+                <asp:BoundField
+                    DataField="status"
+                    HeaderText="Status" />
+
+                <asp:BoundField
+                    DataField="Admnistered_at"
+                    HeaderText="Administration Date"
+                    DataFormatString="{0:dd MMM yyyy HH:mm}" />
+
+                <asp:BoundField
+                    DataField="Doctor"
+                    HeaderText="Prescribed By" />
+
+                <asp:BoundField
+                    DataField="Frequency"
+                    HeaderText="Frequency" />
+
+                <asp:BoundField
+                    DataField="Duration"
+                    HeaderText="Duration" />
+
+                <asp:BoundField
+                    DataField="DosageUnit"
+                    HeaderText="Unit" />
+
+            </Columns>
+
+            <HeaderStyle
+                BackColor="#24572d"
+                ForeColor="White"
+                Font-Bold="True" />
+
+            <RowStyle BackColor="White" />
+
+            <AlternatingRowStyle BackColor="#f3f7f3" />
+
+        </asp:GridView>
+
+    </div>
+
+</div>
+
 
         <div class="med-columns">
             <div>
@@ -396,13 +493,6 @@
 
     </div>
 
-    <!-- Keep all your existing SqlDataSource controls below this point.
-         Do not remove or rename them. -->
-
-    <!-- PASTE YOUR EXISTING SqlDSMedAdmin, SqlDSMedNotes,
-         SqlDSDocNotes, SqlDSPrescription, SqlDSPrescriptionItems,
-         SqlDSGetNurseID and SqlDSRecordMedAdmin controls here. -->
-    
 <!-- 1. Medication administration history -->
 <asp:SqlDataSource ID="SqlDSMedAdmin" runat="server"
     ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
@@ -477,6 +567,38 @@
         <asp:ControlParameter ControlID="DDLStatus" Name="status" PropertyName="SelectedValue" Type="String" />
     </InsertParameters>
 </asp:SqlDataSource>
+
+
+    <div>
+        Recent Administrations<br />
+        <asp:GridView ID="GridView3" runat="server" AutoGenerateColumns="False" DataKeyNames="medication_AdministrationID" DataSourceID="SqlDSRecMedAdmin" EmptyDataText="No recent administrations">
+            <Columns>
+                <asp:BoundField DataField="Patient" HeaderText="Patient" SortExpression="Patient" />
+                <asp:BoundField DataField="MedicineName" HeaderText="MedicineName" SortExpression="MedicineName" />
+                <asp:BoundField DataField="dosageGiven" HeaderText="dosageGiven" SortExpression="dosageGiven" />
+                <asp:BoundField DataField="Dosage" HeaderText="Dosage" SortExpression="Dosage" />
+                <asp:BoundField DataField="status" HeaderText="status" SortExpression="status" />
+                <asp:BoundField DataField="Admnistered_at" HeaderText="Admnistered_at" SortExpression="Admnistered_at" />
+                <asp:BoundField DataField="Doctor" HeaderText="Doctor" SortExpression="Doctor" />
+                <asp:BoundField DataField="Frequency" HeaderText="Frequency" SortExpression="Frequency" />
+                <asp:BoundField DataField="Duration" HeaderText="Duration" SortExpression="Duration" />
+                <asp:BoundField DataField="DateIssued" HeaderText="DateIssued" SortExpression="DateIssued" />
+                <asp:BoundField DataField="DosageUnit" HeaderText="DosageUnit" SortExpression="DosageUnit" />
+            </Columns>
+        </asp:GridView>
+<asp:SqlDataSource ID="SqlDSRecMedAdmin" runat="server"
+    ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
+    SelectCommand="SELECT MedicationAdministration.medication_AdministrationID, MedicationAdministration.NurseID, MedicationAdministration.PrescriptionItemID, MedicationAdministration.Admnistered_at, MedicationAdministration.Notes, MedicationAdministration.dosageGiven, MedicationAdministration.status, Nurse.UserId, PrescriptionItem.MedicineID, PrescriptionItem.Dosage, PrescriptionItem.Frequency, Doctor.FullName AS Doctor, Patient.FullName AS Patient, Prescriptions.DoctorID, Prescriptions.PatientID, PrescriptionItem.Instruction, PrescriptionItem.Duration, Medicine.MedicineName, Medicine.DosageUnit, Prescriptions.DateIssued, Nurse.FullName FROM MedicationAdministration INNER JOIN Nurse ON MedicationAdministration.NurseID = Nurse.NurseID INNER JOIN PrescriptionItem ON MedicationAdministration.PrescriptionItemID = PrescriptionItem.PrescriptionItemID INNER JOIN Prescriptions ON PrescriptionItem.PrescriptionID = Prescriptions.PrescriptionID INNER JOIN Doctor ON Prescriptions.DoctorID = Doctor.DoctorID INNER JOIN Patient ON Prescriptions.PatientID = Patient.PatientID INNER JOIN Medicine ON PrescriptionItem.MedicineID = Medicine.MedicineID WHERE (Nurse.UserId = @id) AND (MedicationAdministration.Admnistered_at &gt;= DATEADD(DAY, - 7, GETDATE())) AND (MedicationAdministration.Admnistered_at &lt;= GETDATE()) ORDER BY MedicationAdministration.Admnistered_at DESC">
+    <SelectParameters>
+        <asp:Parameter Name="id" />
+    </SelectParameters>
+</asp:SqlDataSource>
+
+
+        <asp:Label ID="lblID" runat="server" Text="Label"></asp:Label>
+
+
+    </div>
 
 
 </div>
