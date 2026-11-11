@@ -169,15 +169,26 @@ namespace WebApplication1.Private.Appointments
 
         protected void Calendar1BookDate_DayRender(object sender, DayRenderEventArgs e)
         {
-            DateTime day = e.Day.Date;
-            if (day < DateTime.Today ||
-                day.DayOfWeek == DayOfWeek.Saturday ||
-                day.DayOfWeek == DayOfWeek.Sunday)
+   
+            DateTime minimumDate = DateTime.Today.AddDays(1);
+
+            bool isPastOrToday = e.Day.Date < minimumDate;
+
+            bool isWeekend =
+                e.Day.Date.DayOfWeek == DayOfWeek.Saturday ||
+                e.Day.Date.DayOfWeek == DayOfWeek.Sunday;
+
+            if (isPastOrToday || isWeekend)
             {
                 e.Day.IsSelectable = false;
-                e.Cell.ForeColor = Color.Gray;
+
+                e.Cell.ForeColor = System.Drawing.Color.Gray;
+                e.Cell.ToolTip = isWeekend
+                    ? "Appointments are only available Monday to Friday."
+                    : "Appointments can only be booked from tomorrow onwards.";
             }
         }
+        
 
         protected void BookingSelectionChanged(object sender, EventArgs e)
         {
@@ -186,10 +197,18 @@ namespace WebApplication1.Private.Appointments
 
         private bool IsValidBookingDate(DateTime date)
         {
-            return date.Date >= DateTime.Today &&
-                   date.DayOfWeek != DayOfWeek.Saturday &&
-                   date.DayOfWeek != DayOfWeek.Sunday;
+            // Reject dates before today
+            if (date.Date < DateTime.Today)
+                return false;
+
+            // Reject weekends
+            if (date.DayOfWeek == DayOfWeek.Saturday ||
+                date.DayOfWeek == DayOfWeek.Sunday)
+                return false;
+
+            return true;
         }
+
 
         // These time options are display aids only; the SQL procedure enforces
         // the same rules atomically before accepting any appointment.
@@ -347,16 +366,34 @@ namespace WebApplication1.Private.Appointments
 
                 // The database procedure checks overlaps and daily limit again under a lock.
                 // Only the authenticated account determines the PatientID; controls cannot impersonate others.
+
+                // Combine start time and end time into one TimeSlots value
+                string timeSlots =
+                    DateTime.Today.Add(start).ToString("hh:mm tt", CultureInfo.InvariantCulture)
+                    + "-" +
+                    DateTime.Today.Add(end).ToString("hh:mm tt", CultureInfo.InvariantCulture);
+
+                // Set appointment parameters
                 var p = SqlDataSourceInsertAppointment.InsertParameters;
-                p["UserId"].DefaultValue = userId;
-                p["PatientID"].DefaultValue = patientId.ToString(CultureInfo.InvariantCulture);
-                p["AppointmentDate"].DefaultValue = date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-                p["StartTime"].DefaultValue = start.ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture);
-                p["EndTime"].DefaultValue = end.ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture);
-                p["AppointmentReason"].DefaultValue = reason;
+
+                p["patientID"].DefaultValue =
+                    patientId.ToString(CultureInfo.InvariantCulture);
+
+                p["appointmentReason"].DefaultValue = reason;
+
+                p["appointmentDate"].DefaultValue =
+                    date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                // Combine the selected start and end times.
+            
+
+                p["timeslots"].DefaultValue = timeSlots;
+
                 _bookingInserted = false;
                 SqlDataSourceInsertAppointment.Insert();
                 if (!_bookingInserted) return;
+                lblAppointmentStatus.Text = "SCHEDULED MEETING";
+                lblAppointmentStatus.CssClass = "eb-status-scheduled";
                 GridViewMyAppointments.DataBind();
                 txtAppointmentReason.Text = "";
                 ddlTimeSlot.SelectedIndex = 0;

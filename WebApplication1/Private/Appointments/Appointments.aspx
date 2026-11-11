@@ -105,10 +105,207 @@
     .appointment-hero-content h1 {margin:0 0 10px;font-size:clamp(28px,3vw,42px);font-weight:750;}
     .appointment-hero-content p {margin:0;max-width:500px;font-size:16px;line-height:1.5;}
     @media(max-width:650px){.appointment-hero,.appointment-hero-content{min-height:220px}.appointment-hero-content{padding:24px 16px}}
+
+
+
+    /* Appointment status row */
+.eb-status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    gap: 12px;
+}
+
+/* Scheduled appointment indicator */
+.eb-status-scheduled {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 15px;
+    border-radius: 25px;
+
+    background: #fff3e6;
+    color: #ea580c;
+    border: 1px solid #fb923c;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.4);
+
+    animation: scheduledGlow 2s ease-in-out infinite;
+}
+
+@keyframes scheduledGlow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(249, 115, 22, 0.25);
+    }
+
+    50% {
+        box-shadow:
+            0 0 12px rgba(249, 115, 22, 0.65),
+            0 0 20px rgba(249, 115, 22, 0.25);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .eb-status-scheduled {
+        animation: none;
+    }
+}
+
+
+    /* =============================================================
+       EASTBOOM FOREST GREEN - matches Patient Dashboard
+       Presentation-only overrides: existing ASP.NET controls stay intact.
+       ============================================================= */
+    .eb-booking {
+        --eb-ink:#203b35; --eb-muted:#6f817b; --eb-line:#e0e9e4;
+        --eb-purple:#27664b; --eb-teal:#176f54; --eb-blue:#337e5e;
+        --eb-red:#b84833;
+        background:#f6f9f7;
+        color:var(--eb-ink);
+        padding-top:34px;
+    }
+    .eb-booking .eb-wrap {max-width:1200px}
+    .eb-booking .eb-eyebrow {color:#267455;letter-spacing:.11em}
+    .eb-booking .eb-page-head h1 {color:#1d392d;font-size:32px;letter-spacing:-.025em}
+    .eb-booking .eb-page-head p {color:#70827b;line-height:1.55}
+    .eb-booking .eb-step-pill {color:#3b6150}
+    .eb-booking .eb-step-pill b,
+    .eb-booking .eb-step-pill:nth-child(2) b,
+    .eb-booking .eb-step-pill:nth-child(3) b,
+    .eb-booking .eb-step-number,
+    .eb-booking .eb-step-section.purple .eb-step-number,
+    .eb-booking .eb-step-section.blue .eb-step-number {
+        background:#1c704f; color:white; border-radius:7px;
+        box-shadow:0 3px 6px rgba(19,72,47,.15);
+    }
+    .eb-booking .eb-card {
+        background:#fff;
+        border:1px solid #e0e9e4;
+        border-radius:16px;
+        box-shadow:0 6px 18px rgba(20,51,36,.045), 0 1px 2px rgba(20,51,36,.025);
+        transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;
+    }
+    @media (hover:hover) and (pointer:fine) {
+        .eb-booking .eb-card:hover {
+            transform:translateY(-2px);
+            border-color:#cfe0d4;
+            box-shadow:0 15px 30px rgba(20,51,36,.09),0 3px 6px rgba(20,51,36,.03);
+        }
+    }
+    .eb-booking .eb-card h2,.eb-booking .eb-step-heading h3 {color:#203b35}
+    .eb-booking .eb-sub,.eb-booking .eb-step-heading p {color:#75887e}
+    .eb-booking .eb-calendar-frame {border-color:#dae7de;border-radius:12px;background:#fff}
+    .eb-booking .eb-calendar a {color:#254739}
+    .eb-booking .eb-calendar a:hover {background:#e8f4ec}
+    .eb-booking .eb-calendar .eb-cal-selected a {background:#176f54!important;color:#fff!important}
+    .eb-booking .eb-selected-date {color:#195e45;background:#e6f3eb}
+    .eb-booking .eb-cal-legend {color:#74877b}
+    .eb-booking .eb-legend-dot,.eb-booking .eb-legend-dot.selected {background:#176f54}
+    .eb-booking .eb-time-grid {gap:8px}
+    .eb-booking .eb-slot {
+        background:#fff;color:#294b3c;border:1px solid #dce7df;
+        border-radius:9px;transition:background .2s ease,transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+    }
+    .eb-booking .eb-slot:hover {
+        background:#f0f7f2;border-color:#4c9773;transform:translateY(-1px);
+        box-shadow:0 4px 9px rgba(21,90,57,.07);
+    }
+    .eb-booking .eb-slot.active {
+        background:#e3f2e8;color:#13583d;border-color:#1b7653;
+        box-shadow:inset 0 0 0 1px #1b7653,0 3px 8px rgba(21,90,57,.07);
+    }
+    .eb-booking .eb-input,.eb-booking .eb-time-fallback {color:#244337;border-color:#d9e5dd;background:#fff}
+    .eb-booking .eb-input:focus,.eb-booking .eb-time-fallback:focus {
+        border-color:#318260;outline:none;box-shadow:0 0 0 3px rgba(43,125,82,.13);
+    }
+    .eb-booking .eb-input[readonly] {background:#f7faf8;color:#365b49}
+    .eb-booking .eb-person-row {background:#f8faf9;border-color:#eaf0ec}
+    .eb-booking .eb-person-row .value {color:#254538}
+    .eb-booking .eb-summary-row {border-color:#e2ebe5}
+    .eb-booking .eb-summary-row .key {color:#70867a}
+    .eb-booking .eb-summary-row .value {color:#244438}
+    .eb-booking .eb-status.complete {background:#e4f3ea;color:#176842}
+    .eb-booking .eb-alert {background:#fffbef;border-color:#eee0b7}
+    .eb-booking .eb-profile-link {background:#216c4f;box-shadow:none}
+    .eb-booking .eb-profile-link:hover {background:#164e39}
+    .eb-booking .eb-book-button {
+        background:#1e704f;color:#fff;border-radius:10px;
+        box-shadow:0 5px 12px rgba(17,81,51,.16);
+        transition:background .2s ease,transform .2s ease,box-shadow .2s ease;
+    }
+    .eb-booking .eb-book-button:hover {
+        background:#145a3e;transform:translateY(-2px);
+        box-shadow:0 9px 18px rgba(17,81,51,.2);
+    }
+    .eb-booking .eb-clear {color:#38624b;border-color:#dce7de}
+    .eb-booking .eb-clear:hover {background:#f0f7f2;color:#154d37}
+    .eb-booking .eb-tabs {background:#edf4ee}
+    .eb-booking .eb-tabs button {color:#61806c}
+    .eb-booking .eb-tabs button.active {color:#195e43;box-shadow:0 1px 5px rgba(18,76,44,.10)}
+    .eb-booking .eb-table th {background:#f2f7f3;color:#587667}
+    .eb-booking .eb-table tr:nth-child(even) td {background:#fafcfb}
+    .eb-booking .eb-table tbody tr {transition:background .2s ease}
+    .eb-booking .eb-table tbody tr:hover td {background:#f0f7f2}
+    .eb-booking .eb-no-history {border-color:#dce9df;color:#708679}
+    .eb-booking .eb-foot {border-color:#e0e9e4;color:#849589}
+    /* Forest green photo banner with layered depth */
+    .appointment-hero {
+        background-color:#183b2c;
+        min-height:275px;
+        box-shadow:inset 0 -8px 20px rgba(12,35,23,.12);
+    }
+    .appointment-hero::before {
+        background:linear-gradient(110deg,rgba(15,42,31,.97) 0%,rgba(25,67,46,.89) 52%,rgba(45,112,76,.66) 100%);
+    }
+    .appointment-hero::after {
+        height:80px;
+        background:linear-gradient(to bottom,rgba(246,249,247,0),#f6f9f7);
+    }
+    .appointment-hero-content {max-width:1200px;padding:34px 20px 52px}
+    .appointment-hero-content h1 {
+        font-size:clamp(30px,3.2vw,43px);letter-spacing:-.025em;
+        text-shadow:0 3px 12px rgba(0,0,0,.12);
+    }
+    .appointment-hero-content p {color:#e0efe6;font-size:15px}
+    .appointment-hero-label {
+        display:inline-block;align-self:flex-start;
+        background:rgba(255,255,255,.14);color:#fff;
+        padding:8px 13px;border-radius:30px;
+        font-size:11px;font-weight:800;letter-spacing:.06em;
+        margin-bottom:17px;backdrop-filter:blur(3px);
+    }
+    /* Status shown after a successful database save */
+    .eb-booking .eb-status-row {border-top:1px solid #e2ebe5;margin-top:4px}
+    .eb-booking .eb-status-scheduled {
+        background:#e7f4eb;color:#195d40;border:1px solid #bcdcc8;
+        box-shadow:0 2px 7px rgba(19,83,48,.07);
+        animation:none;
+    }
+    .eb-booking .eb-booking-message:empty {display:none}
+    .eb-booking .eb-appointment-status:empty {display:none}
+    .eb-booking .eb-appointment-status {display:block;margin:10px 0;font-size:12px;font-weight:750}
+    /* Polished keyboard accessibility */
+    .eb-booking button:focus-visible,.eb-booking a:focus-visible {
+        outline:3px solid rgba(36,119,75,.4);outline-offset:2px;
+    }
+    @media(max-width:650px) {
+        .appointment-hero,.appointment-hero-content {min-height:225px}
+        .appointment-hero-content {padding:24px 16px 45px}
+        .eb-booking .eb-page-head h1 {font-size:28px}
+    }
+    @media(prefers-reduced-motion:reduce) {
+        .eb-booking .eb-card,.eb-booking .eb-slot,.eb-booking .eb-book-button {transition:none!important;transform:none!important}
+    }
+
 </style>
 
-<div class="appointment-hero" style="background-image:url('<%= ResolveUrl("~/Images/Doctors.jpg") %>');">
+<div class="appointment-hero" style="background-image:url('<%= ResolveUrl("~/Images/vitaly-gariev-NDOYHZ_98Rw-unsplash.jpg") %>');">
     <div class="appointment-hero-content">
+        <span class="appointment-hero-label">PIETERMARITZBURG HEALTH SERVICES</span>
         <h1>Book an Appointment</h1>
         <p>Eastboom Clinic makes booking simple and convenient.</p>
     </div>
@@ -215,6 +412,7 @@
                 <div class="eb-summary-row"><span class="key">Doctor</span><span id="ebSummaryDoctor" class="value placeholder">Not selected</span></div>
                 <div class="eb-summary-row"><span class="key">Nurse</span><span id="ebSummaryNurse" class="value placeholder">Not selected</span></div>
                 <asp:Label ID="lblBookingMessage" runat="server" CssClass="eb-booking-message" EnableViewState="false" />
+                <asp:Label ID="lblAppointmentStatus" runat="server" Text="" CssClass="eb-appointment-status" />
                 <asp:Button ID="Button1BookAppointement" runat="server" Text="Book now  →" CssClass="eb-book-button" OnClick="Button1BookAppointement_Click" />
                 <a class="eb-clear" href='<%= ResolveUrl("~/Private/Appointments/Appointments.aspx") %>'>Clear selections</a>
                 <p id="ebProfileSummaryNote" class="eb-small-note">A completed profile is required to confirm a booking.</p>
@@ -263,42 +461,46 @@
     ID="SqlDataSourceInsertAppointment"
     runat="server"
     ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
-    InsertCommand="dbo.BookProAppointment"
-    InsertCommandType="StoredProcedure"
-    OnInserted="SqlDataSourceInsertAppointment_Inserted">
-
+    InsertCommand="INSERT INTO Pro_Appointment
+(
+    PatientID,
+    DoctorID,
+    NurseID,
+    AppointmentReason,
+    TimeSlots,
+    AppointmentStatus,
+    AppointmentDate
+)
+VALUES
+(
+    @patientID,
+    @doctorID,
+    @nurseID,
+    @appointmentReason,
+    @timeslots,
+    'Scheduled',
+    @appointmentDate
+)"
+    OnInserted="SqlDataSourceInsertAppointment_Inserted" SelectCommand="SELECT [AppointmentID], [PatientID], [DoctorID], [NurseID], [AppointmentReason], [TimeSlots] FROM [Pro_Appointment]">
     <InsertParameters>
-        <asp:Parameter Name="UserId" Type="String" />
-        <asp:Parameter Name="PatientID" Type="Int32" />
-
-        <asp:ControlParameter
-            Name="DoctorID"
-            ControlID="ddlDoctor"
-            PropertyName="SelectedValue"
-            Type="Int32" />
-
-        <asp:ControlParameter
-            Name="NurseID"
-            ControlID="ddlNurse"
-            PropertyName="SelectedValue"
-            Type="Int32" />
-
-        <asp:Parameter Name="AppointmentDate" DbType="Date" />
-        <asp:Parameter Name="StartTime" DbType="Time" />
-        <asp:Parameter Name="EndTime" DbType="Time" />
-        <asp:Parameter Name="AppointmentReason" Type="String" />
+        <asp:Parameter Name="patientID" />
+        <asp:ControlParameter ControlID="ddlDoctor" Name="doctorID" PropertyName="SelectedValue" />
+        <asp:ControlParameter ControlID="ddlNurse" Name="nurseID" PropertyName="SelectedValue" />
+        <asp:Parameter Name="appointmentReason" />
+        <asp:Parameter Name="timeslots" />
+        <asp:ControlParameter ControlID="Calendar1BookDate" Name="appointmentDate" PropertyName="SelectedDate" />
     </InsertParameters>
 
 </asp:SqlDataSource>
 
 
 <script>
-(function () {
-    function initializeEastboomUI() {
-        var root = document.getElementById('ebBookingRoot');
-        if (!root) return;
-        root.classList.add('js-enabled');
-        var timeSelect = document.getElementById('<%= ddlTimeSlot.ClientID %>');
+    (function () {
+        function initializeEastboomUI() {
+            var root = document.getElementById('ebBookingRoot');
+            if (!root) return;
+            root.classList.add('js-enabled');
+            var timeSelect = document.getElementById('<%= ddlTimeSlot.ClientID %>');
         var endSelect = document.getElementById('<%= ddlEndTime.ClientID %>');
         var doctor = document.getElementById('<%= ddlDoctor.ClientID %>');
         var nurse = document.getElementById('<%= ddlNurse.ClientID %>');
@@ -351,7 +553,7 @@
             [['Morning', 'morning'], ['Afternoon', 'afternoon']].forEach(function (period) {
                 var periodChoices = choices.filter(function (o) {
                     var start = (o.value.split('-')[0] || '').trim();
-                    var isMorning = /AM$/i.test(start) || (!/PM$/i.test(start) && parseInt(start,10) < 12);
+                    var isMorning = /AM$/i.test(start) || (!/PM$/i.test(start) && parseInt(start, 10) < 12);
                     return period[1] === 'morning' ? isMorning : !isMorning;
                 });
                 if (!periodChoices.length) return;
@@ -371,9 +573,9 @@
                         // Server loads the end times valid for the new start time.
                         timeSelect.dispatchEvent(new Event('change', { bubbles: true }));
                         Array.prototype.forEach.call(grid.parentNode.querySelectorAll('.eb-slot'), function (b) {
-                            b.classList.remove('active'); b.setAttribute('aria-pressed','false');
+                            b.classList.remove('active'); b.setAttribute('aria-pressed', 'false');
                         });
-                        button.classList.add('active'); button.setAttribute('aria-pressed','true');
+                        button.classList.add('active'); button.setAttribute('aria-pressed', 'true');
                         updateSummary();
                     });
                     grid.appendChild(button);
@@ -381,10 +583,12 @@
                 timeTiles.appendChild(grid);
             });
         }
-        if (reason) {reason.addEventListener('input', function () {
-            if (reason.value.length > 100) reason.value = reason.value.substring(0,100);
-            updateSummary();
-        });}
+        if (reason) {
+            reason.addEventListener('input', function () {
+                if (reason.value.length > 100) reason.value = reason.value.substring(0, 100);
+                updateSummary();
+            });
+        }
         if (timeSelect) timeSelect.addEventListener('change', updateSummary);
         if (endSelect) endSelect.addEventListener('change', updateSummary);
         if (doctor) doctor.addEventListener('change', updateSummary);
@@ -393,7 +597,7 @@
         var alert = document.getElementById('ebProfileAlert');
         var status = document.getElementById('ebProfileStatus');
         if (alert) alert.style.display = incomplete ? 'flex' : 'none';
-        if (status) {status.textContent = incomplete ? 'Incomplete' : 'Profile linked'; status.classList.toggle('complete', !incomplete);}
+        if (status) { status.textContent = incomplete ? 'Incomplete' : 'Profile linked'; status.classList.toggle('complete', !incomplete); }
         var note = document.getElementById('ebProfileSummaryNote');
         if (note && !incomplete) note.textContent = 'Your profile is linked. Booking will be validated when you confirm.';
         renderTimes(); updateSummary();
@@ -409,7 +613,7 @@
                 Array.prototype.forEach.call(table.rows, function (tr, index) {
                     if (index === 0 || !tr.cells || tr.cells.length < 7) return;
                     var date = new Date(tr.cells[3].textContent.trim());
-                    var statusText = tr.cells[6].textContent.trim().toLowerCase();
+                    var statusText = tr.cells[5].textContent.trim().toLowerCase();
                     var past = !isNaN(date.getTime()) && (date < today || statusText === 'completed' || statusText === 'cancelled');
                     var visible = filter === 'all' || (filter === 'past' ? past : !past);
                     tr.style.display = visible ? '' : 'none';

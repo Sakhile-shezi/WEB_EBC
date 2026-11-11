@@ -43,8 +43,11 @@ namespace WebApplication1.Private.Patient
                 }
                 catch (SqlException ex)
                 {
-                    System.Diagnostics.Trace.TraceError("Patient dashboard failed: " + ex);
-                    lblDashboardMessage.Text = "We could not load your dashboard. Please try again later.";
+                    System.Diagnostics.Trace.TraceError(
+                        "Patient dashboard failed: " + ex);
+
+                    lblDashboardMessage.Text =
+                        "We could not load your dashboard. Please try again later.";
                 }
             }
         }
@@ -79,64 +82,146 @@ namespace WebApplication1.Private.Patient
             }
         }
 
+
         private void LoadAppointmentOverview(string userId)
         {
-            // "Completed" means explicitly marked completed, not just past its date.
             const string sql = @"
-SELECT COUNT(a.Appointment_ID) AS Total,
-       COALESCE(SUM(CASE WHEN UPPER(LTRIM(RTRIM(ISNULL(a.Appointment_Status,'')))) = 'COMPLETED' THEN 1 ELSE 0 END),0) AS Completed,
-       COALESCE(SUM(CASE WHEN UPPER(LTRIM(RTRIM(ISNULL(a.Appointment_Status,'')))) = 'CANCELLED' THEN 1 ELSE 0 END),0) AS Cancelled,
-       COALESCE(SUM(CASE WHEN UPPER(LTRIM(RTRIM(ISNULL(a.Appointment_Status,'')))) NOT IN ('CANCELLED','COMPLETED')
-                          AND (a.Appointment_Date > CONVERT(date,GETDATE()) OR
-                               (a.Appointment_Date=CONVERT(date,GETDATE()) AND TRY_CONVERT(time,a.EndTime)>CONVERT(time,GETDATE())))
-                    THEN 1 ELSE 0 END),0) AS Upcoming
-FROM dbo.Patient p LEFT JOIN dbo.Appointment a ON a.Patient_ID=p.PatientID
-WHERE p.UserId=@UserId";
+    SELECT
+        COUNT(a.PatientID) AS Total,
+
+        COALESCE(SUM(CASE
+            WHEN UPPER(LTRIM(RTRIM(a.AppointmentStatus)))
+                = 'COMPLETED'
+            THEN 1 ELSE 0 END), 0) AS Completed,
+
+        COALESCE(SUM(CASE
+            WHEN UPPER(LTRIM(RTRIM(a.AppointmentStatus)))
+                = 'CANCELLED'
+            THEN 1 ELSE 0 END), 0) AS Cancelled,
+
+        COALESCE(SUM(CASE
+            WHEN UPPER(LTRIM(RTRIM(a.AppointmentStatus)))
+                = 'SCHEDULED'
+            AND a.AppointmentDate IS NOT NULL
+            AND CHARINDEX('-', a.TimeSlots) > 0
+            AND (
+                a.AppointmentDate > CONVERT(date, GETDATE())
+                OR (
+                    a.AppointmentDate = CONVERT(date, GETDATE())
+                    AND TRY_CONVERT(time,
+                        LTRIM(RTRIM(SUBSTRING(
+                            a.TimeSlots,
+                            CHARINDEX('-', a.TimeSlots) + 1,
+                            LEN(a.TimeSlots)))))
+                        > CONVERT(time, GETDATE())
+                )
+            )
+            THEN 1 ELSE 0 END), 0) AS Upcoming
+
+    FROM dbo.Patient p
+
+    LEFT JOIN dbo.Pro_Appointment a
+        ON a.PatientID = p.PatientID
+
+    WHERE p.UserId = @UserId";
+
             using (var con = new SqlConnection(ConnectionString))
             using (var cmd = new SqlCommand(sql, con))
             {
-                cmd.Parameters.Add("@UserId", SqlDbType.NVarChar, 128).Value = userId;
+                cmd.Parameters.Add("@UserId", SqlDbType.NVarChar, 128)
+                    .Value = userId;
+
                 con.Open();
+
                 using (var reader = cmd.ExecuteReader())
                 {
                     if (reader.Read())
                     {
                         lblTotal.Text = Convert.ToString(reader["Total"]);
+                        lblUpcoming.Text = Convert.ToString(reader["Upcoming"]);
                         lblCompleted.Text = Convert.ToString(reader["Completed"]);
                         lblCancelled.Text = Convert.ToString(reader["Cancelled"]);
-                        lblUpcoming.Text = Convert.ToString(reader["Upcoming"]);
                     }
                 }
             }
 
+            // Retrieve the patient's nearest scheduled appointment.
             const string nextSql = @"
-SELECT TOP (1) a.Appointment_Date, a.StartTime, a.EndTime,
-       COALESCE(d.FullName,'Doctor to be confirmed') AS DoctorName
-FROM dbo.Appointment a
-INNER JOIN dbo.Patient p ON a.Patient_ID=p.PatientID
-LEFT JOIN dbo.Doctor d ON a.Doctor_ID=d.DoctorID
-WHERE p.UserId=@UserId
-  AND UPPER(LTRIM(RTRIM(ISNULL(a.Appointment_Status,'')))) NOT IN ('CANCELLED','COMPLETED')
-  AND (a.Appointment_Date>CONVERT(date,GETDATE()) OR
-       (a.Appointment_Date=CONVERT(date,GETDATE()) AND TRY_CONVERT(time,a.EndTime)>CONVERT(time,GETDATE())))
-ORDER BY a.Appointment_Date, TRY_CONVERT(time,a.StartTime), a.Appointment_ID";
-            lblNextAppointment.Text = "No upcoming appointment scheduled.";
+    SELECT TOP (1)
+        a.AppointmentDate,
+        a.TimeSlots,
+        COALESCE(d.FullName, 'Doctor to be confirmed')
+            AS DoctorName
+
+    FROM dbo.Pro_Appointment a
+
+    INNER JOIN dbo.Patient p
+        ON a.PatientID = p.PatientID
+
+    LEFT JOIN dbo.Doctor d
+        ON a.DoctorID = d.DoctorID
+
+    WHERE p.UserId = @UserId
+
+    AND UPPER(LTRIM(RTRIM(a.AppointmentStatus)))
+        = 'SCHEDULED'
+
+    AND CHARINDEX('-', a.TimeSlots) > 0
+
+    AND (
+        a.AppointmentDate > CONVERT(date, GETDATE())
+        OR (
+            a.AppointmentDate = CONVERT(date, GETDATE())
+            AND TRY_CONVERT(time,
+                LTRIM(RTRIM(SUBSTRING(
+                    a.TimeSlots,
+                    CHARINDEX('-', a.TimeSlots) + 1,
+                    LEN(a.TimeSlots)))))
+                > CONVERT(time, GETDATE())
+        )
+    )
+
+    ORDER BY a.AppointmentDate,
+        TRY_CONVERT(time,
+            LEFT(a.TimeSlots,
+                CHARINDEX('-', a.TimeSlots) - 1))";
+
+            lblNextAppointment.Text =
+                "No upcoming appointment scheduled.";
+
             using (var con = new SqlConnection(ConnectionString))
             using (var cmd = new SqlCommand(nextSql, con))
             {
-                cmd.Parameters.Add("@UserId", SqlDbType.NVarChar, 128).Value = userId;
+                cmd.Parameters.Add("@UserId", SqlDbType.NVarChar, 128)
+                    .Value = userId;
+
                 con.Open();
+
                 using (var reader = cmd.ExecuteReader())
                 {
-                    if (!reader.Read()) return;
-                    string date = Convert.ToDateTime(reader["Appointment_Date"]).ToString("dddd, dd MMMM yyyy");
-                    string start = HttpUtility.HtmlEncode(Convert.ToString(reader["StartTime"]));
-                    string end = HttpUtility.HtmlEncode(Convert.ToString(reader["EndTime"]));
-                    string doctor = HttpUtility.HtmlEncode(Convert.ToString(reader["DoctorName"]));
-                    lblNextAppointment.Text = "<strong>" + HttpUtility.HtmlEncode(date) + "</strong>" +
-                        "<small>" + start + " - " + end + " | " + doctor + "</small>";
+                    if (reader.Read())
+                    {
+                        string date = Convert.ToDateTime(
+                            reader["AppointmentDate"])
+                            .ToString("dddd, dd MMMM yyyy");
+
+                        string timeSlots = HttpUtility.HtmlEncode(
+                            Convert.ToString(reader["TimeSlots"]));
+
+                        string doctor = HttpUtility.HtmlEncode(
+                            Convert.ToString(reader["DoctorName"]));
+
+                        lblNextAppointment.Text =
+                            "<strong>" +
+                            HttpUtility.HtmlEncode(date) +
+                            "</strong>" +
+                            "<small>" +
+                            timeSlots + " | " + doctor +
+                            "</small>";
+                    }
                 }
             }
         }
+
     }
 }
