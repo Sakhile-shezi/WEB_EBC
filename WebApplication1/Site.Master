@@ -111,7 +111,7 @@
     <!-- DOCTOR NAVIGATION -->
     <li id="doctorDashboardNav" runat="server" visible="false" class="nav-item">
         <a class="nav-link" runat="server"
-            href="~/Private/Doctor/WebForm1.aspx">
+            href="~/Private/Doctor/DoctorDashboard.aspx">
             Doctor Dashboard
         </a>
     </li>
