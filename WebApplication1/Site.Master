@@ -90,7 +90,13 @@
             Doctor Dashboard
         </a>
     </li>
-
+    <!-- Doctor navigation -->
+    <li id="Li1" runat="server" visible="true" class="nav-item">
+        <a class="nav-link" runat="server"
+           href="~/Private/Doctor/DoctorsDashBoard.aspx">
+            Doctor Dashboard
+        </a>
+    </li>
     <!-- Administrator navigation -->
     <li id="adminNavItem" runat="server" visible="false" class="nav-item">
         <a class="nav-link" runat="server"

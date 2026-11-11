@@ -203,6 +203,9 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="packages.config" />
+    <Content Include="Help.aspx" />
+    <Content Include="Hscripts\public-chatbot.js" />
+    <Content Include="Hscripts\public-knowledgebase.js" />
     <Content Include="Images\Doctors.jpeg" />
     <Content Include="Images\eastboom.jpg" />
     <Content Include="Images\Smile.jpeg" />
@@ -212,6 +215,7 @@
     <Content Include="Private\Administrator\ManageStaff.aspx" />
     <Content Include="Private\Administrator\Profile.aspx" />
     <Content Include="Private\Administrator\WebForm1.aspx" />
+    <Content Include="Private\Doctor\DoctorsDashBoard.aspx" />
     <Content Include="Private\Doctor\Prescription.aspx" />
     <Content Include="Private\Doctor\Profile.aspx" />
     <Content Include="Private\Doctor\WebForm1.aspx" />
@@ -401,6 +405,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Help.aspx.cs">
+      <DependentUpon>Help.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Help.aspx.designer.cs">
+      <DependentUpon>Help.aspx</DependentUpon>
+    </Compile>
     <Compile Include="InitialAdminSetup.aspx.cs">
       <DependentUpon>InitialAdminSetup.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -436,6 +447,13 @@
     </Compile>
     <Compile Include="Private\Administrator\WebForm1.aspx.designer.cs">
       <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Doctor\DoctorsDashBoard.aspx.cs">
+      <DependentUpon>DoctorsDashBoard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Doctor\DoctorsDashBoard.aspx.designer.cs">
+      <DependentUpon>DoctorsDashBoard.aspx</DependentUpon>
     </Compile>
     <Compile Include="Private\Doctor\Prescription.aspx.cs">
       <DependentUpon>Prescription.aspx</DependentUpon>
@@ -540,7 +558,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Help\" />
     <Folder Include="Private\Help\" />
   </ItemGroup>
   <ItemGroup>
