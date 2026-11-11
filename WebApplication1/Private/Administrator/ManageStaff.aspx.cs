@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNet.Identity;
+﻿
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Web;
 using WebApplication1.Models;
 
@@ -10,7 +14,7 @@ namespace WebApplication1.Private.Administrator
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Additional server-side authorization check.
+            // Administrator authorization check.
             if (!Context.User.Identity.IsAuthenticated ||
                 !Context.User.IsInRole("Admin"))
             {
@@ -18,6 +22,44 @@ namespace WebApplication1.Private.Administrator
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }
+
+            // Configure the dropdown query for the selected role.
+            ConfigureClinicRecords();
+
+            if (!IsPostBack)
+            {
+                ddlClinicRecord.DataBind();
+            }
+        }
+
+        private void ConfigureClinicRecords()
+        {
+            if (ddlRole.SelectedValue == "Doctor")
+            {
+                sqlClinicRecords.SelectCommand = @"
+                    SELECT DoctorID AS RecordID, FullName
+                    FROM dbo.Doctor
+                    WHERE UserId IS NULL
+                    ORDER BY FullName";
+            }
+            else if (ddlRole.SelectedValue == "Nurse")
+            {
+                sqlClinicRecords.SelectCommand = @"
+                    SELECT NurseID AS RecordID, FullName
+                    FROM dbo.Nurse
+                    WHERE UserId IS NULL
+                    ORDER BY FullName";
+            }
+        }
+
+        protected void ddlRole_SelectedIndexChanged(
+            object sender, EventArgs e)
+        {
+            ConfigureClinicRecords();
+
+            ddlClinicRecord.DataBind();
+
+            lblMessage.Text = "";
         }
 
         protected void btnCreateStaff_Click(object sender, EventArgs e)
@@ -25,37 +67,40 @@ namespace WebApplication1.Private.Administrator
             if (!Page.IsValid)
                 return;
 
-            var manager = Context.GetOwinContext()
-                .GetUserManager<ApplicationUserManager>();
-
             string email = txtEmail.Text.Trim();
             string password = txtPassword.Text;
             string selectedRole = ddlRole.SelectedValue;
+            string recordId = ddlClinicRecord.SelectedValue;
 
-            // Only allow the two staff roles.
-            if (selectedRole != "Doctor" && selectedRole != "Nurse")
+            // Only allow Doctor or Nurse.
+            if (selectedRole != "Doctor" &&
+                selectedRole != "Nurse")
             {
-                lblMessage.Text = "Invalid staff role selected.";
-                lblMessage.ForeColor =
-                    System.Drawing.Color.Red;
+                ShowMessage("Invalid staff role selected.", false);
                 return;
             }
 
-            // Check whether this email is already registered.
+            if (string.IsNullOrWhiteSpace(recordId))
+            {
+                ShowMessage("Please select a clinic record.", false);
+                return;
+            }
+
+            var manager = Context.GetOwinContext()
+                .GetUserManager<ApplicationUserManager>();
+
+            // Check whether email already exists.
             var existingUser = manager.FindByEmail(email);
 
             if (existingUser != null)
             {
-                lblMessage.Text =
-                    "An account with this email already exists.";
-
-                lblMessage.ForeColor =
-                    System.Drawing.Color.Red;
-
+                ShowMessage(
+                    "An account with this email already exists.",
+                    false);
                 return;
             }
 
-            // Create the new account.
+            // Create the Identity account.
             var user = new ApplicationUser
             {
                 UserName = email,
@@ -66,47 +111,143 @@ namespace WebApplication1.Private.Administrator
 
             if (!result.Succeeded)
             {
-                lblMessage.Text =
-                    string.Join(" ", result.Errors);
-
-                lblMessage.ForeColor =
-                    System.Drawing.Color.Red;
-
+                ShowMessage(string.Join(" ", result.Errors), false);
                 return;
             }
 
-            // Assign the selected staff role.
+            // Assign the role.
             IdentityResult roleResult =
                 manager.AddToRole(user.Id, selectedRole);
 
             if (!roleResult.Succeeded)
             {
-                // Remove the account if role assignment fails.
                 manager.Delete(user);
 
-                lblMessage.Text =
-                    "Account creation failed during role assignment: " +
-                    string.Join(" ", roleResult.Errors);
-
-                lblMessage.ForeColor =
-                    System.Drawing.Color.Red;
+                ShowMessage(
+                    "Role assignment failed: " +
+                    string.Join(" ", roleResult.Errors),
+                    false);
 
                 return;
             }
 
-            // Successful registration.
-            lblMessage.Text =
-                "Staff account created successfully! Role assigned: " +
-                selectedRole;
+            // Link the Identity account to the clinic record.
+            try
+            {
+                int rowsAffected = LinkClinicRecord(
+                    selectedRole,
+                    recordId,
+                    user.Id);
 
-            lblMessage.ForeColor =
-                System.Drawing.Color.Green;
+                if (rowsAffected != 1)
+                {
+                    // Record was already linked or no longer exists.
+                    manager.RemoveFromRole(user.Id, selectedRole);
+                    manager.Delete(user);
 
-            // Clear the form.
+                    ShowMessage(
+                        "The clinic record could not be linked. " +
+                        "It may already have an account. " +
+                        "The newly created account was removed.",
+                        false);
+
+                    return;
+                }
+            }
+            catch (Exception)
+            {
+                // Remove the newly created Identity account.
+                manager.RemoveFromRole(user.Id, selectedRole);
+                manager.Delete(user);
+
+                ShowMessage(
+                    "An error occurred while linking the clinic record. " +
+                    "The newly created account was removed. " +
+                    "Please verify the database and try again.",
+                    false);
+
+                return;
+            }
+
+            // Everything succeeded.
+            ShowMessage(
+                "Account created and linked successfully! Role: " +
+                selectedRole,
+                true);
+
             txtEmail.Text = "";
             txtPassword.Text = "";
             txtConfirmPassword.Text = "";
-            ddlRole.SelectedIndex = 0;
+
+            ConfigureClinicRecords();
+            ddlClinicRecord.DataBind();
+        }
+
+        private int LinkClinicRecord(
+            string role,
+            string recordId,
+            string userId)
+        {
+            string connectionString =
+                ConfigurationManager
+                    .ConnectionStrings["DefaultConnection"]
+                    .ConnectionString;
+
+            string query;
+
+            // Choose a fixed SQL statement based on the role.
+            // Never insert user-provided table names into SQL.
+            if (role == "Doctor")
+            {
+                query = @"
+                    UPDATE dbo.Doctor
+                    SET UserId = @UserId
+                    WHERE DoctorID = @RecordID
+                      AND UserId IS NULL";
+            }
+            else if (role == "Nurse")
+            {
+                query = @"
+                    UPDATE dbo.Nurse
+                    SET UserId = @UserId
+                    WHERE NurseID = @RecordID
+                      AND UserId IS NULL";
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    "Invalid role.");
+            }
+
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                using (SqlCommand command =
+                    new SqlCommand(query, connection))
+                {
+                    command.Parameters.Add(
+                        "@UserId", SqlDbType.NVarChar, 128)
+                        .Value = userId;
+
+                    command.Parameters.Add(
+                        "@RecordID", SqlDbType.Int)
+                        .Value = Convert.ToInt32(recordId);
+
+                    connection.Open();
+
+                    return command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private void ShowMessage(string message, bool success)
+        {
+            lblMessage.Text = message;
+
+            lblMessage.ForeColor = success
+                ? System.Drawing.Color.Green
+                : System.Drawing.Color.Red;
         }
     }
 }
+

@@ -203,6 +203,9 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="packages.config" />
+    <Content Include="Help.aspx" />
+    <Content Include="Hscripts\public-chatbot.js" />
+    <Content Include="Hscripts\public-knowledgebase.js" />
     <Content Include="Images\Doctors.jpeg" />
     <Content Include="Images\eastboom.jpg" />
     <Content Include="Images\Smile.jpeg" />
@@ -210,6 +213,7 @@
     <Content Include="InitialAdminSetup.aspx" />
     <Content Include="Private\Administrator\AppointmentManagement.aspx" />
     <Content Include="Private\Administrator\ManageStaff.aspx" />
+    <Content Include="Private\Administrator\MedicineManagement.aspx" />
     <Content Include="Private\Administrator\Profile.aspx" />
     <Content Include="Private\Administrator\WebForm1.aspx" />
     <Content Include="Private\Appointments\Appointments.aspx" />
@@ -402,6 +406,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Help.aspx.cs">
+      <DependentUpon>Help.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Help.aspx.designer.cs">
+      <DependentUpon>Help.aspx</DependentUpon>
+    </Compile>
     <Compile Include="InitialAdminSetup.aspx.cs">
       <DependentUpon>InitialAdminSetup.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -423,6 +434,13 @@
     </Compile>
     <Compile Include="Private\Administrator\ManageStaff.aspx.designer.cs">
       <DependentUpon>ManageStaff.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Administrator\MedicineManagement.aspx.cs">
+      <DependentUpon>MedicineManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Administrator\MedicineManagement.aspx.designer.cs">
+      <DependentUpon>MedicineManagement.aspx</DependentUpon>
     </Compile>
     <Compile Include="Private\Administrator\Profile.aspx.cs">
       <DependentUpon>Profile.aspx</DependentUpon>

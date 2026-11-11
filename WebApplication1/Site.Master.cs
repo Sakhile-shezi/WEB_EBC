@@ -72,20 +72,60 @@ namespace WebApplication1
             //   if (Context.User.Identity.IsAuthenticated) {
             //      Menu1.Visible = true;
             //  }
-            // Patient navigation
-            patientNavItem.Visible = Context.User.IsInRole("Patient");
 
-            // Nurse navigation
-            nurseNavItem.Visible = Context.User.IsInRole("Nurse");
+            // Hide all role-specific navigation by default.
+            patientDashboardNav.Visible = false;
 
-            // Doctor navigation
-            doctorNavItem.Visible = Context.User.IsInRole("Doctor");
+            nurseDashboardNav.Visible = false;
+            nurseMedicationNav.Visible = false;
+            nurseProfileNav.Visible = false;
 
-            // Administrator navigation
-            adminNavItem.Visible = Context.User.IsInRole("Admin");
+            doctorDashboardNav.Visible = false;
+            doctorPrescriptionNav.Visible = false;
+            doctorProfileNav.Visible = false;
 
-            // Staff management is only available to administrators
-            manageStaffNavItem.Visible = Context.User.IsInRole("Admin");
+            adminDashboardNav.Visible = false;
+            adminMedicineNav.Visible = false;
+            adminManageStaffNav.Visible = false;
+
+
+            // Only display role-specific links to authenticated users.
+            if (!Context.User.Identity.IsAuthenticated)
+                return;
+
+
+            // PATIENT
+            if (Context.User.IsInRole("Patient"))
+            {
+                patientDashboardNav.Visible = true;
+            }
+
+
+            // NURSE
+            if (Context.User.IsInRole("Nurse"))
+            {
+                nurseDashboardNav.Visible = true;
+                nurseMedicationNav.Visible = true;
+                nurseProfileNav.Visible = true;
+            }
+
+
+            // DOCTOR
+            if (Context.User.IsInRole("Doctor"))
+            {
+                doctorDashboardNav.Visible = true;
+                doctorPrescriptionNav.Visible = true;
+                doctorProfileNav.Visible = true;
+            }
+
+
+            // ADMINISTRATOR
+            if (Context.User.IsInRole("Admin"))
+            {
+                adminDashboardNav.Visible = true;
+                adminMedicineNav.Visible = true;
+                adminManageStaffNav.Visible = true;
+            }
         }
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
