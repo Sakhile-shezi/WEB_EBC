@@ -213,6 +213,7 @@
     <Content Include="InitialAdminSetup.aspx" />
     <Content Include="Private\Administrator\AppointmentManagement.aspx" />
     <Content Include="Private\Administrator\ManageStaff.aspx" />
+    <Content Include="Private\Administrator\MedicineManagement.aspx" />
     <Content Include="Private\Administrator\Profile.aspx" />
     <Content Include="Private\Administrator\WebForm1.aspx" />
     <Content Include="Private\Doctor\DoctorsDashBoard.aspx" />
@@ -433,6 +434,13 @@
     </Compile>
     <Compile Include="Private\Administrator\ManageStaff.aspx.designer.cs">
       <DependentUpon>ManageStaff.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Administrator\MedicineManagement.aspx.cs">
+      <DependentUpon>MedicineManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Administrator\MedicineManagement.aspx.designer.cs">
+      <DependentUpon>MedicineManagement.aspx</DependentUpon>
     </Compile>
     <Compile Include="Private\Administrator\Profile.aspx.cs">
       <DependentUpon>Profile.aspx</DependentUpon>
