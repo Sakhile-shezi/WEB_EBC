@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Help.aspx.cs" Inherits="WebApplication1.Help" %>
+﻿<%@ Page Title="Help & Support - East Boom CHC" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Help.aspx.cs" Inherits="WebApplication1.Help" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <style>
@@ -18,20 +18,18 @@
         .onboarding-section { background: #ffffff; border: 1px solid var(--ob-card-border); border-radius: 10px; padding: 35px; margin-bottom: 40px; }
         .onboarding-section h2 { color: var(--ob-deep-forest); font-size: 1.4rem; margin-bottom: 8px; }
         
-        /* --- UPDATED STEP CARDS CSS --- */
         .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 25px; }
         .step-card { background: var(--ob-light-mint); padding: 30px 20px; border-radius: 8px; border-bottom: 4px solid var(--ob-accent-mint); text-align: center; transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .step-card:hover { transform: translateY(-4px); box-shadow: 0 8px 15px rgba(30, 58, 47, 0.08); }
         .step-number { display: flex; align-items: center; justify-content: center; background: var(--ob-primary-green); color: white; width: 36px; height: 36px; border-radius: 50%; font-weight: bold; font-size: 1.1rem; margin: 0 auto 15px auto; }
         .step-card h4 { color: var(--ob-primary-green); font-size: 1.1rem; margin-bottom: 10px; font-weight: 600; }
         .step-card p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; margin: 0; }
-        /* ------------------------------ */
 
-        .support-dock { position: fixed; bottom: 30px; right: 30px; display: flex; align-items: center; gap: 12px; z-index: 1000; }
-        .corner-chip { background: #ffffff; color: var(--ob-primary-green); border: 1px solid var(--ob-card-border); padding: 10px 18px; border-radius: 30px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-        .corner-chip:hover { background: var(--ob-light-mint); border-color: var(--ob-accent-mint); transform: translateY(-2px); }
-        .chat-toggle { width: 56px; height: 56px; background: var(--ob-primary-green); color: #ffffff; border: none; border-radius: 50%; font-size: 1.5rem; cursor: pointer; transition: all 0.3s ease; }
+        /* Floating Chat Toggle only (No query button) */
+        .support-dock { position: fixed; bottom: 30px; right: 30px; z-index: 1000; }
+        .chat-toggle { width: 56px; height: 56px; background: var(--ob-primary-green); color: #ffffff; border: none; border-radius: 50%; font-size: 1.5rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(30, 58, 47, 0.3); display: flex; align-items: center; justify-content: center; }
         .chat-toggle:hover { transform: scale(1.08); background: var(--ob-accent-mint); }
+        
         .chat-container { position: fixed; bottom: 100px; right: 30px; width: 380px; height: 520px; background: #ffffff; border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); display: none; flex-direction: column; overflow: hidden; z-index: 1000; border: 1px solid var(--ob-card-border); }
         .chat-header { background: var(--ob-primary-green); color: #ffffff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
         .chat-avatar { font-size: 1.5rem; background: rgba(255,255,255,0.15); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; }
@@ -50,8 +48,9 @@
     <div class="portal-container">
         <div class="hero-banner">
             <h1>Public Help & Support Center</h1>
-            <p>Welcome to the East Boom Community Health Centre support guide.</p>
+            <p>Welcome to the East Boom Community Health Centre support guide. Browse our guides or use our virtual help desk assistant below.</p>
         </div>
+        
         <div class="help-grid">
             <div class="help-card">
                 <h3>🏥 Patient Portal Registration</h3>
@@ -70,7 +69,6 @@
             </div>
         </div>
 
-        <!-- --- UPDATED STEP CARDS HTML --- -->
         <div class="onboarding-section">
             <h2>New Patient Step-by-Step Guide</h2>
             <p style="color: var(--text-muted); margin-bottom: 25px;">Follow these four simple steps to get started and manage your healthcare journey online.</p>
@@ -97,76 +95,30 @@
                 </div>
             </div>
         </div>
-        <!-- ------------------------------- -->
+    </div>
 
-        <div id="feedbackContainer" style="display: none; background: #ffffff; border: 1px solid var(--ob-card-border); border-radius: 10px; padding: 30px; margin-bottom: 30px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h2 style="color: var(--ob-deep-forest); font-size: 1.4rem; margin: 0;">Submit a Personal Query</h2>
-                <button type="button" onclick="toggleFeedbackForm()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">✖</button>
-            </div>
-            <asp:Panel ID="PanelFeedbackForm" runat="server">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                    <div>
-                        <label style="display: block; font-weight: 600; color: var(--ob-primary-green); margin-bottom: 5px; font-size: 0.9rem;">Full Name *</label>
-                        <asp:TextBox ID="txtFullName" runat="server" CssClass="form-control" style="width: 100%; padding: 10px; border: 1px solid var(--ob-card-border); border-radius: 6px;"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvFullName" runat="server" ControlToValidate="txtFullName" ErrorMessage="Required." Display="Dynamic" style="color: #c62828; font-size: 0.8rem;" />
-                    </div>
-                    <div>
-                        <label style="display: block; font-weight: 600; color: var(--ob-primary-green); margin-bottom: 5px; font-size: 0.9rem;">Contact *</label>
-                        <asp:TextBox ID="txtContact" runat="server" CssClass="form-control" style="width: 100%; padding: 10px; border: 1px solid var(--ob-card-border); border-radius: 6px;"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvContact" runat="server" ControlToValidate="txtContact" ErrorMessage="Required." Display="Dynamic" style="color: #c62828; font-size: 0.8rem;" />
-                    </div>
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; font-weight: 600; color: var(--ob-primary-green); margin-bottom: 5px; font-size: 0.9rem;">Query Type</label>
-                    <asp:DropDownList ID="ddlQueryType" runat="server" style="width: 100%; padding: 10px; border: 1px solid var(--ob-card-border); border-radius: 6px;">
-                        <asp:ListItem Text="General Patient Inquiry" Value="General" />
-                        <asp:ListItem Text="Technical Portal Issue" Value="Technical" />
-                    </asp:DropDownList>
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; font-weight: 600; color: var(--ob-primary-green); margin-bottom: 5px; font-size: 0.9rem;">Message *</label>
-                    <asp:TextBox ID="txtMessage" runat="server" TextMode="MultiLine" Rows="4" style="width: 100%; padding: 10px; border: 1px solid var(--ob-card-border); border-radius: 6px;"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvMessage" runat="server" ControlToValidate="txtMessage" ErrorMessage="Required." Display="Dynamic" style="color: #c62828; font-size: 0.8rem;" />
-                </div>
-                <asp:Button ID="btnSubmitQuery" runat="server" Text="Submit Query" OnClick="btnSubmitQuery_Click" style="background: var(--ob-primary-green); color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer;" />
-            </asp:Panel>
-            <asp:Label ID="lblSuccessMessage" runat="server" Visible="false" style="display: block; margin-top: 15px; padding: 12px; background: #e8f5e9; color: #2e8b57; border-radius: 6px;"></asp:Label>
-        </div>
-    </div>
+    <!-- Floating Chat Toggle Only -->
     <div class="support-dock">
-        <button type="button" class="corner-chip" onclick="toggleFeedbackForm()">✉ Submit a query</button>
-        <button type="button" class="chat-toggle" onclick="toggleChat()">💬</button>
+        <button type="button" class="chat-toggle" onclick="toggleChat()" title="Open Help Desk">💬</button>
     </div>
+
     <div class="chat-container" id="chatContainer">
         <div class="chat-header">
             <div style="display: flex; align-items: center;"><div class="chat-avatar">🤖</div><div><h4 style="margin:0; color: white;">Help Desk</h4><span class="status"><span class="status-dot"></span> Online</span></div></div>
             <button type="button" class="close-btn" onclick="toggleChat()">✖</button>
         </div>
-        <div class="chat-messages" id="chatMessages"><div class="bot-message">Hello! How can I assist you today?</div></div>
+        <div class="chat-messages" id="chatMessages"><div class="bot-message">Hello! Welcome to East Boom CHC Help Desk. How can I assist you today?</div></div>
         <div class="chat-chips">
             <button type="button" class="chip" onclick="sendQuickReply('Book appointment')">Book</button>
             <button type="button" class="chip" onclick="sendQuickReply('Reset password')">Password</button>
+            <button type="button" class="chip" onclick="sendQuickReply('Clinic hours')">Hours</button>
         </div>
         <div class="chat-input-area">
             <input type="text" id="userInput" placeholder="Type a message..." onkeypress="handleKeyPress(event)" />
             <button type="button" onclick="sendMessage()">➤</button>
         </div>
     </div>
-    <script>
-        function openQueryFormFromChat() {
-            const chatContainer = document.getElementById('chatContainer');
-            if (chatContainer) chatContainer.style.display = 'none';
-            const container = document.getElementById('feedbackContainer');
-            if (container) { container.style.display = 'block'; container.scrollIntoView({ behavior: 'smooth' }); }
-        }
-        function toggleFeedbackForm() {
-            const container = document.getElementById('feedbackContainer');
-            container.style.display = (container.style.display === 'none' || container.style.display === '') ? 'block' : 'none';
-            if (container.style.display === 'block') container.scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
-    <script src="<%= ResolveUrl("~/Hscripts/public-knowledgebase.js") %>"></script>
-    <script src="<%= ResolveUrl("~/Hscripts/public-chatbot.js") %>"></script>
+<script src="<%= ResolveUrl("~/Hscripts/public-knowledgebase.js") %>"></script>
+<script src="<%= ResolveUrl("~/Hscripts/public-chatbot.js") %>"></script>
 
 </asp:Content>
