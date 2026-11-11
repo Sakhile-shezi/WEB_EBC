@@ -73,9 +73,15 @@
     <!-- PATIENT NAVIGATION -->
     <li id="patientDashboardNav" runat="server" visible="false" class="nav-item">
         <a class="nav-link" runat="server"
-            href="~/Private/Patient/WebForm1.aspx">
+           href="~/Private/Patient/PatientDashboard.aspx">
             Patient Dashboard
         </a>
+    </li>
+    <li id="appointmentView">
+                <a class="nav-link" runat="server"
+   href="~/Private/Appointments/Appointments.aspx">
+    Appointment View
+</a>
     </li>
 
 

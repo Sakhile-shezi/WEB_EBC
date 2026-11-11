@@ -166,6 +166,12 @@
         <h2>Prescription History</h2>
         <p>Review and search prescriptions issued to your patients.</p>
     </div>
+    
+<div class="prescription-hero" style="background-image:url('<%= ResolveUrl("~/Images/WhatsApp Image 2026-09-02 at 10.38.35.jpeg") %>');">
+    <div class="prescription-hero-content">
+       
+    </div>
+</div>
 
     <!-- Search section -->
     <div class="pres-card">

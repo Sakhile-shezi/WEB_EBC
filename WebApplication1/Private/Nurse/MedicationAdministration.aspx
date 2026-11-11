@@ -161,6 +161,12 @@
         <h2>Medication Administration</h2>
         <p>View prescriptions and record medication administered to patients.</p>
     </div>
+    <div class="medicationAdministration-hero" style="background-image:url('<%= ResolveUrl("~/Images/WhatsApp Image 2026-09-02 at 10.38.35.jpeg") %>');">
+    <div class="medicationAdministration-hero">
+       
+       
+    </div>
+</div>
 
     <!-- Existing medication administration records -->
     <div class="med-card">
