@@ -110,7 +110,7 @@ namespace WebApplication1.Account
                         switch (roles[0])
                         {
                             case "Patient":
-                                Response.Redirect("~/Private/Patient/WebForm1.aspx", false);
+                                Response.Redirect("~/Private/Patient/PatientDashboard.aspx", false);
                                 break;
 
                             case "Doctor":

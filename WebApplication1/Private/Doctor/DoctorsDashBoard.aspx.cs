@@ -9,30 +9,60 @@ namespace WebApplication1.Private.Doctor
 {
     public partial class DoctorsDashBoard : System.Web.UI.Page
     {
-        // Retrieves the connection string defined in your Web.config
         private string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                lblTodayDate.Text = DateTime.Today.ToString("dd MMMM yyyy");
-                LoadDailyAppointments();
+                LoadDoctorProfile();
+                txtDateFilter.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                lblDisplayDate.Text = DateTime.Today.ToString("yyyy/MM/dd");
+
+                LoadAppointmentsByDate(DateTime.Today);
             }
         }
 
-        private void LoadDailyAppointments()
+        private void LoadDoctorProfile()
+        {
+            string currentUserId = User.Identity.GetUserId();
+            if (string.IsNullOrEmpty(currentUserId)) return;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT FullName FROM [dbo].[Doctor] WHERE UserId = @UserId";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@UserId", currentUserId);
+                    conn.Open();
+                    object result = cmd.ExecuteScalar();
+                    if (result != null) lblDoctorName.Text = result.ToString();
+                }
+            }
+        }
+
+        protected void txtDateFilter_TextChanged(object sender, EventArgs e)
+        {
+            if (DateTime.TryParse(txtDateFilter.Text, out DateTime selectedDate))
+            {
+                lblDisplayDate.Text = selectedDate.ToString("yyyy/MM/dd");
+                LoadAppointmentsByDate(selectedDate);
+            }
+        }
+
+        protected void btnToday_Click(object sender, EventArgs e)
+        {
+            txtDateFilter.Text = DateTime.Today.ToString("yyyy-MM-dd");
+            lblDisplayDate.Text = DateTime.Today.ToString("yyyy/MM/dd");
+            LoadAppointmentsByDate(DateTime.Today);
+        }
+
+        private void LoadAppointmentsByDate(DateTime targetDate)
         {
             try
             {
-                // Get the currently logged-in user's identity ID
                 string currentUserId = User.Identity.GetUserId();
-
-                if (string.IsNullOrEmpty(currentUserId))
-                {
-                    lblErrorMessage.Text = "Error: User is not authenticated.";
-                    return;
-                }
+                if (string.IsNullOrEmpty(currentUserId)) return;
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
@@ -41,6 +71,7 @@ namespace WebApplication1.Private.Doctor
                             a.[AppointmentID],
                             a.[TimeSlots],
                             p.[FullName] AS PatientName,
+                            CONCAT(DATEDIFF(YEAR, p.[DateOfBirth], GETDATE()), ' / ', COALESCE(NULLIF(LEFT(p.[Gender], 1), ''), 'U')) AS AgeGender,
                             a.[AppointmentReason],
                             a.[AppointmentStatus]
                         FROM 
@@ -60,9 +91,7 @@ namespace WebApplication1.Private.Doctor
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@CurrentUserId", currentUserId);
-
-                        // Use DateTime.Today to automatically filter by the current day
-                        cmd.Parameters.AddWithValue("@TargetDate", DateTime.Today.Date);
+                        cmd.Parameters.AddWithValue("@TargetDate", targetDate.Date);
 
                         using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
                         {
@@ -71,25 +100,35 @@ namespace WebApplication1.Private.Doctor
 
                             gvAppointments.DataSource = dt;
                             gvAppointments.DataBind();
+
+                            lblTotalCount.Text = dt.Rows.Count.ToString();
+                            lblCompletedCount.Text = dt.Select("AppointmentStatus = 'Completed'").Length.ToString();
+                            lblInProgressCount.Text = dt.Select("AppointmentStatus = 'In Progress'").Length.ToString();
+                            lblPendingCount.Text = dt.Select("AppointmentStatus = 'Scheduled' OR AppointmentStatus = 'Waiting'").Length.ToString();
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Log the exception (ex) in a real-world scenario
-                lblErrorMessage.Text = "An error occurred while loading your schedule. Please contact IT support.";
+                lblErrorMessage.Text = "An error occurred: " + ex.Message;
             }
         }
 
         protected void btnViewConsultation_Click(object sender, EventArgs e)
         {
-            // Extract the AppointmentID from the clicked button's CommandArgument
             LinkButton btn = (LinkButton)sender;
             string appointmentId = btn.CommandArgument;
-
-            // Redirect the doctor to the detailed consultation page for that specific appointment
             Response.Redirect($"PatientDetails.aspx?AppointmentID={appointmentId}");
+        }
+
+        protected void gvAppointments_PreRender(object sender, EventArgs e)
+        {
+            if (gvAppointments.Rows.Count > 0)
+            {
+                gvAppointments.UseAccessibleHeader = true;
+                gvAppointments.HeaderRow.TableSection = TableRowSection.TableHeader;
+            }
         }
     }
 }

@@ -158,6 +158,12 @@
         <h2>Medication Administration</h2>
         <p>Review prescribed medication, administration progress and nursing records.</p>
     </div>
+    <div class="medicationAdministration-hero" style="background-image:url('<%= ResolveUrl("~/Images/WhatsApp Image 2026-09-02 at 10.38.35.jpeg") %>');">
+    <div class="medicationAdministration-hero">
+       
+       
+    </div>
+</div>
 
     <!-- Medication overview -->
     <div class="med-card">
