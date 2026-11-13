@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace WebApplication1.Private.Doctor
 {
@@ -17,26 +18,26 @@ namespace WebApplication1.Private.Doctor
                 return;
             }
 
-            // Use the logged-in Doctor's Identity ID.
-            SqlDSPrescription.SelectParameters["id"].DefaultValue =
-                User.Identity.GetUserId();
+            // Get the logged-in Doctor's Identity ID.
+            string userId = User.Identity.GetUserId();
 
-            // Load today's date on the initial page load.
+            // Supply the Identity ID to the prescription query.
+            SqlDSPrescription.SelectParameters["id"].DefaultValue = userId;
+
+            // Load prescriptions immediately on the initial page visit.
             if (!IsPostBack)
             {
-                TBDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                GridView2.Visible = false;
+                GridView1.DataBind();
             }
         }
 
         protected void BtnSearch_Click(object sender, EventArgs e)
         {
-            if (!Page.IsValid)
-                return;
-
-            // Clear the selected prescription when performing a new search.
+            // Clear the previously selected prescription.
             GridView1.SelectedIndex = -1;
 
-            // Refresh the prescription list.
+            // Refresh the prescription records using the supplied filters.
             GridView1.DataBind();
 
             // Refresh the details table.
@@ -53,9 +54,21 @@ namespace WebApplication1.Private.Doctor
                 lblDetails.Text =
                     "Showing medicine details for prescription #" +
                     GridView1.SelectedValue.ToString();
+                GridView2.Visible = true;
 
                 GridView2.DataBind();
             }
+        }
+        protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            // Clear the previously selected prescription.
+            GridView1.SelectedIndex = -1;
+
+            // Reset the prescription details.
+            GridView2.DataBind();
+
+            lblDetails.Text =
+                "Select a prescription above to view its medicine details.";
         }
     }
 }

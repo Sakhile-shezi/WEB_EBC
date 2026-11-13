@@ -1,4 +1,5 @@
 ﻿
+
 <%@ Page Title="Medication Administration" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="MedicationAdministration.aspx.cs" Inherits="WebApplication1.Private.Nurse.MedicationAdministration" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
@@ -56,18 +57,11 @@
 
     .med-input {
         width: 100%;
-        max-width: 100%;
         padding: 9px 11px;
         border: 1px solid #ccd8ce;
         border-radius: 6px;
         box-sizing: border-box;
         margin-bottom: 14px;
-    }
-
-    .med-input:focus {
-        outline: none;
-        border-color: #43834c;
-        box-shadow: 0 0 0 3px rgba(67,131,76,.12);
     }
 
     .med-button {
@@ -93,11 +87,17 @@
     }
 
     .med-grid th {
-        background: #24572d;
-        color: white;
+        background: #24572d !important;
+        color: white !important;
         padding: 12px 10px;
         text-align: left;
         white-space: nowrap;
+    }
+
+    .med-grid th a,
+    .med-grid th a:visited,
+    .med-grid th a:hover {
+        color: white !important;
     }
 
     .med-grid td {
@@ -129,18 +129,16 @@
         gap: 22px;
     }
 
-    .med-status {
-        display: block;
-        margin-top: 14px;
-        color: #246333;
-        font-weight: 600;
-    }
-
     .med-help {
         color: #6b786e;
         font-size: 13px;
         margin-top: -10px;
         margin-bottom: 14px;
+    }
+
+    .med-selected-row {
+        background: #dcebdc !important;
+        font-weight: 600;
     }
 
     @media (max-width: 800px) {
@@ -156,112 +154,19 @@
 
 <div class="med-page">
 
-    <!-- Page heading -->
     <div class="med-heading">
         <h2>Medication Administration</h2>
-        <p>View prescriptions and record medication administered to patients.</p>
+        <p>Review prescribed medication, administration progress and nursing records.</p>
     </div>
 
-    <!-- Existing medication administration records -->
+    <!-- Medication overview -->
     <div class="med-card">
-        <h4>Medication Administration History</h4>
-        
-<!-- RECENT ADMINISTRATIONS -->
-<div style="margin-bottom: 30px;">
+        <h4>Medication Overview</h4>
 
-    <div style="display: flex; justify-content: space-between;
-                align-items: center; flex-wrap: wrap; gap: 10px;
-                margin-bottom: 8px;">
-
-        <h4 style="margin: 0; padding: 0; border: none;">
-            Recent Administrations
-        </h4>
-
-        <span style="background: #eaf3eb; color: #24572d;
-                     padding: 5px 12px; border-radius: 20px;
-                     font-size: 12px; font-weight: 600;">
-            Last 7 Days
-        </span>
-
-    </div>
-
-    <p class="med-help">
-        Your recent medication administration records from the past seven days.
-    </p>
-
-    <div class="med-grid-wrap">
-
-        <asp:GridView
-            ID="GridView4"
-            runat="server"
-            AutoGenerateColumns="False"
-            DataKeyNames="medication_AdministrationID"
-            DataSourceID="SqlDSRecMedAdmin"
-            CssClass="med-grid"
-            CellPadding="4"
-            GridLines="None"
-            EmptyDataText="No recent medication administration records found.">
-
-            <Columns>
-
-                <asp:BoundField
-                    DataField="Patient"
-                    HeaderText="Patient" />
-
-                <asp:BoundField
-                    DataField="MedicineName"
-                    HeaderText="Medicine" />
-
-                <asp:BoundField
-                    DataField="dosageGiven"
-                    HeaderText="Dosage Given" />
-
-                <asp:BoundField
-                    DataField="Dosage"
-                    HeaderText="Prescribed Dosage" />
-
-                <asp:BoundField
-                    DataField="status"
-                    HeaderText="Status" />
-
-                <asp:BoundField
-                    DataField="Admnistered_at"
-                    HeaderText="Administration Date"
-                    DataFormatString="{0:dd MMM yyyy HH:mm}" />
-
-                <asp:BoundField
-                    DataField="Doctor"
-                    HeaderText="Prescribed By" />
-
-                <asp:BoundField
-                    DataField="Frequency"
-                    HeaderText="Frequency" />
-
-                <asp:BoundField
-                    DataField="Duration"
-                    HeaderText="Duration" />
-
-                <asp:BoundField
-                    DataField="DosageUnit"
-                    HeaderText="Unit" />
-
-            </Columns>
-
-            <HeaderStyle
-                BackColor="#24572d"
-                ForeColor="White"
-                Font-Bold="True" />
-
-            <RowStyle BackColor="White" />
-
-            <AlternatingRowStyle BackColor="#f3f7f3" />
-
-        </asp:GridView>
-
-    </div>
-
-</div>
-
+        <p class="med-help">
+            View prescribed medication and its administration progress.
+            Select a medication to inspect its administration history.
+        </p>
 
         <div class="med-columns">
             <div>
@@ -270,336 +175,308 @@
                 </label>
                 <asp:TextBox ID="TBPatient" runat="server"
                     CssClass="med-input"
-                    placeholder="Search by patient name"
-                    OnTextChanged="TBPatient_TextChanged" />
+                    placeholder="Search by patient name" />
             </div>
 
             <div>
                 <label class="med-label" for="<%= TBDate.ClientID %>">
-                    Administration date
+                    Prescription date
                 </label>
                 <asp:TextBox ID="TBDate" runat="server"
                     CssClass="med-input"
-                    TextMode="Date"
-                    OnTextChanged="TBPatient_TextChanged" />
+                    TextMode="Date" />
             </div>
         </div>
 
         <asp:Button ID="BtnSearch" runat="server"
-            Text="Search records"
-            CssClass="med-button" />
+            Text="Search"
+            CssClass="med-button"
+            OnClick="BtnSearch_Click" />
+
+        <asp:Button ID="BtnClear" runat="server"
+            Text="Clear filters"
+            CssClass="med-button"
+            CausesValidation="false"
+            OnClick="BtnClear_Click" />
 
         <div class="med-grid-wrap">
             <asp:GridView ID="GVMedicationAdmin" runat="server"
                 AutoGenerateColumns="False"
-                DataKeyNames="medication_AdministrationID"
-                DataSourceID="SqlDSMedAdmin"
+                DataKeyNames="PrescriptionItemID"
+                DataSourceID="SqlDSMedicationOverview"
                 CssClass="med-grid"
-                CellPadding="4"
                 GridLines="None"
-                EmptyDataText="No medication administration records found.">
+                AllowPaging="True"
+                PageSize="10"
+                AllowSorting="True"
+                EmptyDataText="No prescribed medications found."
+                OnSelectedIndexChanged="GVMedicationAdmin_SelectedIndexChanged"
+                OnPageIndexChanging="GVMedicationAdmin_PageIndexChanging">
 
                 <Columns>
-                    <asp:CommandField ShowSelectButton="True" SelectText="View" />
-                    <asp:BoundField DataField="FullName" HeaderText="Nurse" />
+                    <asp:CommandField ShowSelectButton="True" SelectText="View history" />
+
                     <asp:BoundField DataField="Patient" HeaderText="Patient" />
                     <asp:BoundField DataField="MedicineName" HeaderText="Medicine" />
-                    <asp:BoundField DataField="dosageGiven" HeaderText="Dosage given" />
-                    <asp:BoundField DataField="status" HeaderText="Status" />
-                    <asp:BoundField DataField="Admnistered_at" HeaderText="Administration date" />
                     <asp:BoundField DataField="Dosage" HeaderText="Prescribed dosage" />
-                    <asp:BoundField DataField="Frequency" HeaderText="Frequency" />
-                    <asp:BoundField DataField="Doctor" HeaderText="Prescribed by" />
-                    <asp:BoundField DataField="DateIssued" HeaderText="Prescription date" />
-                    <asp:BoundField DataField="Duration" HeaderText="Duration" />
                     <asp:BoundField DataField="DosageUnit" HeaderText="Unit" />
+                    <asp:BoundField DataField="Frequency" HeaderText="Per day" />
+                    <asp:BoundField DataField="Duration" HeaderText="Duration (days)" />
+                    <asp:BoundField DataField="ExpectedAdministrations" HeaderText="Expected" />
+                    <asp:BoundField DataField="AdministeredCount" HeaderText="Administered" />
+                    <asp:BoundField DataField="PartiallyAdministeredCount" HeaderText="Partial" />
+                    <asp:BoundField DataField="RemainingAdministrations" HeaderText="Remaining" />
+                    <asp:BoundField DataField="NurseBreakdown" HeaderText="Nurse contributions" />
+                    <asp:BoundField DataField="Doctor" HeaderText="Prescribed by" />
+                    <asp:BoundField DataField="DateIssued" HeaderText="Date issued"
+                        DataFormatString="{0:dd MMM yyyy}" />
                 </Columns>
+
+                <SelectedRowStyle CssClass="med-selected-row" />
             </asp:GridView>
         </div>
     </div>
 
-    <!-- Selected administration details -->
-    <div class="med-columns">
+    <!-- Selected prescription item -->
+    <asp:Panel ID="pnlSelectedDetails" runat="server" Visible="false">
 
         <div class="med-card">
-            <h4>Doctor's Instructions</h4>
+            <h4>Administration History</h4>
+
             <p class="med-help">
-                Instructions and prescription information for the selected record.
+                Each row represents an individual administration record.
+                Select a record to view the nurse's notes.
             </p>
 
-            <asp:DetailsView ID="DetailsView1" runat="server"
-                AutoGenerateRows="False"
-                DataSourceID="SqlDSDocNotes"
-                CssClass="med-grid"
-                GridLines="None">
-                <Fields>
-                    <asp:BoundField DataField="Instruction" HeaderText="Instructions" />
-                    <asp:BoundField DataField="DateIssued" HeaderText="Date prescribed" />
-                </Fields>
-            </asp:DetailsView>
+            <div class="med-grid-wrap">
+                <asp:GridView ID="GVAdministrationHistory" runat="server"
+                    AutoGenerateColumns="False"
+                    DataKeyNames="medication_AdministrationID"
+                    DataSourceID="SqlDSAdministrationHistory"
+                    CssClass="med-grid"
+                    GridLines="None"
+                    AllowPaging="True"
+                    PageSize="10"
+                    EmptyDataText="No administration records have been recorded for this medication."
+                    OnSelectedIndexChanged="GVAdministrationHistory_SelectedIndexChanged">
+
+                    <Columns>
+                        <asp:CommandField ShowSelectButton="True" SelectText="View notes" />
+                        <asp:BoundField DataField="FullName" HeaderText="Nurse" />
+                        <asp:BoundField DataField="dosageGiven" HeaderText="Dosage given" />
+                        <asp:BoundField DataField="status" HeaderText="Status" />
+                        <asp:BoundField DataField="Admnistered_at"
+                            HeaderText="Administration date"
+                            DataFormatString="{0:dd MMM yyyy HH:mm}" />
+                        <asp:BoundField DataField="Notes" HeaderText="Administration notes" />
+                    </Columns>
+
+                    <SelectedRowStyle CssClass="med-selected-row" />
+                </asp:GridView>
+            </div>
         </div>
-
-        <div class="med-card">
-            <h4>Nurse's Administration Notes</h4>
-            <p class="med-help">
-                Notes entered when the selected medicine was administered.
-            </p>
-
-            <asp:DetailsView ID="DetailsView2" runat="server"
-                AutoGenerateRows="False"
-                DataSourceID="SqlDSMedNotes"
-                CssClass="med-grid"
-                GridLines="None">
-                <Fields>
-                    <asp:BoundField DataField="Notes" HeaderText="Nurse's notes" />
-                </Fields>
-            </asp:DetailsView>
-        </div>
-
-    </div>
-
-    <!-- Record a new administration -->
-    <div class="med-card">
-        <h4>Record Medication Administration</h4>
-
-        <p class="med-help">
-            Find the patient's prescription, select the prescribed medicine,
-            and record the administration.
-        </p>
 
         <div class="med-columns">
-            <div>
-                <label class="med-label" for="<%= TBPatient2.ClientID %>">
-                    Patient name
-                </label>
-                <asp:TextBox ID="TBPatient2" runat="server"
-                    CssClass="med-input"
-                    placeholder="Enter patient name" />
 
-                <label class="med-label" for="<%= TBDate2.ClientID %>">
-                    Prescription date
-                </label>
-                <asp:TextBox ID="TBDate2" runat="server"
-                    CssClass="med-input"
-                    TextMode="Date" />
+            <div class="med-card">
+                <h4>Doctor's Instructions</h4>
 
-                <asp:Button ID="BtnSearch2" runat="server"
-                    Text="Find prescriptions"
-                    CssClass="med-button" />
-            </div>
+                <p class="med-help">
+                    Instructions attached to the selected prescription item.
+                </p>
 
-            <div>
-                <label class="med-label">Logged-in nurse</label>
-
-                <asp:DetailsView ID="DVNurse" runat="server"
+                <asp:DetailsView ID="DetailsView1" runat="server"
                     AutoGenerateRows="False"
-                    DataKeyNames="NurseID"
-                    DataSourceID="SqlDSGetNurseID"
+                    DataSourceID="SqlDSDocNotes"
                     CssClass="med-grid"
-                    GridLines="None">
+                    GridLines="None"
+                    EmptyDataText="No instructions available.">
                     <Fields>
-                        <asp:BoundField DataField="FullName" HeaderText="Nurse name" />
+                        <asp:BoundField DataField="Instruction"
+                            HeaderText="Instructions" />
+                        <asp:BoundField DataField="DateIssued"
+                            HeaderText="Date prescribed"
+                            DataFormatString="{0:dd MMM yyyy}" />
                     </Fields>
                 </asp:DetailsView>
             </div>
-        </div>
 
-        <h4>Available Prescriptions</h4>
+            <div class="med-card">
+                <h4>Nurse's Administration Notes</h4>
 
-        <div class="med-grid-wrap">
-            <asp:GridView ID="GridView1" runat="server"
-                AutoGenerateColumns="False"
-                CellPadding="4"
-                DataKeyNames="PrescriptionID"
-                DataSourceID="SqlDSPrescription"
-                CssClass="med-grid"
-                GridLines="None"
-                EmptyDataText="No prescriptions found.">
+                <p class="med-help">
+                    Notes associated with the selected administration record.
+                </p>
 
-                <Columns>
-                    <asp:CommandField ShowSelectButton="True" SelectText="Select" />
-                    <asp:BoundField DataField="PrescriptionID" HeaderText="Prescription ID" />
-                    <asp:BoundField DataField="Doctor" HeaderText="Doctor" />
-                    <asp:BoundField DataField="Patient" HeaderText="Patient" />
-                    <asp:BoundField DataField="DateIssued" HeaderText="Date issued" />
-                </Columns>
-            </asp:GridView>
-        </div>
-
-        <h4 style="margin-top: 28px;">Prescribed Medicines</h4>
-
-        <div class="med-grid-wrap">
-            <asp:GridView ID="GridView2" runat="server"
-                AutoGenerateColumns="False"
-                CellPadding="4"
-                DataKeyNames="PrescriptionItemID"
-                DataSourceID="SqlDSPrescriptionItems"
-                CssClass="med-grid"
-                GridLines="None"
-                EmptyDataText="Select a prescription to view its medicines.">
-
-                <Columns>
-                    <asp:CommandField ShowSelectButton="True" SelectText="Select medicine" />
-                    <asp:BoundField DataField="MedicineName" HeaderText="Medicine" />
-                    <asp:BoundField DataField="Dosage" HeaderText="Prescribed dosage" />
-                    <asp:BoundField DataField="Frequency" HeaderText="Frequency" />
-                    <asp:BoundField DataField="Duration" HeaderText="Duration (days)" />
-                    <asp:BoundField DataField="Instruction" HeaderText="Instructions" />
-                </Columns>
-            </asp:GridView>
-        </div>
-
-        <h4 style="margin-top: 28px;">Administration Details</h4>
-
-        <div class="med-columns">
-            <div>
-                <label class="med-label" for="<%= DDLStatus.ClientID %>">
-                    Administration status
-                </label>
-                <asp:DropDownList ID="DDLStatus" runat="server"
-                    CssClass="med-input">
-                    <asp:ListItem>Administered</asp:ListItem>
-                    <asp:ListItem>Partially Administered</asp:ListItem>
-                    <asp:ListItem>Not Administered</asp:ListItem>
-                </asp:DropDownList>
-
-                <label class="med-label" for="<%= TBDosageGiven.ClientID %>">
-                    Dosage given
-                </label>
-                <asp:TextBox ID="TBDosageGiven" runat="server"
-                    CssClass="med-input"
-                    TextMode="Number" />
+                <asp:DetailsView ID="DetailsView2" runat="server"
+                    AutoGenerateRows="False"
+                    DataSourceID="SqlDSMedNotes"
+                    CssClass="med-grid"
+                    GridLines="None"
+                    EmptyDataText="Select an administration record to view its notes.">
+                    <Fields>
+                        <asp:BoundField DataField="Notes"
+                            HeaderText="Nurse's notes" />
+                    </Fields>
+                </asp:DetailsView>
             </div>
 
-            <div>
-                <label class="med-label" for="<%= TBNurseNotes.ClientID %>">
-                    Administration notes
-                </label>
-                <asp:TextBox ID="TBNurseNotes" runat="server"
-                    CssClass="med-input"
-                    TextMode="MultiLine"
-                    Rows="5"
-                    placeholder="Enter relevant observations or reasons for partial/non-administration..." />
-            </div>
         </div>
 
-        <asp:Button ID="BtnMedAdminRecord" runat="server"
-            OnClick="BtnMedAdminRecord_Click"
-            Text="Record Administration"
-            CssClass="med-button" />
+    </asp:Panel>
 
-        <asp:Label ID="lblStatus" runat="server"
-            CssClass="med-status" />
+    <!-- Main overview query -->
+    <asp:SqlDataSource ID="SqlDSMedicationOverview" runat="server"
+        ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
+        CancelSelectOnNullParameter="False"
+        SelectCommand="
+        SELECT
+            PI.PrescriptionItemID,
+            P.PrescriptionID,
+            PA.PatientID,
+            PA.FullName AS Patient,
+            D.FullName AS Doctor,
+            P.DateIssued,
+            M.MedicineName,
+            M.DosageUnit,
+            PI.Dosage,
+            PI.Frequency,
+            PI.Duration,
 
-    </div>
+            (PI.Frequency * PI.Duration) AS ExpectedAdministrations,
 
-<!-- 1. Medication administration history -->
-<asp:SqlDataSource ID="SqlDSMedAdmin" runat="server"
-    ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
-    SelectCommand="SELECT MedicationAdministration.medication_AdministrationID, MedicationAdministration.NurseID, MedicationAdministration.PrescriptionItemID, MedicationAdministration.Admnistered_at, MedicationAdministration.Notes, MedicationAdministration.dosageGiven, MedicationAdministration.status, Nurse.UserId, PrescriptionItem.MedicineID, PrescriptionItem.Dosage, PrescriptionItem.Frequency, Doctor.FullName AS Doctor, Patient.FullName AS Patient, Prescriptions.DoctorID, Prescriptions.PatientID, PrescriptionItem.Instruction, PrescriptionItem.Duration, Medicine.MedicineName, Medicine.DosageUnit, Prescriptions.DateIssued, Nurse.FullName FROM MedicationAdministration INNER JOIN Nurse ON MedicationAdministration.NurseID = Nurse.NurseID INNER JOIN PrescriptionItem ON MedicationAdministration.PrescriptionItemID = PrescriptionItem.PrescriptionItemID INNER JOIN Prescriptions ON PrescriptionItem.PrescriptionID = Prescriptions.PrescriptionID INNER JOIN Doctor ON Prescriptions.DoctorID = Doctor.DoctorID INNER JOIN Patient ON Prescriptions.PatientID = Patient.PatientID INNER JOIN Medicine ON PrescriptionItem.MedicineID = Medicine.MedicineID WHERE (@name IS NULL) OR (@name = '') OR (Patient.FullName LIKE '%' + @name + '%')">
-    <SelectParameters>
-        <asp:ControlParameter ControlID="TBPatient" Name="name" PropertyName="Text" />
-    </SelectParameters>
-</asp:SqlDataSource>
+            COUNT(CASE
+                WHEN MA.status = 'Administered' THEN 1
+            END) AS AdministeredCount,
 
+            COUNT(CASE
+                WHEN MA.status = 'Partially Administered' THEN 1
+            END) AS PartiallyAdministeredCount,
 
-<!-- 2. Nurse notes for the selected administration record -->
-<asp:SqlDataSource ID="SqlDSMedNotes" runat="server"
-    ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
-    SelectCommand="SELECT Notes FROM MedicationAdministration WHERE medication_AdministrationID = @id">
-    <SelectParameters>
-        <asp:ControlParameter ControlID="GVMedicationAdmin" Name="id" PropertyName="SelectedValue" />
-    </SelectParameters>
-</asp:SqlDataSource>
+            CASE
+                WHEN (PI.Frequency * PI.Duration) -
+                    COUNT(CASE WHEN MA.status = 'Administered' THEN 1 END) < 0
+                THEN 0
+                ELSE (PI.Frequency * PI.Duration) -
+                    COUNT(CASE WHEN MA.status = 'Administered' THEN 1 END)
+            END AS RemainingAdministrations,
 
+            STUFF((
+                SELECT
+                    ', ' + N2.FullName + ' (' +
+                    CAST(COUNT(*) AS VARCHAR(10)) + ')'
+                FROM MedicationAdministration MA2
+                INNER JOIN Nurse N2
+                    ON MA2.NurseID = N2.NurseID
+                WHERE MA2.PrescriptionItemID = PI.PrescriptionItemID
+                GROUP BY N2.NurseID, N2.FullName
+                FOR XML PATH(''), TYPE
+            ).value('.', 'NVARCHAR(MAX)'), 1, 2, '') AS NurseBreakdown
 
-<!-- 3. Doctor's prescription instructions -->
-<asp:SqlDataSource ID="SqlDSDocNotes" runat="server"
-    ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
-    SelectCommand="SELECT PrescriptionItem.Instruction, Prescriptions.DateIssued FROM MedicationAdministration INNER JOIN PrescriptionItem ON MedicationAdministration.PrescriptionItemID = PrescriptionItem.PrescriptionItemID INNER JOIN Prescriptions ON PrescriptionItem.PrescriptionID = Prescriptions.PrescriptionID WHERE MedicationAdministration.medication_AdministrationID = @id">
-    <SelectParameters>
-        <asp:ControlParameter ControlID="GVMedicationAdmin" Name="id" PropertyName="SelectedValue" />
-    </SelectParameters>
-</asp:SqlDataSource>
+        FROM PrescriptionItem PI
+        INNER JOIN Prescriptions P
+            ON PI.PrescriptionID = P.PrescriptionID
+        INNER JOIN Patient PA
+            ON P.PatientID = PA.PatientID
+        INNER JOIN Doctor D
+            ON P.DoctorID = D.DoctorID
+        INNER JOIN Medicine M
+            ON PI.MedicineID = M.MedicineID
+        LEFT JOIN MedicationAdministration MA
+            ON PI.PrescriptionItemID = MA.PrescriptionItemID
 
+        WHERE
+            (@name IS NULL OR @name = ''
+                OR PA.FullName LIKE '%' + @name + '%')
+            AND
+            (@date IS NULL
+                OR P.DateIssued >= @date
+                AND P.DateIssued < DATEADD(DAY, 1, @date))
 
-<!-- 4. Prescriptions available for administration -->
-<asp:SqlDataSource ID="SqlDSPrescription" runat="server"
-    ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
-    SelectCommand="SELECT Prescriptions.PrescriptionID, Prescriptions.DoctorID, Doctor.FullName AS Doctor, Prescriptions.PatientID, Patient.FullName AS Patient, Prescriptions.DateIssued FROM Prescriptions INNER JOIN Doctor ON Prescriptions.DoctorID = Doctor.DoctorID INNER JOIN Patient ON Prescriptions.PatientID = Patient.PatientID WHERE (@name IS NULL OR @name = '') AND (Prescriptions.DateIssued >= @date) AND (Prescriptions.DateIssued < DATEADD(DAY, 1, @date)) OR (Prescriptions.DateIssued >= @date) AND (Prescriptions.DateIssued < DATEADD(DAY, 1, @date)) AND (Patient.FullName LIKE '%' + @name + '%')">
+        GROUP BY
+            PI.PrescriptionItemID,
+            P.PrescriptionID,
+            PA.PatientID,
+            PA.FullName,
+            D.FullName,
+            P.DateIssued,
+            M.MedicineName,
+            M.DosageUnit,
+            PI.Dosage,
+            PI.Frequency,
+            PI.Duration
 
-    <SelectParameters>
-        <asp:ControlParameter ControlID="TBPatient2" Name="name" PropertyName="Text" Type="String" />
-        <asp:ControlParameter ControlID="TBDate2" Name="date" PropertyName="Text" Type="DateTime" />
-    </SelectParameters>
-</asp:SqlDataSource>
+        ORDER BY P.DateIssued DESC">
 
+        <SelectParameters>
+            <asp:ControlParameter ControlID="TBPatient"
+                Name="name" PropertyName="Text"
+                ConvertEmptyStringToNull="true" />
 
-<!-- 5. Medicines belonging to the selected prescription -->
-<asp:SqlDataSource ID="SqlDSPrescriptionItems" runat="server"
-    ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
-    SelectCommand="SELECT PrescriptionItem.PrescriptionItemID, PrescriptionItem.PrescriptionID, PrescriptionItem.MedicineID, PrescriptionItem.Dosage, PrescriptionItem.Frequency, PrescriptionItem.Duration, PrescriptionItem.Instruction, Medicine.MedicineName FROM PrescriptionItem INNER JOIN Medicine ON PrescriptionItem.MedicineID = Medicine.MedicineID WHERE PrescriptionItem.PrescriptionID = @id">
+            <asp:ControlParameter ControlID="TBDate"
+                Name="date" PropertyName="Text"
+                Type="DateTime"
+                ConvertEmptyStringToNull="true" />
+        </SelectParameters>
+    </asp:SqlDataSource>
 
-    <SelectParameters>
-        <asp:ControlParameter ControlID="GridView1" Name="id" PropertyName="SelectedValue" Type="Int32" DefaultValue="0" />
-    </SelectParameters>
-</asp:SqlDataSource>
+    <!-- Individual administration records for selected prescription item -->
+    <asp:SqlDataSource ID="SqlDSAdministrationHistory" runat="server"
+        ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
+        SelectCommand="
+        SELECT
+            MA.medication_AdministrationID,
+            MA.dosageGiven,
+            MA.status,
+            MA.Admnistered_at,
+            MA.Notes,
+            N.FullName
+        FROM MedicationAdministration MA
+        INNER JOIN Nurse N
+            ON MA.NurseID = N.NurseID
+        WHERE MA.PrescriptionItemID = @itemID
+        ORDER BY MA.Admnistered_at DESC">
 
+        <SelectParameters>
+            <asp:ControlParameter ControlID="GVMedicationAdmin"
+                Name="itemID" PropertyName="SelectedValue"
+                Type="Int32" />
+        </SelectParameters>
+    </asp:SqlDataSource>
 
-<!-- 6. Retrieve the nurse -->
-<asp:SqlDataSource ID="SqlDSGetNurseID" runat="server"
-    ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
-    SelectCommand="SELECT * FROM Nurse">
-</asp:SqlDataSource>
+    <!-- Doctor's instructions for selected prescription item -->
+    <asp:SqlDataSource ID="SqlDSDocNotes" runat="server"
+        ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
+        SelectCommand="
+        SELECT
+            PI.Instruction,
+            P.DateIssued
+        FROM PrescriptionItem PI
+        INNER JOIN Prescriptions P
+            ON PI.PrescriptionID = P.PrescriptionID
+        WHERE PI.PrescriptionItemID = @itemID">
 
+        <SelectParameters>
+            <asp:ControlParameter ControlID="GVMedicationAdmin"
+                Name="itemID" PropertyName="SelectedValue"
+                Type="Int32" />
+        </SelectParameters>
+    </asp:SqlDataSource>
 
-<!-- 7. Insert a medication administration record -->
-<asp:SqlDataSource ID="SqlDSRecordMedAdmin" runat="server"
-    ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
-    InsertCommand="INSERT INTO MedicationAdministration (NurseID, PrescriptionItemID, Admnistered_at, Notes, dosageGiven, status) VALUES (@NurseID, @PrescriptionItemID, @Admnistered_at, @Notes, @dosageGiven, @status)">
+    <!-- Nurse's notes for selected individual administration -->
+    <asp:SqlDataSource ID="SqlDSMedNotes" runat="server"
+        ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
+        SelectCommand="
+        SELECT Notes
+        FROM MedicationAdministration
+        WHERE medication_AdministrationID = @adminID">
 
-    <InsertParameters>
-        <asp:ControlParameter ControlID="DVNurse" Name="NurseID" PropertyName="SelectedValue" Type="Int32" />
-        <asp:ControlParameter ControlID="GridView2" Name="PrescriptionItemID" PropertyName="SelectedValue" Type="Int32" />
-        <asp:Parameter Name="Admnistered_at" Type="DateTime" />
-        <asp:ControlParameter ControlID="TBNurseNotes" Name="Notes" PropertyName="Text" Type="String" />
-        <asp:ControlParameter ControlID="TBDosageGiven" Name="dosageGiven" PropertyName="Text" Type="Int32" />
-        <asp:ControlParameter ControlID="DDLStatus" Name="status" PropertyName="SelectedValue" Type="String" />
-    </InsertParameters>
-</asp:SqlDataSource>
-
-
-    <div>
-        Recent Administrations<br />
-        <asp:GridView ID="GridView3" runat="server" AutoGenerateColumns="False" DataKeyNames="medication_AdministrationID" DataSourceID="SqlDSRecMedAdmin" EmptyDataText="No recent administrations">
-            <Columns>
-                <asp:BoundField DataField="Patient" HeaderText="Patient" SortExpression="Patient" />
-                <asp:BoundField DataField="MedicineName" HeaderText="MedicineName" SortExpression="MedicineName" />
-                <asp:BoundField DataField="dosageGiven" HeaderText="dosageGiven" SortExpression="dosageGiven" />
-                <asp:BoundField DataField="Dosage" HeaderText="Dosage" SortExpression="Dosage" />
-                <asp:BoundField DataField="status" HeaderText="status" SortExpression="status" />
-                <asp:BoundField DataField="Admnistered_at" HeaderText="Admnistered_at" SortExpression="Admnistered_at" />
-                <asp:BoundField DataField="Doctor" HeaderText="Doctor" SortExpression="Doctor" />
-                <asp:BoundField DataField="Frequency" HeaderText="Frequency" SortExpression="Frequency" />
-                <asp:BoundField DataField="Duration" HeaderText="Duration" SortExpression="Duration" />
-                <asp:BoundField DataField="DateIssued" HeaderText="DateIssued" SortExpression="DateIssued" />
-                <asp:BoundField DataField="DosageUnit" HeaderText="DosageUnit" SortExpression="DosageUnit" />
-            </Columns>
-        </asp:GridView>
-<asp:SqlDataSource ID="SqlDSRecMedAdmin" runat="server"
-    ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
-    SelectCommand="SELECT MedicationAdministration.medication_AdministrationID, MedicationAdministration.NurseID, MedicationAdministration.PrescriptionItemID, MedicationAdministration.Admnistered_at, MedicationAdministration.Notes, MedicationAdministration.dosageGiven, MedicationAdministration.status, Nurse.UserId, PrescriptionItem.MedicineID, PrescriptionItem.Dosage, PrescriptionItem.Frequency, Doctor.FullName AS Doctor, Patient.FullName AS Patient, Prescriptions.DoctorID, Prescriptions.PatientID, PrescriptionItem.Instruction, PrescriptionItem.Duration, Medicine.MedicineName, Medicine.DosageUnit, Prescriptions.DateIssued, Nurse.FullName FROM MedicationAdministration INNER JOIN Nurse ON MedicationAdministration.NurseID = Nurse.NurseID INNER JOIN PrescriptionItem ON MedicationAdministration.PrescriptionItemID = PrescriptionItem.PrescriptionItemID INNER JOIN Prescriptions ON PrescriptionItem.PrescriptionID = Prescriptions.PrescriptionID INNER JOIN Doctor ON Prescriptions.DoctorID = Doctor.DoctorID INNER JOIN Patient ON Prescriptions.PatientID = Patient.PatientID INNER JOIN Medicine ON PrescriptionItem.MedicineID = Medicine.MedicineID WHERE (Nurse.UserId = @id) AND (MedicationAdministration.Admnistered_at &gt;= DATEADD(DAY, - 7, GETDATE())) AND (MedicationAdministration.Admnistered_at &lt;= GETDATE()) ORDER BY MedicationAdministration.Admnistered_at DESC">
-    <SelectParameters>
-        <asp:Parameter Name="id" />
-    </SelectParameters>
-</asp:SqlDataSource>
-
-
-        <asp:Label ID="lblID" runat="server" Text="Label"></asp:Label>
-
-
-    </div>
-
+        <SelectParameters>
+            <asp:ControlParameter ControlID="GVAdministrationHistory"
+                Name="adminID" PropertyName="SelectedValue"
+                Type="Int32" />
+        </SelectParameters>
+    </asp:SqlDataSource>
 
 </div>
 
