@@ -106,6 +106,23 @@
             Profile
         </a>
     </li>
+    <li id="nurseMedicineNav" runat="server"
+    visible="false" class="nav-item">
+
+    <a class="nav-link" runat="server"
+        href="~/Private/Clinical/Medicine.aspx">
+        Medicine Catalogue
+    </a>
+</li>
+
+<li id="nurseMedicineManagementNav" runat="server"
+    visible="false" class="nav-item">
+
+    <a class="nav-link" runat="server"
+        href="~/Private/Clinical/MedicineManagement.aspx">
+        Manage Medicines
+    </a>
+</li>
 
 
     <!-- DOCTOR NAVIGATION -->
@@ -130,6 +147,23 @@
         </a>
     </li>
 
+    <li id="doctorMedicineNav" runat="server"
+    visible="false" class="nav-item">
+
+    <a class="nav-link" runat="server"
+        href="~/Private/Clinical/Medicine.aspx">
+        Medicine Catalogue
+    </a>
+</li>
+
+<li id="doctorMedicineManagementNav" runat="server"
+    visible="false" class="nav-item">
+
+    <a class="nav-link" runat="server"
+        href="~/Private/Clinical/MedicineManagement.aspx">
+        Manage Medicines
+    </a>
+</li>
 
     <!-- ADMINISTRATOR NAVIGATION -->
     <li id="adminDashboardNav" runat="server" visible="false" class="nav-item">
@@ -139,12 +173,6 @@
         </a>
     </li>
 
-    <li id="adminMedicineNav" runat="server" visible="false" class="nav-item">
-        <a class="nav-link" runat="server"
-            href="~/Private/Administrator/MedicineManagement.aspx">
-            Medicine Management
-        </a>
-    </li>
 
     <li id="adminManageStaffNav" runat="server" visible="false" class="nav-item">
         <a class="nav-link" runat="server"
