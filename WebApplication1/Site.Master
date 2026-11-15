@@ -154,7 +154,14 @@
             Prescription
         </a>
     </li>
+    <li id="doctorPrescriptionManagementNav"
+    runat="server" visible="false" class="nav-item">
 
+    <a class="nav-link" runat="server"
+        href="~/Private/Doctor/PrescriptionManagement.aspx">
+        Prescription Management
+    </a>
+</li>
     <li id="doctorProfileNav" runat="server" visible="false" class="nav-item">
         <a class="nav-link" runat="server"
             href="~/Private/Doctor/Profile.aspx">

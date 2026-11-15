@@ -86,6 +86,7 @@ namespace WebApplication1
             // DOCTOR
             doctorDashboardNav.Visible = false;
             doctorPrescriptionNav.Visible = false;
+            doctorPrescriptionManagementNav.Visible = false;
             doctorProfileNav.Visible = false;
             doctorMedicineNav.Visible = false;
             doctorMedicineManagementNav.Visible = false;
@@ -124,6 +125,7 @@ namespace WebApplication1
             {
                 doctorDashboardNav.Visible = true;
                 doctorPrescriptionNav.Visible = true;
+                doctorMedicineManagementNav.Visible = true;
                 doctorProfileNav.Visible = true;
 
                 doctorMedicineNav.Visible = true;

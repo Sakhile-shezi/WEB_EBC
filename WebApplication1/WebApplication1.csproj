@@ -206,6 +206,7 @@
     <Content Include="Private\Appointments\Appointments.aspx" />
     <Content Include="Private\Doctor\DoctorDashboard.aspx" />
     <Content Include="Private\Doctor\Prescription.aspx" />
+    <Content Include="Private\Doctor\PrescriptionManagement.aspx" />
     <Content Include="Private\Doctor\Profile.aspx" />
     <Content Include="Private\Doctor\WebForm1.aspx" />
     <Content Include="Private\Clinical\Medicine.aspx" />
@@ -485,6 +486,13 @@
     </Compile>
     <Compile Include="Private\Doctor\Prescription.aspx.designer.cs">
       <DependentUpon>Prescription.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Doctor\PrescriptionManagement.aspx.cs">
+      <DependentUpon>PrescriptionManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Doctor\PrescriptionManagement.aspx.designer.cs">
+      <DependentUpon>PrescriptionManagement.aspx</DependentUpon>
     </Compile>
     <Compile Include="Private\Doctor\Profile.aspx.cs">
       <DependentUpon>Profile.aspx</DependentUpon>
