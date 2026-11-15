@@ -68,27 +68,35 @@ namespace WebApplication1
         }
 
 
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Hide all role-specific navigation by default.
+            // PATIENT
             patientDashboardNav.Visible = false;
+            patientHistoryNav.Visible = false;
 
+            // NURSE
             nurseDashboardNav.Visible = false;
             nurseMedicationNav.Visible = false;
             nurseProfileNav.Visible = false;
             nurseMedicineNav.Visible = false;
             nurseMedicineManagementNav.Visible = false;
+            nurseTreatmentRecordingNav.Visible = false;
+            nurseTreatmentHistoryNav.Visible = false;
 
+            // DOCTOR
             doctorDashboardNav.Visible = false;
             doctorPrescriptionNav.Visible = false;
             doctorProfileNav.Visible = false;
             doctorMedicineNav.Visible = false;
             doctorMedicineManagementNav.Visible = false;
+            doctorTreatmentRecordingNav.Visible = false;
+            doctorTreatmentHistoryNav.Visible = false;
 
+            // ADMIN
             adminDashboardNav.Visible = false;
             adminManageStaffNav.Visible = false;
 
-            // Only display role-specific links to authenticated users.
             if (!Context.User.Identity.IsAuthenticated)
                 return;
 
@@ -96,6 +104,7 @@ namespace WebApplication1
             if (Context.User.IsInRole("Patient"))
             {
                 patientDashboardNav.Visible = true;
+                patientHistoryNav.Visible = true;
             }
 
             // NURSE
@@ -107,6 +116,9 @@ namespace WebApplication1
 
                 nurseMedicineNav.Visible = true;
                 nurseMedicineManagementNav.Visible = true;
+
+                nurseTreatmentRecordingNav.Visible = true;
+                nurseTreatmentHistoryNav.Visible = true;
             }
 
             // DOCTOR
@@ -118,6 +130,9 @@ namespace WebApplication1
 
                 doctorMedicineNav.Visible = true;
                 doctorMedicineManagementNav.Visible = true;
+
+                doctorTreatmentRecordingNav.Visible = true;
+                doctorTreatmentHistoryNav.Visible = true;
             }
 
             // ADMINISTRATOR
@@ -127,6 +142,7 @@ namespace WebApplication1
                 adminManageStaffNav.Visible = true;
             }
         }
+
 
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)

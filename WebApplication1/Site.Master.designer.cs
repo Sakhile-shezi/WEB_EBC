@@ -33,6 +33,15 @@ namespace WebApplication1
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl patientDashboardNav;
 
         /// <summary>
+        /// patientHistoryNav control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl patientHistoryNav;
+
+        /// <summary>
         /// nurseDashboardNav control.
         /// </summary>
         /// <remarks>
@@ -78,6 +87,24 @@ namespace WebApplication1
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl nurseMedicineManagementNav;
 
         /// <summary>
+        /// nurseTreatmentRecordingNav control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl nurseTreatmentRecordingNav;
+
+        /// <summary>
+        /// nurseTreatmentHistoryNav control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl nurseTreatmentHistoryNav;
+
+        /// <summary>
         /// doctorDashboardNav control.
         /// </summary>
         /// <remarks>
@@ -121,6 +148,24 @@ namespace WebApplication1
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl doctorMedicineManagementNav;
+
+        /// <summary>
+        /// doctorTreatmentRecordingNav control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl doctorTreatmentRecordingNav;
+
+        /// <summary>
+        /// doctorTreatmentHistoryNav control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl doctorTreatmentHistoryNav;
 
         /// <summary>
         /// adminDashboardNav control.

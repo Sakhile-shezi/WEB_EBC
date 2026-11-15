@@ -46,6 +46,10 @@
 .pd-stat-icon svg{height:18px;width:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .pd-stat-value{display:block;margin-top:16px;color:#1d4230;font-size:34px;font-weight:750;line-height:1.1;font-variant-numeric:tabular-nums;transform:translateZ(9px)}
 .pd-stat-detail{display:block;margin-top:8px;font-size:11px;color:#829189;line-height:1.5}
+.pd-health{margin-bottom:20px}
+.pd-health .pd-section-head{align-items:center;margin-bottom:0}
+.pd-health-btn{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:#1e704f;color:#fff!important;text-decoration:none!important;border-radius:9px;padding:13px 20px;font-weight:700;font-size:13px;box-shadow:0 5px 12px rgba(17,81,51,.16);transition:background .2s ease,transform .2s ease}
+.pd-health-btn:hover{background:#145a3e;transform:translateY(-2px)}
 .pd-section-head{display:flex;align-items:end;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:20px}
 .pd-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
 .pd-table{width:100%;min-width:690px;border-collapse:collapse;font-size:12px}
@@ -62,7 +66,7 @@
 .pd.js-motion .pd-reveal{animation:pdArrive .6s both}
 @keyframes pdArrive{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:960px){.pd-overview{grid-template-columns:1fr}.pd-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){.pd{padding:13px 11px 40px}.pd-hero{padding:27px 23px;min-height:200px}.pd-action{width:100%}.pd-panel{padding:19px}.pd-contact{grid-template-columns:1fr}.pd-stats{gap:11px}.pd-stat{padding:15px}.pd-stat-value{font-size:29px}.pd-section-head{align-items:start}}
+@media(max-width:600px){.pd-health-btn{width:100%}.pd{padding:13px 11px 40px}.pd-hero{padding:27px 23px;min-height:200px}.pd-action{width:100%}.pd-panel{padding:19px}.pd-contact{grid-template-columns:1fr}.pd-stats{gap:11px}.pd-stat{padding:15px}.pd-stat-value{font-size:29px}.pd-section-head{align-items:start}}
 @media(prefers-reduced-motion:reduce){.pd *{animation:none!important;transition:none!important}.pd.js-motion .pd-reveal{animation:none!important}.pd-stat{transform:none!important}}
 </style>
 
@@ -121,6 +125,16 @@
         <asp:Label ID="lblCancelled" runat="server" Text="0" CssClass="pd-stat-value" /><span class="pd-stat-detail">Cancelled bookings</span>
       </div>
     </div>
+
+    <section class="pd-panel pd-reveal pd-health" aria-label="Health tracker">
+      <div class="pd-section-head">
+        <div class="pd-panel-heading">
+          <span class="pd-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-5 4 10 2-5h6"/></svg></span>
+          <div><h2>Health Tracker</h2><p class="pd-muted">Not feeling well? Describe your symptoms to see what they might point to and whether you should come in.</p></div>
+        </div>
+        <a class="pd-health-btn" href='<%= ResolveUrl("~/Private/Patient/SymptomChecker.aspx") %>'>Check Your Symptoms</a>
+      </div>
+    </section>
 
     <section class="pd-panel pd-reveal" aria-label="Upcoming appointments">
       <div class="pd-section-head">

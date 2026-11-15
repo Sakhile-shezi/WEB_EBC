@@ -1,4 +1,5 @@
-<%@ Page Title="Book Appointment" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Appointments.aspx.cs" Inherits="WebApplication1.Private.Appointments.Appointments" %>
+<%@ Page Title="Book Appointment" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" MaintainScrollPositionOnPostback="true" CodeBehind="Appointments.aspx.cs" Inherits="WebApplication1.Private.Appointments.Appointments" %>
+<%@ Register Src="~/Controls/ReceiptViewer.ascx" TagPrefix="eb" TagName="ReceiptViewer" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 <style>
@@ -301,6 +302,33 @@
         .eb-booking .eb-card,.eb-booking .eb-slot,.eb-booking .eb-book-button {transition:none!important;transform:none!important}
     }
 
+    /* Step 2: specialty -> doctors in that specialty -> selected doctor.
+       Reuses the existing table, input and pill styling. */
+    .eb-booking .eb-doc-block {margin-top:16px}
+    .eb-booking .eb-doc-head {display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}
+    .eb-booking .eb-doc-head .eb-label {margin:0}
+    .eb-booking .eb-change-doc {font-size:11px;font-weight:750;color:#1b7653;text-decoration:none}
+    .eb-booking .eb-change-doc:hover {color:#13583d;text-decoration:underline}
+    .eb-booking .eb-doc-frame {border:1px solid #dae7de;border-radius:12px;overflow:hidden;background:#fff}
+    .eb-booking .eb-doc-table {min-width:0}
+    .eb-booking .eb-doc-table td {vertical-align:middle}
+    .eb-booking .eb-doc-table tr:last-child td {border-bottom:0}
+    .eb-booking .eb-doc-table tr.eb-doc-selected td {background:#e3f2e8!important;color:#13583d;font-weight:750}
+    .eb-booking .eb-avail {display:inline-block;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:750;white-space:nowrap;background:#e4f3ea;color:#176842}
+    .eb-booking .eb-avail.full {background:#fbe9e5;color:#a23a27}
+    .eb-booking .eb-pick {display:inline-block;padding:6px 13px;border:1px solid #1b7653;border-radius:8px;color:#13583d;background:#fff;font-size:11px;font-weight:750;text-decoration:none!important;transition:background .2s ease,color .2s ease}
+    .eb-booking .eb-pick:hover,.eb-booking .eb-doc-selected .eb-pick {background:#1e704f;color:#fff}
+    .eb-booking .eb-pick.aspNetDisabled {border-color:#dce7df;color:#9aa9a1;background:#f7faf8;cursor:not-allowed}
+    .eb-booking .eb-doc-details {width:100%;border-collapse:collapse;font-size:12px}
+    .eb-booking .eb-doc-details td {padding:11px 12px;border-bottom:1px solid #e2ebe5;overflow-wrap:anywhere}
+    .eb-booking .eb-doc-details tr:last-child td {border-bottom:0}
+    .eb-booking .eb-doc-details .eb-doc-key {color:#70867a;width:36%;font-weight:450}
+    .eb-booking .eb-doc-details .eb-doc-val {color:#244438;font-weight:700}
+    .eb-booking .eb-doc-empty td,.eb-booking td.eb-doc-empty {padding:16px!important;color:#708679;font-size:12px;font-weight:450;background:#f8faf9!important}
+
+    /* Button under the booking message that opens the receipt */
+    .eb-booking .eb-receipt-link {display:block;width:100%;text-align:center;border:1px solid #1b7653;border-radius:9px;padding:11px;margin-top:9px;background:#fff;color:#13583d;font-size:12px;font-weight:750;cursor:pointer;transition:background .2s ease,color .2s ease}
+    .eb-booking .eb-receipt-link:hover {background:#1e704f;color:#fff}
 </style>
 
 <div class="appointment-hero" style="background-image:url('<%= ResolveUrl("~/Images/vitaly-gariev-NDOYHZ_98Rw-unsplash.jpg") %>');">
@@ -374,11 +402,11 @@
 
             <div class="eb-separator"></div>
             <section class="eb-step-section purple" aria-label="Choose your care team">
-                <div class="eb-step-heading"><span class="eb-step-number">2</span><div><h3>Choose your care team</h3><p>Select the doctor and nurse for this visit. Available times refresh automatically.</p></div></div>
+                <div class="eb-step-heading"><span class="eb-step-number">2</span><div><h3>Choose your care team</h3><p>Pick a specialty, then select a doctor from that specialty and a nurse. Available times refresh automatically.</p></div></div>
                 <div class="eb-field-grid">
-                    <div><label class="eb-label" for="<%= ddlDoctor.ClientID %>">Doctor</label>
-                        <asp:DropDownList ID="ddlDoctor" runat="server" CssClass="eb-input" DataSourceID="SqlDataSourceDoctors" DataTextField="FullName" DataValueField="DoctorID" AppendDataBoundItems="true" AutoPostBack="true" OnSelectedIndexChanged="BookingSelectionChanged">
-                            <asp:ListItem Text="-- Select Doctor --" Value="" />
+                    <div><label class="eb-label" for="<%= ddlSpecialty.ClientID %>">Doctor specialty</label>
+                        <asp:DropDownList ID="ddlSpecialty" runat="server" CssClass="eb-input" DataSourceID="SqlDataSourceSpecialties" DataTextField="Specialty" DataValueField="Specialty" AppendDataBoundItems="true" AutoPostBack="true" OnSelectedIndexChanged="ddlSpecialty_SelectedIndexChanged">
+                            <asp:ListItem Text="-- Select Specialty --" Value="" />
                         </asp:DropDownList>
                     </div>
                     <div><label class="eb-label" for="<%= ddlNurse.ClientID %>">Nurse</label>
@@ -387,6 +415,59 @@
                         </asp:DropDownList>
                     </div>
                 </div>
+
+                <!-- Doctors in the chosen specialty, with availability for the selected date. -->
+                <asp:Panel ID="pnlDoctorList" runat="server" CssClass="eb-doc-block">
+                    <span class="eb-label">Doctors in this specialty</span>
+                    <div class="eb-doc-frame">
+                        <asp:GridView ID="gvDoctors" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSourceDoctors" DataKeyNames="DoctorID"
+                            CssClass="eb-table eb-doc-table" GridLines="None" OnSelectedIndexChanged="gvDoctors_SelectedIndexChanged"
+                            EmptyDataText="Choose a specialty above to see its doctors.">
+                            <SelectedRowStyle CssClass="eb-doc-selected" />
+                            <EmptyDataRowStyle CssClass="eb-doc-empty" />
+                            <Columns>
+                                <asp:BoundField DataField="FullName" HeaderText="Doctor" />
+                                <asp:TemplateField HeaderText="Availability">
+                                    <ItemTemplate><span class='<%# AvailabilityCss(Eval("SlotsLeft")) %>'><%# AvailabilityText(Eval("SlotsLeft")) %></span></ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemStyle HorizontalAlign="Right" />
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="btnPickDoctor" runat="server" CommandName="Select" CausesValidation="false" CssClass="eb-pick"
+                                            Text="Select" Enabled='<%# Convert.ToInt32(Eval("SlotsLeft")) > 0 %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                        </asp:GridView>
+                    </div>
+                </asp:Panel>
+
+                <!-- Once a doctor is selected the list above is hidden and only this doctor is shown.
+                     The booking takes its doctor from this DetailsView (SelectedValue = DoctorID). -->
+                <asp:Panel ID="pnlSelectedDoctor" runat="server" CssClass="eb-doc-block" Visible="false">
+                    <div class="eb-doc-head">
+                        <span class="eb-label">Selected doctor</span>
+                        <asp:LinkButton ID="lnkChangeDoctor" runat="server" CssClass="eb-change-doc" CausesValidation="false" OnClick="lnkChangeDoctor_Click" Text="Change doctor" />
+                    </div>
+                    <div class="eb-doc-frame">
+                        <asp:DetailsView ID="dvDoctor" runat="server" AutoGenerateRows="False" DataSourceID="SqlDataSourceDoctorDetails" DataKeyNames="DoctorID,FullName"
+                            CssClass="eb-doc-details" GridLines="None" EmptyDataText="No doctor selected yet. Select one from the list above.">
+                            <FieldHeaderStyle CssClass="eb-doc-key" />
+                            <RowStyle CssClass="eb-doc-val" />
+                            <EmptyDataRowStyle CssClass="eb-doc-empty" />
+                            <Fields>
+                                <asp:BoundField DataField="FullName" HeaderText="Doctor" />
+                                <asp:BoundField DataField="Specialty" HeaderText="Specialty" />
+                                <asp:BoundField DataField="emailAddress" HeaderText="Email" />
+                                <asp:BoundField DataField="CellphoneNumber" HeaderText="Cellphone" />
+                                <asp:TemplateField HeaderText="Availability">
+                                    <ItemTemplate><span class='<%# AvailabilityCss(Eval("SlotsLeft")) %>'><%# AvailabilityText(Eval("SlotsLeft")) %></span></ItemTemplate>
+                                </asp:TemplateField>
+                            </Fields>
+                        </asp:DetailsView>
+                    </div>
+                </asp:Panel>
+                <asp:HiddenField ID="hfDoctorName" runat="server" />
             </section>
 
             <div class="eb-separator"></div>
@@ -413,6 +494,7 @@
                 <div class="eb-summary-row"><span class="key">Nurse</span><span id="ebSummaryNurse" class="value placeholder">Not selected</span></div>
                 <asp:Label ID="lblBookingMessage" runat="server" CssClass="eb-booking-message" EnableViewState="false" />
                 <asp:Label ID="lblAppointmentStatus" runat="server" Text="" CssClass="eb-appointment-status" />
+                <asp:Button ID="btnViewReceipt" runat="server" Text="View receipt for this booking" CssClass="eb-receipt-link" Visible="false" CausesValidation="false" OnClick="btnViewReceipt_Click" />
                 <asp:Button ID="Button1BookAppointement" runat="server" Text="Book now  →" CssClass="eb-book-button" OnClick="Button1BookAppointement_Click" />
                 <a class="eb-clear" href='<%= ResolveUrl("~/Private/Appointments/Appointments.aspx") %>'>Clear selections</a>
                 <p id="ebProfileSummaryNote" class="eb-small-note">A completed profile is required to confirm a booking.</p>
@@ -423,7 +505,7 @@
     <div class="eb-card eb-history">
         <div class="eb-history-head"><h2>My appointments</h2><div class="eb-tabs" aria-label="Appointment history filter"><button type="button" data-eb-filter="all" class="active">All</button><button type="button" data-eb-filter="upcoming">Upcoming</button><button type="button" data-eb-filter="past">Past</button></div></div>
         <div class="eb-table-wrap">
-            <asp:GridView ID="GridViewMyAppointments" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSourceMyAppointments" CssClass="eb-table" GridLines="None" EmptyDataText="You have no appointments yet.">
+            <asp:GridView ID="GridViewMyAppointments" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSourceMyAppointments" CssClass="eb-table" GridLines="None" EmptyDataText="You have no appointments yet." OnRowCommand="GridViewMyAppointments_RowCommand">
                 <Columns>
                     <asp:BoundField DataField="AppointmentID" HeaderText="Booking #" />
                     <asp:BoundField DataField="DoctorName" HeaderText="Doctor" />
@@ -432,6 +514,11 @@
                     <asp:BoundField DataField="TimeSlots" HeaderText="Time" />
                     <asp:BoundField DataField="AppointmentStatus" HeaderText="Status" />
                     <asp:BoundField DataField="AppointmentReason" HeaderText="Reason" />
+                    <asp:TemplateField HeaderText="Receipt">
+                        <ItemTemplate>
+                            <asp:LinkButton ID="btnRowReceipt" runat="server" CommandName="Receipt" CommandArgument='<%# Eval("AppointmentID") %>' CausesValidation="false" CssClass="eb-pick" Text="Receipt" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
                 </Columns>
             </asp:GridView>
         </div>
@@ -441,8 +528,51 @@
 </div>
 </div>
 
+<%-- Appointment receipt (view, print, email) - shared with the My History page. --%>
+<eb:ReceiptViewer ID="ReceiptViewer1" runat="server" />
+
 <!-- Retained datasources and parameter names: these must stay aligned with Appointments.aspx.cs -->
-<asp:SqlDataSource ID="SqlDataSourceDoctors" runat="server" ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>" SelectCommand="SELECT DoctorID, FullName FROM dbo.Doctor ORDER BY FullName" />
+<asp:SqlDataSource ID="SqlDataSourceSpecialties" runat="server" ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
+    SelectCommand="SELECT DISTINCT LTRIM(RTRIM(Specialty)) AS Specialty FROM dbo.Doctor
+                   WHERE NULLIF(LTRIM(RTRIM(Specialty)), '') IS NOT NULL ORDER BY Specialty" />
+
+<%-- Doctors of the chosen specialty. Booked = records in dbo.Pro_Appointment for that doctor
+     on the selected calendar date whose AppointmentStatus is 'Scheduled'.
+     SlotsLeft = daily limit minus Booked. --%>
+<asp:SqlDataSource ID="SqlDataSourceDoctors" runat="server" ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
+    SelectCommand="SELECT d.DoctorID, LTRIM(RTRIM(d.FullName)) AS FullName,
+                          CASE WHEN b.Booked >= @MaxPerDay THEN 0 ELSE @MaxPerDay - b.Booked END AS SlotsLeft
+                   FROM dbo.Doctor d
+                   CROSS APPLY (SELECT COUNT(*) AS Booked FROM dbo.Pro_Appointment a
+                                WHERE a.DoctorID = d.DoctorID
+                                  AND TRY_CONVERT(date, a.AppointmentDate) = CAST(@Date AS date)
+                                  AND UPPER(LTRIM(RTRIM(ISNULL(a.AppointmentStatus, '')))) = 'SCHEDULED') b
+                   WHERE LTRIM(RTRIM(d.Specialty)) = @Specialty
+                   ORDER BY LTRIM(RTRIM(d.FullName))">
+    <SelectParameters>
+        <asp:ControlParameter ControlID="ddlSpecialty" Name="Specialty" PropertyName="SelectedValue" Type="String" />
+        <asp:ControlParameter ControlID="Calendar1BookDate" Name="Date" PropertyName="SelectedDate" Type="DateTime" />
+        <asp:Parameter Name="MaxPerDay" Type="Int32" DefaultValue="6" />
+    </SelectParameters>
+</asp:SqlDataSource>
+
+<%-- Details of the doctor picked in gvDoctors. The Password column is deliberately never selected. --%>
+<asp:SqlDataSource ID="SqlDataSourceDoctorDetails" runat="server" ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
+    SelectCommand="SELECT d.DoctorID, LTRIM(RTRIM(d.FullName)) AS FullName, LTRIM(RTRIM(d.Specialty)) AS Specialty,
+                          LTRIM(RTRIM(d.emailAddress)) AS emailAddress, LTRIM(RTRIM(d.CellphoneNumber)) AS CellphoneNumber,
+                          CASE WHEN b.Booked >= @MaxPerDay THEN 0 ELSE @MaxPerDay - b.Booked END AS SlotsLeft
+                   FROM dbo.Doctor d
+                   CROSS APPLY (SELECT COUNT(*) AS Booked FROM dbo.Pro_Appointment a
+                                WHERE a.DoctorID = d.DoctorID
+                                  AND TRY_CONVERT(date, a.AppointmentDate) = CAST(@Date AS date)
+                                  AND UPPER(LTRIM(RTRIM(ISNULL(a.AppointmentStatus, '')))) = 'SCHEDULED') b
+                   WHERE d.DoctorID = @DoctorID">
+    <SelectParameters>
+        <asp:ControlParameter ControlID="gvDoctors" Name="DoctorID" PropertyName="SelectedValue" Type="Int32" />
+        <asp:ControlParameter ControlID="Calendar1BookDate" Name="Date" PropertyName="SelectedDate" Type="DateTime" />
+        <asp:Parameter Name="MaxPerDay" Type="Int32" DefaultValue="6" />
+    </SelectParameters>
+</asp:SqlDataSource>
 <asp:SqlDataSource ID="SqlDataSourceNurses" runat="server" ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>" SelectCommand="SELECT NurseID, FullName FROM dbo.Nurse ORDER BY FullName" />
 <asp:SqlDataSource ID="SqlDataSourceMyAppointments" runat="server"
     ConnectionString="<%$ ConnectionStrings:GroupPmb6ConnectionString %>"
@@ -484,7 +614,7 @@ VALUES
     OnInserted="SqlDataSourceInsertAppointment_Inserted" SelectCommand="SELECT [AppointmentID], [PatientID], [DoctorID], [NurseID], [AppointmentReason], [TimeSlots] FROM [Pro_Appointment]">
     <InsertParameters>
         <asp:Parameter Name="patientID" />
-        <asp:ControlParameter ControlID="ddlDoctor" Name="doctorID" PropertyName="SelectedValue" />
+        <asp:ControlParameter ControlID="dvDoctor" Name="doctorID" PropertyName="SelectedValue" />
         <asp:ControlParameter ControlID="ddlNurse" Name="nurseID" PropertyName="SelectedValue" />
         <asp:Parameter Name="appointmentReason" />
         <asp:Parameter Name="timeslots" />
@@ -502,7 +632,7 @@ VALUES
             root.classList.add('js-enabled');
             var timeSelect = document.getElementById('<%= ddlTimeSlot.ClientID %>');
         var endSelect = document.getElementById('<%= ddlEndTime.ClientID %>');
-        var doctor = document.getElementById('<%= ddlDoctor.ClientID %>');
+        var doctorName = document.getElementById('<%= hfDoctorName.ClientID %>');
         var nurse = document.getElementById('<%= ddlNurse.ClientID %>');
         var reason = document.getElementById('<%= txtAppointmentReason.ClientID %>');
         var name = document.getElementById('<%= txtPatientName.ClientID %>');
@@ -516,7 +646,12 @@ VALUES
             element.classList.toggle('placeholder', !value);
         }
         function updateSummary() {
-            setSummary('ebSummaryDoctor', doctor, 'Not selected');
+            var doctorSummary = document.getElementById('ebSummaryDoctor');
+            var pickedDoctor = doctorName ? doctorName.value : '';
+            if (doctorSummary) {
+                doctorSummary.textContent = pickedDoctor || 'Not selected';
+                doctorSummary.classList.toggle('placeholder', !pickedDoctor);
+            }
             setSummary('ebSummaryNurse', nurse, 'Not selected');
 
             var startText = (timeSelect && timeSelect.value && timeSelect.selectedIndex >= 0)
@@ -544,7 +679,7 @@ VALUES
             if (!choices.length) {
                 var empty = document.createElement('p');
                 empty.className = 'eb-empty-slots';
-                empty.textContent = (!doctor.value || !nurse.value)
+                empty.textContent = (!doctorName || !doctorName.value || !nurse.value)
                     ? 'Choose a doctor and nurse below to see available times.'
                     : 'No available times for this selection. Try another date or care team.';
                 timeTiles.appendChild(empty);
@@ -591,7 +726,6 @@ VALUES
         }
         if (timeSelect) timeSelect.addEventListener('change', updateSummary);
         if (endSelect) endSelect.addEventListener('change', updateSummary);
-        if (doctor) doctor.addEventListener('change', updateSummary);
         if (nurse) nurse.addEventListener('change', updateSummary);
         var incomplete = !name || !name.value.trim() || /profile not completed/i.test(name.value);
         var alert = document.getElementById('ebProfileAlert');
