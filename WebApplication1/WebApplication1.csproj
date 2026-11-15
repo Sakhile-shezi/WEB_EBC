@@ -216,12 +216,15 @@
     <Content Include="Private\Administrator\WebForm1.aspx" />
     <Content Include="Private\Appointments\Appointments.aspx" />
     <Content Include="Private\Doctor\DoctorDashboard.aspx" />
+    <Content Include="Private\Doctor\EditDeletePrescriptions.aspx" />
     <Content Include="Private\Doctor\Prescription.aspx" />
+    <Content Include="Private\Doctor\CreatePrescription.aspx" />
     <Content Include="Private\Doctor\Profile.aspx" />
     <Content Include="Private\Doctor\UpdateAppointment.aspx" />
     <Content Include="Private\Doctor\WebForm1.aspx" />
     <Content Include="Private\Clinical\Medicine.aspx" />
     <Content Include="Private\Nurse\MedicationAdministration.aspx" />
+    <Content Include="Private\Nurse\MedicationAdministrationManagement.aspx" />
     <Content Include="Private\Nurse\Profile.aspx" />
     <Content Include="Private\Nurse\WebForm1.aspx" />
     <Content Include="Private\CompletePatientProfile.aspx" />
@@ -236,6 +239,7 @@
     <Content Include="Private\Doctor\Web.config" />
     <Content Include="Private\Nurse\Web.config" />
     <Content Include="Private\Patient\Web.config" />
+    <Content Include="Private\Clinical\Web.config" />
     <Content Include="Content\bootstrap.rtl.min.css.map" />
     <Content Include="Content\bootstrap.rtl.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
@@ -253,7 +257,6 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="packages.config" />
-    <Content Include="Private\Clinical\Web.config" />
     <None Include="Properties\PublishProfiles\IST-Pmb-Group-6 - Web Deploy.pubxml" />
     <Content Include="Private\Private1.aspx" />
     <Content Include="Private\Private2.aspx" />
@@ -508,12 +511,26 @@
     <Compile Include="Private\Doctor\DoctorDashboard.aspx.designer.cs">
       <DependentUpon>DoctorDashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Private\Doctor\EditDeletePrescriptions.aspx.cs">
+      <DependentUpon>EditDeletePrescriptions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Doctor\EditDeletePrescriptions.aspx.designer.cs">
+      <DependentUpon>EditDeletePrescriptions.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Private\Doctor\Prescription.aspx.cs">
       <DependentUpon>Prescription.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Private\Doctor\Prescription.aspx.designer.cs">
       <DependentUpon>Prescription.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Doctor\CreatePrescription.aspx.cs">
+      <DependentUpon>CreatePrescription.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Doctor\CreatePrescription.aspx.designer.cs">
+      <DependentUpon>CreatePrescription.aspx</DependentUpon>
     </Compile>
     <Compile Include="Private\Doctor\Profile.aspx.cs">
       <DependentUpon>Profile.aspx</DependentUpon>
@@ -549,6 +566,13 @@
     </Compile>
     <Compile Include="Private\Nurse\MedicationAdministration.aspx.designer.cs">
       <DependentUpon>MedicationAdministration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Nurse\MedicationAdministrationManagement.aspx.cs">
+      <DependentUpon>MedicationAdministrationManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Nurse\MedicationAdministrationManagement.aspx.designer.cs">
+      <DependentUpon>MedicationAdministrationManagement.aspx</DependentUpon>
     </Compile>
     <Compile Include="Private\Nurse\Profile.aspx.cs">
       <DependentUpon>Profile.aspx</DependentUpon>
@@ -658,7 +682,6 @@
     <Folder Include="Private\Help\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Site.Mobile.Master" />
     <Content Include="Scripts\bootstrap.min.js.map" />
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.esm.min.js.map" />
@@ -667,6 +690,7 @@
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\jquery-3.7.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.1.min.map" />
+    <Content Include="Site.Mobile.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -699,13 +723,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
@@ -716,4 +733,11 @@
   </Target>
   <Import Project="..\packages\EntityFramework.6.5.2\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.2\build\EntityFramework.targets')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

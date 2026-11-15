@@ -301,14 +301,14 @@ namespace WebApplication1.Private
                                     SqlDbType.SmallDateTime).Value = performedAt;
 
                                 cmd.Parameters.Add("@Results",
-                                    SqlDbType.VarChar, 255).Value =
+                                    SqlDbType.VarChar, 500).Value =
                                     txtResults.Text.Trim();
 
                                 cmd.Parameters.Add("@Diagnosis",
                                     SqlDbType.VarChar, 255).Value =
                                     txtDiagnosis.Text.Trim();
 
-                                cmd.Parameters.Add("@Notes",SqlDbType.VarChar, 255).Value = txtNotes.Text.Trim();
+                                cmd.Parameters.Add("@Notes",SqlDbType.VarChar, 500).Value = txtNotes.Text.Trim();
 
                                 cmd.Parameters.Add("@PerformedBy",
                                     SqlDbType.VarChar, 255).Value = performedBy;
