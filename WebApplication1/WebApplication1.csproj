@@ -189,6 +189,7 @@
     <Content Include="Help.aspx" />
     <Content Include="Hscripts\public-chatbot.js" />
     <Content Include="Hscripts\public-knowledgebase.js" />
+    <Content Include="Hscripts\Webhelp.aspx" />
     <Content Include="Images\akram-huseyn-brbF5FSnSgI-unsplash.jpg" />
     <Content Include="Images\benyamin-bohlouli-e7MJLM5VGjY-unsplash.jpg" />
     <Content Include="Images\Doctors.jpeg" />
@@ -447,6 +448,13 @@
       <DependentUpon>Help.aspx</DependentUpon>
     </Compile>
     <Compile Include="Helperss\ClinicMailer.cs" />
+    <Compile Include="Hscripts\Webhelp.aspx.cs">
+      <DependentUpon>Webhelp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Hscripts\Webhelp.aspx.designer.cs">
+      <DependentUpon>Webhelp.aspx</DependentUpon>
+    </Compile>
     <Compile Include="InitialAdminSetup.aspx.cs">
       <DependentUpon>InitialAdminSetup.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

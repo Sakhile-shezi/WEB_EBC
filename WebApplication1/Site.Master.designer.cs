@@ -51,15 +51,6 @@ namespace WebApplication1
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl nurseMedicationNav;
 
         /// <summary>
-        /// nurseMedicationManagementNav control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl nurseMedicationManagementNav;
-
-        /// <summary>
         /// nurseProfileNav control.
         /// </summary>
         /// <remarks>
@@ -121,24 +112,6 @@ namespace WebApplication1
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl doctorPrescriptionNav;
-
-        /// <summary>
-        /// doctorPrescriptionManagementNav control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl doctorPrescriptionManagementNav;
-
-        /// <summary>
-        /// doctorManagePrescriptionsNav control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl doctorManagePrescriptionsNav;
 
         /// <summary>
         /// doctorProfileNav control.

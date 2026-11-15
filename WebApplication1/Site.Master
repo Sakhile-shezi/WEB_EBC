@@ -530,13 +530,13 @@
                                 Contact
                             </a>
                         </li>
-                        <li class="nav-item">
-                          <a class="nav-link"
-                         runat="server"
-                        href="~/Help.aspx">
-                         Help & Support
-                        </a>
-                        </li>
+                       <li class="nav-item">
+                            <a class="nav-link"
+                        runat="server"
+                         href="~/Hscripts/Webhelp.aspx">
+                           Help & Support
+                         </a>
+                      </li>
                         <!-- PATIENT -->
                         <li id="patientDashboardNav"
                             runat="server"
@@ -941,6 +941,11 @@
                                 Contact
                             </a>
                         </li>
+                        <li>
+                       <a runat="server" href="~/Hscripts/Webhelp.aspx">
+                           Help & Support
+                       </a>
+                </li>
                     </ul>
                 </div>
 
