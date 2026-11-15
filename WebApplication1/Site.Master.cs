@@ -83,19 +83,19 @@ namespace WebApplication1
             nurseMedicineManagementNav.Visible = false;
             nurseTreatmentRecordingNav.Visible = false;
             nurseTreatmentHistoryNav.Visible = false;
-            nurseMedicationManagementNav.Visible = false;
+            //nurseMedicationManagementNav.Visible = false;
 
             // DOCTOR
             doctorDashboardNav.Visible = false;
             doctorPrescriptionNav.Visible = false;
-            doctorPrescriptionManagementNav.Visible = false;
-            doctorManagePrescriptionsNav.Visible = false;
+            //doctorPrescriptionManagementNav.Visible = false;
+            //doctorManagePrescriptionsNav.Visible = false;
             doctorProfileNav.Visible = false;
             doctorMedicineNav.Visible = false;
             doctorMedicineManagementNav.Visible = false;
             doctorTreatmentRecordingNav.Visible = false;
             doctorTreatmentHistoryNav.Visible = false;
-            helpNav.Visible =!Context.User.IsInRole("Nurse") &&!Context.User.IsInRole("Doctor") &&!Context.User.IsInRole("Admin");
+            //helpNav.Visible =!Context.User.IsInRole("Nurse") &&!Context.User.IsInRole("Doctor") &&!Context.User.IsInRole("Admin");
 
             // ADMIN
             adminDashboardNav.Visible = false;
@@ -117,7 +117,7 @@ namespace WebApplication1
                 nurseDashboardNav.Visible = true;
                 nurseMedicationNav.Visible = true;
                 nurseProfileNav.Visible = true;
-                nurseMedicationManagementNav.Visible = true;
+                //nurseMedicationManagementNav.Visible = true;
 
                 nurseMedicineNav.Visible = true;
                 nurseMedicineManagementNav.Visible = true;
@@ -131,9 +131,9 @@ namespace WebApplication1
             {
                 doctorDashboardNav.Visible = true;
                 doctorPrescriptionNav.Visible = true;
-                doctorPrescriptionManagementNav.Visible = true;
+                //doctorPrescriptionManagementNav.Visible = true;
                 doctorProfileNav.Visible = true;
-                doctorManagePrescriptionsNav.Visible = true;
+                //doctorManagePrescriptionsNav.Visible = true;
                 doctorMedicineNav.Visible = true;
                 doctorMedicineManagementNav.Visible = true;
 

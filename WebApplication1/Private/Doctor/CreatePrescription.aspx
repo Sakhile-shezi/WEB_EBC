@@ -1,7 +1,7 @@
 ﻿
 
 <%@ Page Title="Create Prescription" Language="C#" MasterPageFile="~/Site.Master"
-    AutoEventWireup="true" CodeBehind="PrescriptionManagement.aspx.cs"
+    AutoEventWireup="true" CodeBehind="CreatePrescription.aspx.cs"
     Inherits="WebApplication1.Private.Doctor.PrescriptionManagement" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">

@@ -1,6 +1,6 @@
 ﻿
 <%@ Page Title="Manage Prescriptions" Language="C#" MasterPageFile="~/Site.Master"
-    AutoEventWireup="true" CodeBehind="ManagePrescriptions.aspx.cs"
+    AutoEventWireup="true" CodeBehind="EditDeletePrescriptions.aspx.cs"
     Inherits="WebApplication1.Private.Doctor.ManagePrescriptions" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
@@ -40,8 +40,8 @@
 <div class="pm-page">
 
     <div class="pm-heading">
-        <h2>Manage Prescriptions</h2>
-        <p>Review prescriptions and manage their prescribed medicines.</p>
+        <h2>Edit Prescriptions</h2>
+        <p>Edit or delete prescriptions as well as their prescribed medicines.</p>
     </div>
 
     <asp:Panel ID="pnlSuccess" runat="server" Visible="false"
