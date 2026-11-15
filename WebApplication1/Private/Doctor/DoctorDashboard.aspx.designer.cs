@@ -11,53 +11,80 @@ namespace WebApplication1.Private.Doctor
 {
 
 
-    public partial class DoctorsDashBoard
+    public partial class DoctorDashboard
     {
 
         /// <summary>
-        /// lblDoctorName control.
+        /// litDoctorName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDoctorName;
+        protected global::System.Web.UI.WebControls.Literal litDoctorName;
 
         /// <summary>
-        /// txtDateFilter control.
+        /// lnkViewProfile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDateFilter;
+        protected global::System.Web.UI.WebControls.HyperLink lnkViewProfile;
 
         /// <summary>
-        /// btnToday control.
+        /// txtConsultationDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnToday;
+        protected global::System.Web.UI.WebControls.TextBox txtConsultationDate;
 
         /// <summary>
-        /// lblDisplayDate control.
+        /// rptQuickDates control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDisplayDate;
+        protected global::System.Web.UI.WebControls.Repeater rptQuickDates;
 
         /// <summary>
-        /// lblTotalCount control.
+        /// litSelectedDateDisplay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTotalCount;
+        protected global::System.Web.UI.WebControls.Literal litSelectedDateDisplay;
+
+        /// <summary>
+        /// pnlWeekendNotice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlWeekendNotice;
+
+        /// <summary>
+        /// litWeekendNotice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litWeekendNotice;
+
+        /// <summary>
+        /// lblTotalAppointments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTotalAppointments;
 
         /// <summary>
         /// lblCompletedCount control.
@@ -87,13 +114,31 @@ namespace WebApplication1.Private.Doctor
         protected global::System.Web.UI.WebControls.Label lblPendingCount;
 
         /// <summary>
-        /// lblErrorMessage control.
+        /// lblScriptsIssuedCount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblErrorMessage;
+        protected global::System.Web.UI.WebControls.Label lblScriptsIssuedCount;
+
+        /// <summary>
+        /// litScriptsWeekRange control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litScriptsWeekRange;
+
+        /// <summary>
+        /// lnkUpdateAppointmentHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkUpdateAppointmentHeader;
 
         /// <summary>
         /// gvAppointments control.
@@ -103,5 +148,59 @@ namespace WebApplication1.Private.Doctor
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvAppointments;
+
+        /// <summary>
+        /// pnlNoAppointments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlNoAppointments;
+
+        /// <summary>
+        /// litRxSectionTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litRxSectionTitle;
+
+        /// <summary>
+        /// litRxSectionSubtitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litRxSectionSubtitle;
+
+        /// <summary>
+        /// btnResetRxFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnResetRxFilter;
+
+        /// <summary>
+        /// gvPrescriptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvPrescriptions;
+
+        /// <summary>
+        /// pnlNoPrescriptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlNoPrescriptions;
     }
 }
