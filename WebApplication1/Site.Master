@@ -69,7 +69,11 @@
         <a class="nav-link" runat="server" href="~/Contact">Contact</a>
     </li>
 
-
+<li id="helpNav" runat="server" visible="false" class="nav-item">
+    <a class="nav-link" runat="server" href="~/Help.aspx">
+        Help
+    </a>
+</li>
     <!-- PATIENT NAVIGATION -->
     <li id="patientDashboardNav" runat="server" visible="false" class="nav-item">
         <a class="nav-link" runat="server"
@@ -105,6 +109,14 @@
             Medication Administration
         </a>
     </li>
+<li id="nurseMedicationManagementNav"
+    runat="server" visible="false" class="nav-item">
+
+    <a class="nav-link" runat="server"
+       href="~/Private/Nurse/MedicationAdministrationManagement.aspx">
+        Medication Administration Management
+    </a>
+</li>
 
     <li id="nurseProfileNav" runat="server" visible="false" class="nav-item">
         <a class="nav-link" runat="server"
@@ -168,6 +180,14 @@
         Prescription Management
     </a>
 </li>
+    <li id="doctorManagePrescriptionsNav"
+    runat="server" visible="false" class="nav-item">
+
+    <a class="nav-link" runat="server"
+       href="~/Private/Doctor/ManagePrescriptions.aspx">
+        Manage Prescriptions
+    </a>
+</li>
     <li id="doctorProfileNav" runat="server" visible="false" class="nav-item">
         <a class="nav-link" runat="server"
             href="~/Private/Doctor/Profile.aspx">
@@ -180,7 +200,7 @@
 
     <a class="nav-link" runat="server"
         href="~/Private/Clinical/Medicine.aspx">
-        Medicine Catalogue
+        Medicine
     </a>
 </li>
 
@@ -189,7 +209,7 @@
 
     <a class="nav-link" runat="server"
         href="~/Private/Clinical/MedicineManagement.aspx">
-        Manage Medicines
+        Medicine Management
     </a>
 </li>
     <li id="doctorTreatmentRecordingNav" runat="server"

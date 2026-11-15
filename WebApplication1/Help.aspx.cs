@@ -7,7 +7,16 @@ namespace WebApplication1
 {
     public partial class Help : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e) { }
+        protected void Page_Load(object sender, EventArgs e) {
+            if (User.Identity.IsAuthenticated &&
+        (User.IsInRole("Nurse") ||
+         User.IsInRole("Doctor") ||
+         User.IsInRole("Admin")))
+            {
+                Response.Redirect("~/");
+                return;
+            }
+        }
 
         
     }

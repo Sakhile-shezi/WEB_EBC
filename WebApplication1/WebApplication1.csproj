@@ -207,12 +207,14 @@
     <Content Include="Private\Administrator\WebForm1.aspx" />
     <Content Include="Private\Appointments\Appointments.aspx" />
     <Content Include="Private\Doctor\DoctorDashboard.aspx" />
+    <Content Include="Private\Doctor\ManagePrescriptions.aspx" />
     <Content Include="Private\Doctor\Prescription.aspx" />
     <Content Include="Private\Doctor\PrescriptionManagement.aspx" />
     <Content Include="Private\Doctor\Profile.aspx" />
     <Content Include="Private\Doctor\WebForm1.aspx" />
     <Content Include="Private\Clinical\Medicine.aspx" />
     <Content Include="Private\Nurse\MedicationAdministration.aspx" />
+    <Content Include="Private\Nurse\MedicationAdministrationManagement.aspx" />
     <Content Include="Private\Nurse\Profile.aspx" />
     <Content Include="Private\Nurse\WebForm1.aspx" />
     <Content Include="Private\CompletePatientProfile.aspx" />
@@ -499,6 +501,13 @@
     <Compile Include="Private\Doctor\DoctorDashboard.aspx.designer.cs">
       <DependentUpon>DoctorDashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Private\Doctor\ManagePrescriptions.aspx.cs">
+      <DependentUpon>ManagePrescriptions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Doctor\ManagePrescriptions.aspx.designer.cs">
+      <DependentUpon>ManagePrescriptions.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Private\Doctor\Prescription.aspx.cs">
       <DependentUpon>Prescription.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -540,6 +549,13 @@
     </Compile>
     <Compile Include="Private\Nurse\MedicationAdministration.aspx.designer.cs">
       <DependentUpon>MedicationAdministration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Nurse\MedicationAdministrationManagement.aspx.cs">
+      <DependentUpon>MedicationAdministrationManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Nurse\MedicationAdministrationManagement.aspx.designer.cs">
+      <DependentUpon>MedicationAdministrationManagement.aspx</DependentUpon>
     </Compile>
     <Compile Include="Private\Nurse\Profile.aspx.cs">
       <DependentUpon>Profile.aspx</DependentUpon>
