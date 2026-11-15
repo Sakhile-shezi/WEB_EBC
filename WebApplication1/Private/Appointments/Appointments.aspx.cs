@@ -43,6 +43,12 @@ namespace WebApplication1.Private.Appointments
                 // Load patient information without blocking browsing.
                 PopulatePatientDisplay();
 
+                // One daily limit for the availability text and the time-slot rules
+                // (set once; the data sources keep it in view state).
+                string maxPerDay = MaxDoctorAppointmentsPerDay.ToString(CultureInfo.InvariantCulture);
+                SqlDataSourceDoctors.SelectParameters["MaxPerDay"].DefaultValue = maxPerDay;
+                SqlDataSourceDoctorDetails.SelectParameters["MaxPerDay"].DefaultValue = maxPerDay;
+
                 DateTime date = DateTime.Today;
 
                 while (date.DayOfWeek == DayOfWeek.Saturday ||
@@ -54,8 +60,8 @@ namespace WebApplication1.Private.Appointments
                 Calendar1BookDate.SelectedDate = date;
                 Calendar1BookDate.VisibleDate = date;
 
-                // Doctor and nurse dropdowns continue using
-                // their existing SqlDataSources.
+                // Specialty, doctor list, doctor details and nurse
+                // controls are bound by their SqlDataSources.
             }
         }
 
@@ -164,7 +170,90 @@ namespace WebApplication1.Private.Appointments
 
         protected void Calendar1BookDate_SelectionChanged(object sender, EventArgs e)
         {
+            // Availability is per day, so refresh it for the new date.
+            RefreshDoctorPanels();
             LoadAvailableTimeSlots();
+        }
+
+        // ---- Specialty -> doctor list (GridView) -> selected doctor (DetailsView) ----
+
+        private const int MaxDoctorAppointmentsPerDay = 6;
+
+        protected void ddlSpecialty_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // A new specialty means a new list, so drop the previous doctor.
+            gvDoctors.SelectedIndex = -1;
+            RefreshDoctorPanels();
+            LoadAvailableTimeSlots();
+        }
+
+        protected void gvDoctors_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshDoctorPanels();
+            LoadAvailableTimeSlots();
+        }
+
+        // "Change doctor": clear the choice and bring the list back.
+        protected void lnkChangeDoctor_Click(object sender, EventArgs e)
+        {
+            gvDoctors.SelectedIndex = -1;
+            RefreshDoctorPanels();
+            LoadAvailableTimeSlots();
+        }
+
+        // Rebind now (not at PreRender) so the handlers above read current values,
+        // then show either the doctor list or only the selected doctor.
+        private void RefreshDoctorPanels()
+        {
+            gvDoctors.DataBind();
+            dvDoctor.DataBind();
+
+            int doctorId;
+            bool hasDoctor = TryGetSelectedDoctorId(out doctorId);
+            pnlDoctorList.Visible = !hasDoctor;
+            pnlSelectedDoctor.Visible = hasDoctor;
+        }
+
+        // The doctor for the booking is the record shown in the DetailsView.
+        private bool TryGetSelectedDoctorId(out int doctorId)
+        {
+            doctorId = 0;
+            if (gvDoctors.SelectedIndex < 0 || dvDoctor.DataItemCount == 0 ||
+                dvDoctor.SelectedValue == null)
+                return false;
+
+            return int.TryParse(
+                Convert.ToString(dvDoctor.SelectedValue, CultureInfo.InvariantCulture),
+                out doctorId);
+        }
+
+        protected string AvailabilityText(object slotsLeft)
+        {
+            int slots = slotsLeft == null || slotsLeft == DBNull.Value
+                ? 0 : Convert.ToInt32(slotsLeft);
+
+            if (slots <= 0)
+                return "Fully booked for the day";
+
+            return "Available for " + slots.ToString(CultureInfo.InvariantCulture) +
+                   (slots == 1 ? " slot" : " slots");
+        }
+
+        protected string AvailabilityCss(object slotsLeft)
+        {
+            int slots = slotsLeft == null || slotsLeft == DBNull.Value
+                ? 0 : Convert.ToInt32(slotsLeft);
+
+            return slots <= 0 ? "eb-avail full" : "eb-avail";
+        }
+
+        // Runs after all data binding: gives the booking summary the doctor's name.
+        protected void Page_PreRenderComplete(object sender, EventArgs e)
+        {
+            int doctorId;
+            hfDoctorName.Value = TryGetSelectedDoctorId(out doctorId)
+                ? Convert.ToString(dvDoctor.DataKey["FullName"])
+                : "";
         }
 
         protected void Calendar1BookDate_DayRender(object sender, DayRenderEventArgs e)
@@ -237,6 +326,7 @@ namespace WebApplication1.Private.Appointments
         private DataTable ReadExistingBookings(DateTime date, int doctorId, int nurseId, int patientId)
         {
             const string sql = @"SELECT PatientID AS Patient_ID, DoctorID AS Doctor_ID, NurseID AS Nurse_ID,
+                      UPPER(LTRIM(RTRIM(ISNULL(AppointmentStatus, '')))) AS BookingStatus,
                       TRY_CONVERT(time(0), LTRIM(RTRIM(CASE WHEN CHARINDEX(' - ', TimeSlots) > 0
                         THEN LEFT(TimeSlots, CHARINDEX(' - ', TimeSlots)-1)
                         WHEN CHARINDEX('-', TimeSlots) > 0 THEN LEFT(TimeSlots, CHARINDEX('-', TimeSlots)-1)
@@ -287,16 +377,17 @@ namespace WebApplication1.Private.Appointments
             ddlEndTime.Items.Add(new ListItem("-- Select End Time --", ""));
             int doctorId, nurseId;
             DateTime date = Calendar1BookDate.SelectedDate.Date;
-            if (!int.TryParse(ddlDoctor.SelectedValue, out doctorId) ||
+            if (!TryGetSelectedDoctorId(out doctorId) ||
                 !int.TryParse(ddlNurse.SelectedValue, out nurseId) || !IsValidBookingDate(date)) return;
 
             var booked = ReadExistingBookings(date, doctorId, nurseId, GetPatientId(User.Identity.Name));
             int dailyCount = 0;
             foreach (DataRow row in booked.Rows)
-                if (Convert.ToInt32(row["Doctor_ID"]) == doctorId) dailyCount++;
-            if (dailyCount >= 6)
+                if (Convert.ToInt32(row["Doctor_ID"]) == doctorId &&
+                    Convert.ToString(row["BookingStatus"]) == "SCHEDULED") dailyCount++;
+            if (dailyCount >= MaxDoctorAppointmentsPerDay)
             {
-                ShowMessage("This doctor has reached six appointments today.", false);
+                ShowMessage("This doctor is fully booked for the selected day.", false);
                 return;
             }
             for (TimeSpan start = OpenAt; start + Step <= CloseAt; start += Step)
@@ -326,7 +417,7 @@ namespace WebApplication1.Private.Appointments
             int doctorId, nurseId;
             TimeSpan start;
             DateTime date = Calendar1BookDate.SelectedDate.Date;
-            if (!int.TryParse(ddlDoctor.SelectedValue, out doctorId) ||
+            if (!TryGetSelectedDoctorId(out doctorId) ||
                 !int.TryParse(ddlNurse.SelectedValue, out nurseId) ||
                 !ParseTime(ddlTimeSlot.SelectedValue, out start) || !IsValidBookingDate(date)) return;
             var booked = ReadExistingBookings(date, doctorId, nurseId, GetPatientId(User.Identity.Name));
@@ -347,9 +438,9 @@ namespace WebApplication1.Private.Appointments
                 int patientId = GetPatientId(User.Identity.Name);
                 if (patientId <= 0) { ShowMessage("Complete your patient profile before booking.", false); ShowProfilePopup(); return; }
                 int doctorId, nurseId;
-                if (!int.TryParse(ddlDoctor.SelectedValue, out doctorId) ||
+                if (!TryGetSelectedDoctorId(out doctorId) ||
                     !int.TryParse(ddlNurse.SelectedValue, out nurseId))
-                { ShowMessage("Please select a doctor and nurse.", false); return; }
+                { ShowMessage("Please select a specialty, a doctor and a nurse.", false); return; }
                 DateTime date = Calendar1BookDate.SelectedDate.Date;
                 TimeSpan start, end;
                 if (!IsValidBookingDate(date) ||
@@ -397,8 +488,17 @@ namespace WebApplication1.Private.Appointments
                 GridViewMyAppointments.DataBind();
                 txtAppointmentReason.Text = "";
                 ddlTimeSlot.SelectedIndex = 0;
+                RefreshDoctorPanels();
                 LoadAvailableTimeSlots();
                 ShowMessage("Appointment booked successfully.", true);
+
+                // Offer a receipt for the booking that was just saved.
+                int? savedId = ReceiptViewer1.LatestAppointmentId();
+                if (savedId.HasValue)
+                {
+                    ViewState["LastBookedId"] = savedId.Value;
+                    btnViewReceipt.Visible = true;
+                }
             }
             catch (Exception ex)
             {
@@ -442,6 +542,28 @@ namespace WebApplication1.Private.Appointments
 
                 _bookingInserted = e.AffectedRows >= 0;
             }
+        }
+
+        // ------------------------- Appointment receipt -------------------------
+        // The receipt itself (view, print, email) lives in Controls/ReceiptViewer.ascx.
+
+        private void OpenReceipt(int? appointmentId)
+        {
+            if (!ReceiptViewer1.Show(appointmentId))
+                ShowMessage("That appointment could not be found.", false);
+        }
+
+        protected void GridViewMyAppointments_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            int id;
+            if (e.CommandName == "Receipt" &&
+                int.TryParse(Convert.ToString(e.CommandArgument), out id))
+                OpenReceipt(id);
+        }
+
+        protected void btnViewReceipt_Click(object sender, EventArgs e)
+        {
+            OpenReceipt(ViewState["LastBookedId"] as int?);
         }
 
         private void ShowMessage(string message, bool success)

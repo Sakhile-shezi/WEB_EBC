@@ -14,7 +14,9 @@ namespace WebApplication1
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
+            // Identity emails (account verification, password reset) go through the clinic mailer.
+            if (Helperss.ClinicMailer.IsConfigured)
+                Helperss.ClinicMailer.Send(message.Destination, message.Subject, message.Body);
             return Task.FromResult(0);
         }
     }

@@ -543,6 +543,23 @@
                                 Patient Dashboard
                             </a>
                         </li>
+                        
+
+<!-- PATIENT HISTORY -->
+<li id="patientHistoryNav"
+    runat="server"
+    visible="false"
+    class="nav-item">
+
+    <a class="nav-link"
+       runat="server"
+       href="~/Private/Patient/History.aspx">
+        My History
+    </a>
+
+</li>
+
+
 
                         <li id="appointmentView" class="nav-item">
                             <a class="nav-link"
@@ -613,6 +630,36 @@
                             </a>
                         </li>
 
+
+<!-- NURSE TREATMENT RECORDING -->
+<li id="nurseTreatmentRecordingNav"
+    runat="server"
+    visible="false"
+    class="nav-item">
+
+    <a class="nav-link"
+       runat="server"
+       href="~/Private/Clinical/TreatmentInformation.aspx">
+        Treatment Recording
+    </a>
+
+</li>
+
+<!-- NURSE TREATMENT HISTORY -->
+<li id="nurseTreatmentHistoryNav"
+    runat="server"
+    visible="false"
+    class="nav-item">
+
+    <a class="nav-link"
+       runat="server"
+       href="~/Private/Clinical/TreatmentHistory.aspx">
+        Treatment History
+    </a>
+
+</li>
+
+
                         <!-- DOCTOR -->
                         <li id="doctorDashboardNav"
                             runat="server"
@@ -673,6 +720,35 @@
                                 Manage Medicines
                             </a>
                         </li>
+
+<!-- DOCTOR TREATMENT RECORDING -->
+<li id="doctorTreatmentRecordingNav"
+    runat="server"
+    visible="false"
+    class="nav-item">
+
+    <a class="nav-link"
+       runat="server"
+       href="~/Private/Clinical/TreatmentInformation.aspx">
+        Treatment Recording
+    </a>
+
+</li>
+
+<!-- DOCTOR TREATMENT HISTORY -->
+<li id="doctorTreatmentHistoryNav"
+    runat="server"
+    visible="false"
+    class="nav-item">
+
+    <a class="nav-link"
+       runat="server"
+       href="~/Private/Clinical/TreatmentHistory.aspx">
+        Treatment History
+    </a>
+
+</li>
+
 
                         <!-- ADMINISTRATOR -->
                         <li id="adminDashboardNav"
