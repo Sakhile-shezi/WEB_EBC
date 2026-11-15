@@ -73,6 +73,7 @@ namespace WebApplication1
         {
             // PATIENT
             patientDashboardNav.Visible = false;
+            patientHistoryNav.Visible = false;
 
             // NURSE
             nurseDashboardNav.Visible = false;
@@ -103,6 +104,7 @@ namespace WebApplication1
             if (Context.User.IsInRole("Patient"))
             {
                 patientDashboardNav.Visible = true;
+                patientHistoryNav.Visible = true;
             }
 
             // NURSE

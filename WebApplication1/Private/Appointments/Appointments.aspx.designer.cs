@@ -42,13 +42,13 @@ namespace WebApplication1.Private.Appointments
         protected global::System.Web.UI.WebControls.DropDownList ddlEndTime;
 
         /// <summary>
-        /// ddlDoctor control.
+        /// ddlSpecialty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlDoctor;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSpecialty;
 
         /// <summary>
         /// ddlNurse control.
@@ -58,6 +58,60 @@ namespace WebApplication1.Private.Appointments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlNurse;
+
+        /// <summary>
+        /// pnlDoctorList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlDoctorList;
+
+        /// <summary>
+        /// gvDoctors control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvDoctors;
+
+        /// <summary>
+        /// pnlSelectedDoctor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlSelectedDoctor;
+
+        /// <summary>
+        /// lnkChangeDoctor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkChangeDoctor;
+
+        /// <summary>
+        /// dvDoctor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DetailsView dvDoctor;
+
+        /// <summary>
+        /// hfDoctorName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfDoctorName;
 
         /// <summary>
         /// txtAppointmentReason control.
@@ -105,6 +159,15 @@ namespace WebApplication1.Private.Appointments
         protected global::System.Web.UI.WebControls.Label lblAppointmentStatus;
 
         /// <summary>
+        /// btnViewReceipt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnViewReceipt;
+
+        /// <summary>
         /// Button1BookAppointement control.
         /// </summary>
         /// <remarks>
@@ -123,6 +186,24 @@ namespace WebApplication1.Private.Appointments
         protected global::System.Web.UI.WebControls.GridView GridViewMyAppointments;
 
         /// <summary>
+        /// ReceiptViewer1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::WebApplication1.Controls.ReceiptViewer ReceiptViewer1;
+
+        /// <summary>
+        /// SqlDataSourceSpecialties control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceSpecialties;
+
+        /// <summary>
         /// SqlDataSourceDoctors control.
         /// </summary>
         /// <remarks>
@@ -130,6 +211,15 @@ namespace WebApplication1.Private.Appointments
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceDoctors;
+
+        /// <summary>
+        /// SqlDataSourceDoctorDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceDoctorDetails;
 
         /// <summary>
         /// SqlDataSourceNurses control.
