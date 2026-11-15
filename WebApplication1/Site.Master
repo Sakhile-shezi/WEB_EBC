@@ -123,6 +123,21 @@
         Manage Medicines
     </a>
 </li>
+    <li id="nurseTreatmentRecordingNav" runat="server"
+    visible="false" class="nav-item">
+    <a class="nav-link" runat="server"
+       href="~/Private/Clinical/TreatmentInformation.aspx">
+        Treatment Recording
+    </a>
+</li>
+
+<li id="nurseTreatmentHistoryNav" runat="server"
+    visible="false" class="nav-item">
+    <a class="nav-link" runat="server"
+       href="~/Private/Clinical/TreatmentHistory.aspx">
+        Treatment History
+    </a>
+</li>
 
 
     <!-- DOCTOR NAVIGATION -->
@@ -162,6 +177,21 @@
     <a class="nav-link" runat="server"
         href="~/Private/Clinical/MedicineManagement.aspx">
         Manage Medicines
+    </a>
+</li>
+    <li id="doctorTreatmentRecordingNav" runat="server"
+    visible="false" class="nav-item">
+    <a class="nav-link" runat="server"
+       href="~/Private/Clinical/TreatmentInformation.aspx">
+        Treatment Recording
+    </a>
+</li>
+
+<li id="doctorTreatmentHistoryNav" runat="server"
+    visible="false" class="nav-item">
+    <a class="nav-link" runat="server"
+       href="~/Private/Clinical/TreatmentHistory.aspx">
+        Treatment History
     </a>
 </li>
 
