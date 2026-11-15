@@ -182,6 +182,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Flatly.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Controls\ReceiptViewer.ascx" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -200,6 +201,7 @@
     <Content Include="InitialAdminSetup.aspx" />
     <Content Include="Private\Administrator\AppointmentManagement.aspx" />
     <Content Include="Private\Administrator\ManageStaff.aspx" />
+    <Content Include="Private\Appointments\UpdateAppointment.aspx" />
     <Content Include="Private\Clinical\MedicineManagement.aspx" />
     <Content Include="Private\Administrator\Profile.aspx" />
     <Content Include="Private\Administrator\WebForm1.aspx" />
@@ -214,10 +216,12 @@
     <Content Include="Private\Nurse\Profile.aspx" />
     <Content Include="Private\Nurse\WebForm1.aspx" />
     <Content Include="Private\CompletePatientProfile.aspx" />
+    <Content Include="Private\Patient\History.aspx" />
     <Content Include="Private\Patient\PatientDashboard.aspx" />
     <Content Include="Private\Patient\Profile.aspx" />
     <Content Include="Private\Clinical\TreatmentHistory.aspx" />
     <Content Include="Private\Clinical\TreatmentInformation.aspx" />
+    <Content Include="Private\Patient\SymptomChecker.aspx" />
     <Content Include="Private\Web.config" />
     <Content Include="Private\Administrator\Web.config" />
     <Content Include="Private\Doctor\Web.config" />
@@ -406,6 +410,13 @@
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ReceiptViewer.ascx.cs">
+      <DependentUpon>ReceiptViewer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ReceiptViewer.ascx.designer.cs">
+      <DependentUpon>ReceiptViewer.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -423,6 +434,7 @@
     <Compile Include="Help.aspx.designer.cs">
       <DependentUpon>Help.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Helperss\ClinicMailer.cs" />
     <Compile Include="InitialAdminSetup.aspx.cs">
       <DependentUpon>InitialAdminSetup.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -444,6 +456,13 @@
     </Compile>
     <Compile Include="Private\Administrator\ManageStaff.aspx.designer.cs">
       <DependentUpon>ManageStaff.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Appointments\UpdateAppointment.aspx.cs">
+      <DependentUpon>UpdateAppointment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Appointments\UpdateAppointment.aspx.designer.cs">
+      <DependentUpon>UpdateAppointment.aspx</DependentUpon>
     </Compile>
     <Compile Include="Private\Clinical\MedicineManagement.aspx.cs">
       <DependentUpon>MedicineManagement.aspx</DependentUpon>
@@ -543,6 +562,13 @@
     <Compile Include="Private\CompletePatientProfile.aspx.designer.cs">
       <DependentUpon>CompletePatientProfile.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Private\Patient\History.aspx.cs">
+      <DependentUpon>History.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Patient\History.aspx.designer.cs">
+      <DependentUpon>History.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Private\Patient\PatientDashboard.aspx.cs">
       <DependentUpon>PatientDashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -556,6 +582,13 @@
     </Compile>
     <Compile Include="Private\Patient\Profile.aspx.designer.cs">
       <DependentUpon>Profile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Patient\SymptomChecker.aspx.cs">
+      <DependentUpon>SymptomChecker.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Patient\SymptomChecker.aspx.designer.cs">
+      <DependentUpon>SymptomChecker.aspx</DependentUpon>
     </Compile>
     <Compile Include="Private\Private1.aspx.cs">
       <DependentUpon>Private1.aspx</DependentUpon>

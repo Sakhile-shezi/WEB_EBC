@@ -77,6 +77,12 @@
             Patient Dashboard
         </a>
     </li>
+    <li id="patientHistoryNav" runat="server" visible="false" class="nav-item">
+        <a class="nav-link" runat="server"
+           href="~/Private/Patient/History.aspx">
+            My History
+        </a>
+    </li>
     <li id="appointmentView">
                 <a class="nav-link" runat="server"
    href="~/Private/Appointments/Appointments.aspx">
