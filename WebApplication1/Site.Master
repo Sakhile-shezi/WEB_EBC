@@ -1,219 +1,983 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="WebApplication1.SiteMaster" %>
-
+﻿
+<%@ Master Language="C#" AutoEventWireup="true"
+    CodeBehind="Site.master.cs"
+    Inherits="WebApplication1.SiteMaster" %>
 
 <!DOCTYPE html>
-
 <html lang="en">
 <head runat="server">
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0" />
+
+    <title><%: Page.Title %> | EastBoom Clinical Management System</title>
+
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
-    <webopt:bundlereference runat="server" path="~/Content/css" />
-    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
+
+    <link href="~/favicon.ico"
+          rel="shortcut icon"
+          type="image/x-icon" />
+
+    <style>
+        :root {
+            --eb-dark: #10382d;
+            --eb-darker: #092d24;
+            --eb-green: #187452;
+            --eb-lime: #c9f28b;
+            --eb-light: #f5faf6;
+            --eb-border: #dcebe1;
+            --eb-text: #193f30;
+        }
+
+        body {
+            margin: 0;
+            background: #f8fbf9;
+            color: var(--eb-text);
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        /* HEADER */
+        .eb-site-header {
+            position: relative;
+            z-index: 1050;
+            background: var(--eb-dark);
+            box-shadow: 0 5px 22px rgba(8,42,29,.13);
+        }
+
+        .eb-site-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(
+                90deg, #2da771, #cff69c, #2da771
+            );
+        }
+
+        .eb-navbar {
+            padding: 12px 0;
+            background: linear-gradient(
+                115deg, #10382d, #102e2a
+            ) !important;
+        }
+
+        .eb-nav-container {
+            max-width: 1400px;
+            gap: 12px;
+        }
+
+        .eb-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 11px;
+            color: white !important;
+            text-decoration: none;
+            margin-right: 20px;
+            flex: 0 0 auto;
+        }
+
+        .eb-brand:hover {
+            color: white !important;
+        }
+
+        .eb-brand-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(
+                140deg, #236f53, #194a3a
+            );
+            color: var(--eb-lime);
+            border: 1px solid rgba(201,242,139,.25);
+        }
+
+        .eb-brand-icon svg {
+            width: 29px;
+            height: 29px;
+        }
+
+        .eb-brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+        }
+
+        .eb-brand-text strong {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -.7px;
+        }
+
+        .eb-brand-text small {
+            font-size: 10px;
+            color: #b5cfbd;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .eb-navbar .navbar-toggler {
+            border: 1px solid rgba(221,252,231,.42);
+            border-radius: 11px;
+            padding: 7px 10px;
+        }
+
+        .eb-nav-links {
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 3px;
+        }
+
+        .eb-navbar .nav-link {
+            color: #e6f1e9 !important;
+            font-size: 12px;
+            font-weight: 650;
+            padding: 10px 12px;
+            border-radius: 10px;
+            transition: all .25s ease;
+        }
+
+        .eb-navbar .nav-link:hover {
+            background: rgba(207,246,156,.13);
+            color: white !important;
+        }
+
+        .eb-navbar .nav-link[aria-current="page"] {
+            color: var(--eb-lime) !important;
+            background: rgba(201,242,139,.15);
+        }
+
+        .eb-auth-links {
+            align-items: center;
+            gap: 5px;
+            margin-left: auto;
+        }
+
+        .eb-auth-links .nav-link {
+            display: inline-block;
+        }
+
+        .eb-auth-links li:last-child .nav-link {
+            color: #eaffd4 !important;
+            font-weight: 800;
+            border: 1px solid rgba(201,242,139,.4);
+        }
+
+        /* MAIN CONTENT */
+        .eb-main-content {
+            width: 100%;
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 22px 16px 45px;
+            min-height: 400px;
+        }
+
+        /* FOOTER */
+        .eb-site-footer {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(
+                132deg, #0b3028, #164332 75%, #174d37
+            );
+            color: #deefe3;
+        }
+
+        .eb-footer-inner {
+            position: relative;
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 0 22px;
+        }
+
+        .eb-footer-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 24px;
+            padding: 32px 0;
+            border-bottom: 1px solid rgba(219,249,220,.19);
+        }
+
+        .eb-footer-top h2 {
+            margin: 0 0 8px;
+            color: white;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -.6px;
+        }
+
+        .eb-footer-top p {
+            font-size: 12px;
+            color: #b9d2c1;
+            margin: 0;
+        }
+
+        .eb-footer-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: var(--eb-lime);
+            color: #173f2b !important;
+            font-weight: 800;
+            font-size: 12px;
+            padding: 13px 20px;
+            border-radius: 11px;
+            text-decoration: none !important;
+            transition: transform .25s, background .25s;
+        }
+
+        .eb-footer-button:hover {
+            transform: translateY(-3px);
+            background: #dcffab;
+        }
+
+        .eb-footer-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1.2fr 1.3fr;
+            gap: 35px;
+            padding: 44px 0 39px;
+        }
+
+        .eb-footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 22px;
+            font-weight: 800;
+            color: white;
+        }
+
+        .eb-footer-description {
+            margin-top: 16px;
+            max-width: 270px;
+            color: #b7d1be;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .eb-site-footer h3 {
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
+            margin: 4px 0 18px;
+        }
+
+        .eb-footer-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .eb-footer-list a {
+            color: #c4ddcb;
+            font-size: 12px;
+            text-decoration: none !important;
+            transition: color .2s, padding .2s;
+        }
+
+        .eb-footer-list a:hover {
+            color: #e3ffa9;
+            padding-left: 3px;
+        }
+
+        .eb-footer-address {
+            color: #c4ddcb;
+            font-size: 12px;
+            line-height: 1.9;
+            font-style: normal;
+        }
+
+        .eb-footer-address strong {
+            display: block;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .eb-footer-bottom {
+            border-top: 1px solid rgba(219,249,220,.19);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 20px 0;
+        }
+
+        .eb-footer-bottom p {
+            margin: 0;
+            color: #b7d1be;
+            font-size: 11px;
+        }
+
+        .eb-footer-bottom a {
+            color: #d9efdf;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .eb-footer-bottom a:hover {
+            color: #e3ffa9;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 1199.98px) {
+            .eb-nav-collapse {
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1px solid rgba(235,250,227,.14);
+            }
+
+            .eb-nav-links,
+            .eb-auth-links {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .eb-auth-links {
+                margin-left: 0;
+                margin-top: 12px;
+                padding-top: 12px;
+                border-top: 1px solid rgba(235,250,227,.14);
+            }
+
+            .eb-footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .eb-brand-icon {
+                width: 39px;
+                height: 39px;
+            }
+
+            .eb-brand-text strong {
+                font-size: 18px;
+            }
+
+            .eb-brand-text small {
+                font-size: 9px;
+            }
+
+            .eb-main-content {
+                padding: 15px 10px 30px;
+            }
+
+            .eb-footer-top {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .eb-footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 28px 18px;
+            }
+
+            .eb-footer-brand,
+            .eb-footer-location {
+                grid-column: 1 / -1;
+            }
+
+            .eb-footer-inner {
+                padding: 0 19px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .eb-footer-button,
+            .eb-footer-list a,
+            .eb-navbar .nav-link {
+                transition: none;
+            }
+        }
+    </style>
 </head>
-<body>
-    <form runat="server">
-        <asp:ScriptManager runat="server">
-            <Scripts>
-                <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
-                <%--Framework Scripts--%>
-                <asp:ScriptReference Name="MsAjaxBundle" />
-                <asp:ScriptReference Name="jquery" />
-                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
-                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
-                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
-                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
-                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
-                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
-                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
-                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
-                <asp:ScriptReference Name="WebFormsBundle" />
-                <%--Site Scripts--%>
-            </Scripts>
-        </asp:ScriptManager>
 
-        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark"><!-- <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark"> -->
-            <div class="container">
-                <a class="navbar-brand" runat="server" href="~/">Home</a>
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+<body>
+<form runat="server">
+
+    <!-- KEEP ORIGINAL SCRIPT MANAGER -->
+    <asp:ScriptManager runat="server">
+        <Scripts>
+            <asp:ScriptReference Name="MsAjaxBundle" />
+            <asp:ScriptReference Name="jquery" />
+
+            <asp:ScriptReference
+                Name="WebForms.js"
+                Assembly="System.Web"
+                Path="~/Scripts/WebForms/WebForms.js" />
+
+            <asp:ScriptReference
+                Name="WebUIValidation.js"
+                Assembly="System.Web"
+                Path="~/Scripts/WebForms/WebUIValidation.js" />
+
+            <asp:ScriptReference
+                Name="MenuStandards.js"
+                Assembly="System.Web"
+                Path="~/Scripts/WebForms/MenuStandards.js" />
+
+            <asp:ScriptReference
+                Name="GridView.js"
+                Assembly="System.Web"
+                Path="~/Scripts/WebForms/GridView.js" />
+
+            <asp:ScriptReference
+                Name="DetailsView.js"
+                Assembly="System.Web"
+                Path="~/Scripts/WebForms/DetailsView.js" />
+
+            <asp:ScriptReference
+                Name="TreeView.js"
+                Assembly="System.Web"
+                Path="~/Scripts/WebForms/TreeView.js" />
+
+            <asp:ScriptReference
+                Name="WebParts.js"
+                Assembly="System.Web"
+                Path="~/Scripts/WebForms/WebParts.js" />
+
+            <asp:ScriptReference
+                Name="Focus.js"
+                Assembly="System.Web"
+                Path="~/Scripts/WebForms/Focus.js" />
+
+            <asp:ScriptReference Name="WebFormsBundle" />
+        </Scripts>
+    </asp:ScriptManager>
+
+    <!-- SHARED HEADER -->
+    <header class="eb-site-header" id="ebSiteTop">
+
+        <nav class="navbar navbar-expand-xl eb-navbar"
+             data-bs-theme="dark"
+             aria-label="Main navigation">
+
+            <div class="container eb-nav-container">
+
+                <!-- EASTBOOM BRAND -->
+                <a class="navbar-brand eb-brand"
+                   runat="server"
+                   href="~/">
+
+                    <span class="eb-brand-icon" aria-hidden="true">
+                        <svg viewBox="0 0 32 32" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 27S5 20 5 12.7c0-3.4
+                                2.6-6 6-6 2 0 3.8 1.1
+                                5 2.7 1.2-1.6 3-2.7
+                                5-2.7 3.4 0 6 2.6
+                                6 6 0 7.3-11 14.3-11 14.3Z"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linejoin="round" />
+                            <path d="M4 17h7l2-4 3.1 7
+                                2.3-5 1.2 2H28"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round" />
+                        </svg>
+                    </span>
+
+                    <span class="eb-brand-text">
+                        <strong>EastBoom</strong>
+                        <small>Clinical Management System</small>
+                    </span>
+                </a>
+
+                <!-- MOBILE MENU BUTTON -->
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#ebSiteNavbar"
+                        aria-controls="ebSiteNavbar"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                  <!--  <ul class="navbar-nav flex-grow-1">
-                      
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/About">About</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contact</a></li>
-                        <li class="nav-item"> 
-                            <asp:Menu ID="Menu1" class="nav-link" runat="server" Orientation="Horizontal" Visible="False">
-                                <Items>
-                                    <asp:MenuItem NavigateUrl="~/Private/Private1.aspx" Text="Prescription" Value="Dashboard"></asp:MenuItem>
-                                    <asp:MenuItem NavigateUrl="~/Private/Private2.aspx" Text="Dashboard" Value="Details"></asp:MenuItem>
-                                </Items>
-                            </asp:Menu>
-                    </ul> -->
 
+                <div class="collapse navbar-collapse eb-nav-collapse"
+                     id="ebSiteNavbar">
 
-<ul class="navbar-nav flex-grow-1">
+                    <!-- ROLE-BASED NAVIGATION -->
+                    <ul class="navbar-nav eb-nav-links flex-grow-1">
 
-    <!-- Public navigation -->
-    <li class="nav-item">
-        <a class="nav-link" runat="server" href="~/About">About</a>
-    </li>
+                        <!-- PUBLIC -->
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/About">
+                                About
+                            </a>
+                        </li>
 
-    <li class="nav-item">
-        <a class="nav-link" runat="server" href="~/Contact">Contact</a>
-    </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Contact">
+                                Contact
+                            </a>
+                        </li>
 
+                        <!-- PATIENT -->
+                        <li id="patientDashboardNav"
+                            runat="server"
+                            visible="false"
+                            class="nav-item">
 
-    <!-- PATIENT NAVIGATION -->
-    <li id="patientDashboardNav" runat="server" visible="false" class="nav-item">
-        <a class="nav-link" runat="server"
-           href="~/Private/Patient/PatientDashboard.aspx">
-            Patient Dashboard
-        </a>
-    </li>
-    <li id="appointmentView">
-                <a class="nav-link" runat="server"
-   href="~/Private/Appointments/Appointments.aspx">
-    Appointment View
-</a>
-    </li>
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Private/Patient/PatientDashboard.aspx">
+                                Patient Dashboard
+                            </a>
+                        </li>
 
+                        <li id="appointmentView" class="nav-item">
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Private/Appointments/Appointments.aspx">
+                                Appointment View
+                            </a>
+                        </li>
 
-    <!-- NURSE NAVIGATION -->
-    <li id="nurseDashboardNav" runat="server" visible="false" class="nav-item">
-        <a class="nav-link" runat="server"
-            href="~/Private/Nurse/WebForm1.aspx">
-            Nurse Dashboard
-        </a>
-    </li>
+                        <!-- NURSE -->
+                        <li id="nurseDashboardNav"
+                            runat="server"
+                            visible="false"
+                            class="nav-item">
 
-    <li id="nurseMedicationNav" runat="server" visible="false" class="nav-item">
-        <a class="nav-link" runat="server"
-            href="~/Private/Nurse/MedicationAdministration.aspx">
-            Medication Administration
-        </a>
-    </li>
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Private/Nurse/WebForm1.aspx">
+                                Nurse Dashboard
+                            </a>
+                        </li>
 
-    <li id="nurseProfileNav" runat="server" visible="false" class="nav-item">
-        <a class="nav-link" runat="server"
-            href="~/Private/Nurse/Profile.aspx">
-            Profile
-        </a>
-    </li>
-    <li id="nurseMedicineNav" runat="server"
-    visible="false" class="nav-item">
+                        <li id="nurseMedicationNav"
+                            runat="server"
+                            visible="false"
+                            class="nav-item">
 
-    <a class="nav-link" runat="server"
-        href="~/Private/Clinical/Medicine.aspx">
-        Medicine Catalogue
-    </a>
-</li>
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Private/Nurse/MedicationAdministration.aspx">
+                                Medication Administration
+                            </a>
+                        </li>
 
-<li id="nurseMedicineManagementNav" runat="server"
-    visible="false" class="nav-item">
+                        <li id="nurseProfileNav"
+                            runat="server"
+                            visible="false"
+                            class="nav-item">
 
-    <a class="nav-link" runat="server"
-        href="~/Private/Clinical/MedicineManagement.aspx">
-        Manage Medicines
-    </a>
-</li>
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Private/Nurse/Profile.aspx">
+                                Profile
+                            </a>
+                        </li>
 
+                        <li id="nurseMedicineNav"
+                            runat="server"
+                            visible="false"
+                            class="nav-item">
 
-    <!-- DOCTOR NAVIGATION -->
-    <li id="doctorDashboardNav" runat="server" visible="false" class="nav-item">
-        <a class="nav-link" runat="server"
-            href="~/Private/Doctor/DoctorDashboard.aspx">
-            Doctor Dashboard
-        </a>
-    </li>
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Private/Clinical/Medicine.aspx">
+                                Medicine Catalogue
+                            </a>
+                        </li>
 
-    <li id="doctorPrescriptionNav" runat="server" visible="false" class="nav-item">
-        <a class="nav-link" runat="server"
-            href="~/Private/Doctor/Prescription.aspx">
-            Prescription
-        </a>
-    </li>
+                        <li id="nurseMedicineManagementNav"
+                            runat="server"
+                            visible="false"
+                            class="nav-item">
 
-    <li id="doctorProfileNav" runat="server" visible="false" class="nav-item">
-        <a class="nav-link" runat="server"
-            href="~/Private/Doctor/Profile.aspx">
-            Profile
-        </a>
-    </li>
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Private/Clinical/MedicineManagement.aspx">
+                                Manage Medicines
+                            </a>
+                        </li>
 
-    <li id="doctorMedicineNav" runat="server"
-    visible="false" class="nav-item">
+                        <!-- DOCTOR -->
+                        <li id="doctorDashboardNav"
+                            runat="server"
+                            visible="false"
+                            class="nav-item">
 
-    <a class="nav-link" runat="server"
-        href="~/Private/Clinical/Medicine.aspx">
-        Medicine Catalogue
-    </a>
-</li>
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Private/Doctor/DoctorDashboard.aspx">
+                                Doctor Dashboard
+                            </a>
+                        </li>
 
-<li id="doctorMedicineManagementNav" runat="server"
-    visible="false" class="nav-item">
+                        <li id="doctorPrescriptionNav"
+                            runat="server"
+                            visible="false"
+                            class="nav-item">
 
-    <a class="nav-link" runat="server"
-        href="~/Private/Clinical/MedicineManagement.aspx">
-        Manage Medicines
-    </a>
-</li>
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Private/Doctor/Prescription.aspx">
+                                Prescription
+                            </a>
+                        </li>
 
-    <!-- ADMINISTRATOR NAVIGATION -->
-    <li id="adminDashboardNav" runat="server" visible="false" class="nav-item">
-        <a class="nav-link" runat="server"
-            href="~/Private/Administrator/WebForm1.aspx">
-            Admin Dashboard
-        </a>
-    </li>
+                        <li id="doctorProfileNav"
+                            runat="server"
+                            visible="false"
+                            class="nav-item">
 
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Private/Doctor/Profile.aspx">
+                                Profile
+                            </a>
+                        </li>
 
-    <li id="adminManageStaffNav" runat="server" visible="false" class="nav-item">
-        <a class="nav-link" runat="server"
-            href="~/Private/Administrator/ManageStaff.aspx">
-            Manage Staff
-        </a>
-    </li>
+                        <li id="doctorMedicineNav"
+                            runat="server"
+                            visible="false"
+                            class="nav-item">
 
-</ul>
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Private/Clinical/Medicine.aspx">
+                                Medicine Catalogue
+                            </a>
+                        </li>
 
+                        <li id="doctorMedicineManagementNav"
+                            runat="server"
+                            visible="false"
+                            class="nav-item">
 
-                    <asp:LoginView runat="server" ViewStateMode="Disabled">
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Private/Clinical/MedicineManagement.aspx">
+                                Manage Medicines
+                            </a>
+                        </li>
+
+                        <!-- ADMINISTRATOR -->
+                        <li id="adminDashboardNav"
+                            runat="server"
+                            visible="false"
+                            class="nav-item">
+
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Private/Administrator/WebForm1.aspx">
+                                Admin Dashboard
+                            </a>
+                        </li>
+
+                        <li id="adminManageStaffNav"
+                            runat="server"
+                            visible="false"
+                            class="nav-item">
+
+                            <a class="nav-link"
+                               runat="server"
+                               href="~/Private/Administrator/ManageStaff.aspx">
+                                Manage Staff
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <!-- ORIGINAL AUTHENTICATION CONTROLS -->
+                    <asp:LoginView runat="server"
+                                   ViewStateMode="Disabled">
+
                         <AnonymousTemplate>
-                            <ul class="navbar-nav navbar-right">
-                                <li><a runat="server" class="nav-link" href="~/Account/Register">Register</a></li>
-                                <li><a runat="server" class="nav-link" href="~/Account/Login">Log in</a></li>
+                            <ul class="navbar-nav eb-auth-links">
+                                <li class="nav-item">
+                                    <a runat="server"
+                                       class="nav-link"
+                                       href="~/Account/Register">
+                                        Register
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a runat="server"
+                                       class="nav-link"
+                                       href="~/Account/Login">
+                                        Log in
+                                    </a>
+                                </li>
                             </ul>
                         </AnonymousTemplate>
+
                         <LoggedInTemplate>
-                            <ul class="navbar-nav navbar-right">
-                                <li><a runat="server" class="nav-link" href="~/Account/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %> !</a></li>
-                                <li>
-                                    <asp:LoginStatus runat="server" CssClass="nav-link" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
+                            <ul class="navbar-nav eb-auth-links">
+                                <li class="nav-item">
+                                    <a runat="server"
+                                       class="nav-link"
+                                       href="~/Account/Manage"
+                                       title="Manage your account">
+
+                                        Hello,
+                                        <%: Context.User.Identity.GetUserName() %> !
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <asp:LoginStatus
+                                        runat="server"
+                                        CssClass="nav-link"
+                                        LogoutAction="Redirect"
+                                        LogoutText="Log off"
+                                        LogoutPageUrl="~/"
+                                        OnLoggingOut="Unnamed_LoggingOut" />
                                 </li>
                             </ul>
                         </LoggedInTemplate>
+
                     </asp:LoginView>
+
                 </div>
             </div>
         </nav>
-        <div class="container body-content">
-            <asp:ContentPlaceHolder ID="MainContent" runat="server">
-            </asp:ContentPlaceHolder>
-            <hr />
-            <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - My Major Project</p>
-            </footer>
-        </div>
+    </header>
 
-    </form>
-    <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/Scripts/bootstrap.js") %>
-    </asp:PlaceHolder></body>
+    <!-- MAIN CONTENT: DO NOT REMOVE -->
+    <main class="container body-content eb-main-content">
+
+        <asp:ContentPlaceHolder
+            ID="MainContent"
+            runat="server">
+        </asp:ContentPlaceHolder>
+
+    </main>
+
+    <!-- PROFESSIONAL SHARED FOOTER -->
+    <footer class="eb-site-footer">
+
+        <div class="eb-footer-inner">
+
+            <!-- FOOTER CALL TO ACTION -->
+            <div class="eb-footer-top">
+
+                <div>
+                    <h2>Make your next visit easier.</h2>
+                    <p>
+                        Appointments and clinic information,
+                        all in one welcoming place.
+                    </p>
+                </div>
+
+                <a class="eb-footer-button"
+                   runat="server"
+                   href="~/Private/Appointments/Appointments.aspx">
+
+                    Book an appointment
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
+
+            </div>
+
+            <!-- FOOTER COLUMNS -->
+            <div class="eb-footer-grid">
+
+                <!-- BRAND -->
+                <div class="eb-footer-brand">
+
+                    <div class="eb-footer-logo">
+                        <span class="eb-brand-icon"
+                              aria-hidden="true">
+
+                            <svg viewBox="0 0 32 32"
+                                 fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+
+                                <path d="M16 27S5 20 5 12.7c0-3.4
+                                    2.6-6 6-6 2 0 3.8 1.1
+                                    5 2.7 1.2-1.6 3-2.7
+                                    5-2.7 3.4 0 6 2.6
+                                    6 6 0 7.3-11 14.3-11 14.3Z"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linejoin="round" />
+
+                                <path d="M4 17h7l2-4 3.1 7
+                                    2.3-5 1.2 2H28"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round" />
+
+                            </svg>
+                        </span>
+
+                        EastBoom
+                    </div>
+
+                    <p class="eb-footer-description">
+                        A simple and secure way to manage
+                        appointments and connect with
+                        East Boom Community Health Centre
+                        in Pietermaritzburg.
+                    </p>
+
+                </div>
+
+                <!-- QUICK LINKS -->
+                <div>
+                    <h3>Explore</h3>
+
+                    <ul class="eb-footer-list">
+                        <li>
+                            <a runat="server" href="~/">
+                                Home
+                            </a>
+                        </li>
+
+                        <li>
+                            <a runat="server" href="~/About">
+                                About us
+                            </a>
+                        </li>
+
+                        <li>
+                            <a runat="server" href="~/Contact">
+                                Contact
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- PATIENT SERVICES -->
+                <div>
+                    <h3>Patient Services</h3>
+
+                    <ul class="eb-footer-list">
+
+                        <li>
+                            <a runat="server"
+                               href="~/Private/Appointments/Appointments.aspx">
+                                Book an appointment
+                            </a>
+                        </li>
+
+                        <li>
+                            <a runat="server"
+                               href="~/Private/Patient/PatientDashboard.aspx">
+                                Patient Dashboard
+                            </a>
+                        </li>
+
+                        <li>
+                            <a runat="server"
+                               href="~/Private/CompletePatientProfile.aspx">
+                                Complete Profile
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <!-- CLINIC LOCATION -->
+                <div class="eb-footer-location">
+
+                    <h3>Find the Clinic</h3>
+
+                    <address class="eb-footer-address">
+                        <strong>
+                            East Boom Community Health Centre
+                        </strong>
+
+                        541 Boom Street<br />
+                        Pietermaritzburg<br />
+                        KwaZulu-Natal<br />
+                        South Africa
+                    </address>
+
+                    <ul class="eb-footer-list">
+                        <li>
+                            <a runat="server" href="~/Contact">
+                                Contact and directions &rarr;
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <!-- FOOTER BOTTOM -->
+            <div class="eb-footer-bottom">
+
+                <p>
+                    &copy; <%: DateTime.Now.Year %>
+                    EastBoom Clinical Management System.
+                    All rights reserved.
+                </p>
+
+                <a href="#ebSiteTop">
+                    Back to top &uarr;
+                </a>
+
+            </div>
+        </div>
+    </footer>
+
+</form>
+
+<!-- ORIGINAL BOOTSTRAP SCRIPT -->
+<asp:PlaceHolder runat="server">
+    <%: Scripts.Render("~/Scripts/bootstrap.js") %>
+</asp:PlaceHolder>
+
+<script>
+(function() {
+    function highlightCurrentNavigation() {
+        var nav = document.getElementById("ebSiteNavbar");
+        if (!nav) return;
+
+        var current = window.location.pathname
+            .toLowerCase()
+            .replace(/\/$/, "");
+
+        var links = nav.querySelectorAll("a[href]");
+
+        for (var i = 0; i < links.length; i++) {
+            var linkPath = links[i].pathname
+                .toLowerCase()
+                .replace(/\/$/, "");
+
+            if (linkPath && current === linkPath) {
+                links[i].setAttribute(
+                    "aria-current", "page"
+                );
+            }
+        }
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            highlightCurrentNavigation
+        );
+    } else {
+        highlightCurrentNavigation();
+    }
+})();
+</script>
+
+</body>
 </html>
