@@ -83,6 +83,7 @@
     </Reference>
     <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.2.3\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin.Security.Facebook, Version=4.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.Facebook.4.2.3\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
@@ -226,6 +227,7 @@
     <Content Include="Private\Clinical\Medicine.aspx" />
     <Content Include="Private\Nurse\MedicationAdministration.aspx" />
     <Content Include="Private\Nurse\MedicationAdministrationManagement.aspx" />
+    <Content Include="Private\Nurse\NurseDashboard.aspx" />
     <Content Include="Private\Nurse\Profile.aspx" />
     <Content Include="Private\Nurse\WebForm1.aspx" />
     <Content Include="Private\CompletePatientProfile.aspx" />
@@ -581,6 +583,13 @@
     </Compile>
     <Compile Include="Private\Nurse\MedicationAdministrationManagement.aspx.designer.cs">
       <DependentUpon>MedicationAdministrationManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Private\Nurse\NurseDashboard.aspx.cs">
+      <DependentUpon>NurseDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Private\Nurse\NurseDashboard.aspx.designer.cs">
+      <DependentUpon>NurseDashboard.aspx</DependentUpon>
     </Compile>
     <Compile Include="Private\Nurse\Profile.aspx.cs">
       <DependentUpon>Profile.aspx</DependentUpon>

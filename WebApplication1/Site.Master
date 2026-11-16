@@ -583,7 +583,7 @@
 
                             <a class="nav-link"
                                runat="server"
-                               href="~/Private/Nurse/WebForm1.aspx">
+                               href="~/Private/Nurse/NurseDashboard.aspx">
                                 Nurse Dashboard
                             </a>
                         </li>

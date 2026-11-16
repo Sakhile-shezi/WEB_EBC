@@ -118,7 +118,7 @@ namespace WebApplication1.Account
                                 break;
 
                             case "Nurse":
-                                Response.Redirect("~/Private/Nurse/WebForm1.aspx", false);
+                                Response.Redirect("~/Private/Nurse/NurseDashboard.aspx", false);
                                 break;
 
                             case "Admin":
