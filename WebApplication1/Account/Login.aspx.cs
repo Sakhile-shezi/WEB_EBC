@@ -114,7 +114,7 @@ namespace WebApplication1.Account
                                 break;
 
                             case "Doctor":
-                                Response.Redirect("~/Private/Doctor/WebForm1.aspx", false);
+                                Response.Redirect("~/Private/Doctor/DoctorDashboard.aspx", false);
                                 break;
 
                             case "Nurse":
@@ -122,7 +122,7 @@ namespace WebApplication1.Account
                                 break;
 
                             case "Admin":
-                                Response.Redirect("~/Private/Administrator/WebForm1.aspx", false);
+                                Response.Redirect("~/Private/Administrator/ManageStaff.aspx", false);
                                 break;
 
                             default:
