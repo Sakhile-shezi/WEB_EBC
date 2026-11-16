@@ -159,15 +159,6 @@ namespace WebApplication1.Private.Nurse
         protected global::System.Web.UI.WebControls.TextBox txtDosageGiven;
 
         /// <summary>
-        /// txtFrequencyInstance control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFrequencyInstance;
-
-        /// <summary>
         /// ddlStatus control.
         /// </summary>
         /// <remarks>

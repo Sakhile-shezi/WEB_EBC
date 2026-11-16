@@ -1,5 +1,4 @@
 ﻿
-
 using System;
 using System.Configuration;
 using System.Data;
@@ -126,7 +125,6 @@ namespace WebApplication1.Private.Nurse
                     MA.PrescriptionItemID,
                     MA.NurseID,
                     MA.dosageGiven,
-                    MA.frequency_Instance,
                     MA.status,
                     MA.Notes,
                     MA.Admnistered_at,
@@ -230,7 +228,6 @@ namespace WebApplication1.Private.Nurse
             btnSaveAdministration.Text = "Save Administration Record";
 
             txtDosageGiven.Text = "";
-            txtFrequencyInstance.Text = "";
             txtNotes.Text = "";
             ddlStatus.SelectedIndex = 0;
 
@@ -248,7 +245,7 @@ namespace WebApplication1.Private.Nurse
 
             int prescriptionItemId;
             int dosageGiven;
-            int frequencyInstance;
+
             if (!string.IsNullOrEmpty(hfAdministrationID.Value))
             {
                 int editId;
@@ -274,13 +271,6 @@ namespace WebApplication1.Private.Nurse
                 dosageGiven < 0)
             {
                 ShowError("Please enter a valid numeric dosage.");
-                return;
-            }
-
-            if (!int.TryParse(txtFrequencyInstance.Text, out frequencyInstance) ||
-                frequencyInstance <= 0)
-            {
-                ShowError("Please enter a valid frequency instance.");
                 return;
             }
 
@@ -336,8 +326,7 @@ namespace WebApplication1.Private.Nurse
                                 Admnistered_at,
                                 Notes,
                                 dosageGiven,
-                                status,
-                                frequency_Instance
+                                status
                             )
                             VALUES
                             (
@@ -346,8 +335,7 @@ namespace WebApplication1.Private.Nurse
                                 GETDATE(),
                                 @Notes,
                                 @Dosage,
-                                @Status,
-                                @Frequency
+                                @Status
                             );", con, transaction))
                         {
                             cmd.Parameters.Add("@NurseID", SqlDbType.Int).Value = nurseId;
@@ -357,8 +345,6 @@ namespace WebApplication1.Private.Nurse
                             cmd.Parameters.Add("@Dosage", SqlDbType.Int).Value = dosageGiven;
                             cmd.Parameters.Add("@Status", SqlDbType.VarChar, 50).Value =
                                 ddlStatus.SelectedValue;
-                            cmd.Parameters.Add("@Frequency", SqlDbType.Int).Value =
-                                frequencyInstance;
 
                             cmd.ExecuteNonQuery();
                         }
@@ -424,7 +410,6 @@ namespace WebApplication1.Private.Nurse
                     MA.medication_AdministrationID,
                     MA.PrescriptionItemID,
                     MA.dosageGiven,
-                    MA.frequency_Instance,
                     MA.status,
                     MA.Notes,
                     PA.FullName AS Patient,
@@ -465,9 +450,6 @@ namespace WebApplication1.Private.Nurse
                     txtDosageGiven.Text =
                         reader["dosageGiven"] == DBNull.Value
                             ? "" : reader["dosageGiven"].ToString();
-
-                    txtFrequencyInstance.Text =
-                        reader["frequency_Instance"].ToString();
 
                     txtNotes.Text =
                         reader["Notes"] == DBNull.Value
@@ -535,19 +517,11 @@ namespace WebApplication1.Private.Nurse
         private void UpdateAdministration(int administrationId)
         {
             int dosageGiven;
-            int frequencyInstance;
 
             if (!int.TryParse(txtDosageGiven.Text, out dosageGiven) ||
                 dosageGiven < 0)
             {
                 ShowError("Please enter a valid numeric dosage.");
-                return;
-            }
-
-            if (!int.TryParse(txtFrequencyInstance.Text, out frequencyInstance) ||
-                frequencyInstance <= 0)
-            {
-                ShowError("Please enter a valid frequency instance.");
                 return;
             }
 
@@ -567,13 +541,11 @@ namespace WebApplication1.Private.Nurse
             using (SqlCommand cmd = new SqlCommand(@"
                 UPDATE MedicationAdministration
                 SET dosageGiven = @Dosage,
-                    frequency_Instance = @Frequency,
                     status = @Status,
                     Notes = @Notes
                 WHERE medication_AdministrationID = @ID;", con))
             {
                 cmd.Parameters.Add("@Dosage", SqlDbType.Int).Value = dosageGiven;
-                cmd.Parameters.Add("@Frequency", SqlDbType.Int).Value = frequencyInstance;
                 cmd.Parameters.Add("@Status", SqlDbType.VarChar, 50).Value =
                     ddlStatus.SelectedValue;
                 cmd.Parameters.Add("@Notes", SqlDbType.VarChar, 50).Value =
@@ -599,7 +571,7 @@ namespace WebApplication1.Private.Nurse
         }
 
         // ==========================================
-        // SAVE BUTTON: ADD OR UPDATE
+        // GET CURRENT NURSE ID
         // ==========================================
 
         private int GetCurrentNurseID(
@@ -638,7 +610,6 @@ namespace WebApplication1.Private.Nurse
             hfPrescriptionItemID.Value = "";
 
             txtDosageGiven.Text = "";
-            txtFrequencyInstance.Text = "";
             txtNotes.Text = "";
 
             ddlStatus.SelectedIndex = 0;
@@ -676,4 +647,3 @@ namespace WebApplication1.Private.Nurse
         }
     }
 }
-

@@ -453,7 +453,6 @@ namespace WebApplication1.Private.Nurse
                 SELECT TOP ({RecentAdministrationLimit})
                     MA.Admnistered_at,
                     MA.dosageGiven,
-                    MA.frequency_Instance,
                     MA.status,
                     MA.Notes,
                     PA.FullName AS PatientName,
@@ -479,10 +478,10 @@ namespace WebApplication1.Private.Nurse
                     while (r.Read())
                     {
                         string dose = Text(r, "dosageGiven");
-                        string instance = Text(r, "frequency_Instance");
+                        //string instance = Text(r, "frequency_Instance");
                         string doseDisplay = dose.Length > 0 ? dose : "—";
-                        if (instance.Length > 0)
-                            doseDisplay += $" (dose #{instance})";
+                        //if (instance.Length > 0)
+                        //    doseDisplay += $" (dose #{instance})";
 
                         dtRecent.Rows.Add(
                             FormatDateTime(r["Admnistered_at"], "yyyy/MM/dd HH:mm"),

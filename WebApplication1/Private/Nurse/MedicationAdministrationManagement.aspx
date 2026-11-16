@@ -1,4 +1,5 @@
 ﻿
+
 <%@ Page Title="Medication Administration Management" Language="C#" MasterPageFile="~/Site.Master"
     AutoEventWireup="true" CodeBehind="MedicationAdministrationManagement.aspx.cs"
     Inherits="WebApplication1.Private.Nurse.MedicationAdministrationManagement" %>
@@ -34,6 +35,7 @@
     .med-error { color:#a52b25; background:#fff1f0; border-left-color:#c84b43; }
     .med-selected-info { background:#f3f7f3; border-left:4px solid #43834c; border-radius:4px; padding:13px 15px; margin-bottom:18px; }
     .med-action-edit { color:#246333 !important; margin-right:12px; }
+
     @media(max-width:768px) {
         .med-heading { padding:20px; }
         .med-card { padding:16px; }
@@ -153,21 +155,9 @@
                     <asp:TextBox ID="txtDosageGiven" runat="server"
                         CssClass="med-input" TextMode="Number"
                         placeholder="e.g. 2" />
+
                     <p class="med-help">
                         Enter the numeric amount administered, using the prescribed medicine's unit.
-                    </p>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label class="med-label" for="<%= txtFrequencyInstance.ClientID %>">
-                        Frequency Instance
-                    </label>
-
-                    <asp:TextBox ID="txtFrequencyInstance" runat="server"
-                        CssClass="med-input" TextMode="Number"
-                        placeholder="e.g. 1" />
-                    <p class="med-help">
-                        Enter the administration instance number.
                     </p>
                 </div>
 
@@ -213,7 +203,7 @@
 
     <!-- EXISTING ADMINISTRATION RECORDS -->
     <div class="med-card">
-        <h4>2. Existing Medication Administration Records</h4>
+        <h4>3. Existing Medication Administration Records</h4>
 
         <p class="med-help">
             Review records and use Edit or Delete to manage an administration entry.
@@ -240,7 +230,6 @@
                     <asp:BoundField DataField="Nurse" HeaderText="Administering Nurse" />
                     <asp:BoundField DataField="MedicineName" HeaderText="Medicine" />
                     <asp:BoundField DataField="dosageGiven" HeaderText="Dosage Given" />
-                    <asp:BoundField DataField="frequency_Instance" HeaderText="Frequency Instance" />
                     <asp:BoundField DataField="status" HeaderText="Status" />
                     <asp:BoundField DataField="Admnistered_at" HeaderText="Administered At"
                         DataFormatString="{0:dd MMM yyyy, HH:mm}" />
